@@ -1,3 +1,8 @@
+#!/usr/bin/python
+#coding=utf-8
+"""
+This unit test tests whether we can parse SiC-format files correctly.
+"""
 from .. import sic
 import unittest
 
