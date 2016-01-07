@@ -61,12 +61,12 @@ def parse_sic_file(sic_input):
 		raise ValueError("No reactions found in the file provided.")
 	reaction_pieces = reaction[0].split(">")
 	reactants = reaction_pieces[0]
-	products = reaction_pieces[-1].replace(";","")
+	products = reaction_pieces[-1].replace(";","").replace("\n","") #some files have more than one \n...
 	solvent = False
-	if reaction_pieces[3] != "":
+	if reaction_pieces[2] != "":
 		#if you split by ">", then the 2-4th groups will be "" UNLESS there are characters in the middle
 		#if there are characters after the second ">", then we parse them in as the solvent
-		solvent = reaction_pieces[3]
+		solvent = reaction_pieces[2]
 	react_obj = {"reactants": reactants, "products" : products, "solvent" : solvent}
 	for key in react_obj:
 		if react_obj[key]:
