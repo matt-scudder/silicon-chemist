@@ -10,4 +10,4 @@ Python will barf with a ValueError. Beware Python relative imports.
 from sic.sigc.server import app
 
 #NOTE: Update the below to use host=0.0.0.0, port=80 and debug=False for production deployments
-app.run(debug=True)
+app.run(host="0.0.0.0",debug=True)

@@ -1,0 +1,20 @@
+<!DOCTYPE html5>
+<head>
+<!-- Add in Bootstrap stuff here to make the below fancier... -->
+</head>
+
+<body>
+<div id="jsme_container"></div>
+<h2>Reactants</h2><h2>Products</h2>
+<button type="button" id="smiles_test">Test SMILES display</button>
+<button type="button">Submit to SiC³</button>
+<script type="text/javascript" src="/static/js/jsme/jsme.nocache.js"></script>
+<script>
+function jsmeOnLoad() {
+	jsmeApplet = new JSApplet.JSME("jsme_container","380px","340px");
+	document.getElementById("smiles_test").onclick = function(){alert(jsmeApplet.smiles());}; 
+}
+
+</script>
+</body>
+</html>
