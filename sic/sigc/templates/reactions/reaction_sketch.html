@@ -1,20 +1,35 @@
 <!DOCTYPE html5>
 <head>
 <!-- Add in Bootstrap stuff here to make the below fancier... -->
+<link href="/static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/local/general.css" rel="stylesheet">
 </head>
-
 <body>
-<div id="jsme_container"></div>
-<h2>Reactants</h2><h2>Products</h2>
-<button type="button" id="smiles_test">Test SMILES display</button>
-<button type="button">Submit to SiC³</button>
-<script type="text/javascript" src="/static/js/jsme/jsme.nocache.js"></script>
-<script>
-function jsmeOnLoad() {
-	jsmeApplet = new JSApplet.JSME("jsme_container","380px","340px");
-	document.getElementById("smiles_test").onclick = function(){alert(jsmeApplet.smiles());}; 
-}
-
-</script>
+<h1>SiGC Molecule Editor</h1>
+<div class="jsme" id="jsme_container"></div>
+<div class="row">
+	<div class="col-md-1"></div>
+	<h2 class="col-md-5">Reactants</h2>
+	<div class="col-md-4"></div>
+	<h2 class="col-md-2">Products</h2>
+</div> 
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-9">
+	<button id="add_reactant" type="button" class="btn">Add to Reactants</button>
+	</div>
+	<div class="col-md-2">
+	<button id="add_product" type="button" class="btn">Add to Products</button>
+	</div>
+</div>
+<div class="vspacer-1"></div>
+<div class="row">
+	<button type="button" class="btn" id="smiles_test">Test SMILES display</button>
+	<button type="button" class="btn btn-primary">Submit to SiC³</button>
+</div>
+<script src="/static/js/jsme/jsme.nocache.js"></script>
+<script src="/static/js/jquery/jquery-2.1.4.min.js"></script>
+<script src="/static/js/bootstrap/bootstrap.js"></script>
+<script src="/static/js/local/reactions.js"></script>
 </body>
 </html>

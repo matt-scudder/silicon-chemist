@@ -1,0 +1,34 @@
+/*
+   General CSS for SiGC.
+*/
+
+.jsme div{
+	/*
+	   Applying margin-left and margin-right to the OUTER div does nothing, because it's as wide as the screen.
+	   However, the inner div is tiny, so applying margin-left and right to it will make it center.
+	   Thus, apply only to child.
+	*/
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.center {
+	/*
+	   You may notice this is the same as the rule above.
+	   I don't know how to make aliases yet.
+	   */
+	margin-left: auto;
+	margin-right: auto;
+	float: none;
+}
+.align-right {
+	text-align: right;
+}
+
+.vspacer-1 {
+	/*
+	   Vertical spacing.
+	   */
+	height: 1em;
+}
