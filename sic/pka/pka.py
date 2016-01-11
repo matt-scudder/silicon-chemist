@@ -32,15 +32,14 @@ def get_all_pka(molecule):
         pattern = pka_obj.keys()[0] #there's only one key, so this is fine
         smarts = pybel.Smarts(pattern)
         indices = get_real_indices(smarts.findall(molecule))
-        if len(indices) > 0:
-            for group in indices:
-                for atom_idx in group:
-                    atom = molecule.atoms[atom_idx]
-                    if atom.atomicnum == 1: #hydrogen
-                        atom.pka_value = pka_obj[pattern]["pKa_HA"] 
-                    elif atom.atomicnum in LONE_PAIR_ATOMS:
-                        atom.pka_value = pka_obj[pattern]["pKa_BH"]
-                    else:
-                        #TODO: Update this for C with lone pairs as well as borohydride stuff
-                        continue
+		for group in indices:
+			for atom_idx in group:
+				atom = molecule.atoms[atom_idx]
+				if atom.atomicnum == 1: #hydrogen
+					atom.pka_value = pka_obj[pattern]["pKa_HA"] 
+				elif atom.atomicnum in LONE_PAIR_ATOMS:
+					atom.pka_value = pka_obj[pattern]["pKa_BH"]
+				else:
+					#TODO: Update this for C with lone pairs as well as borohydride stuff
+					continue
     #return nothing because this just modifies state
