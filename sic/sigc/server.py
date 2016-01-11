@@ -15,14 +15,14 @@ app = Flask(__name__)
 
 @app.route("/")
 def jsme_display():
-	"""
-	Displays the JSME interface for creating reactant and product sets.
-	"""
-	return render_template("reactions/reaction_sketch.html") #add in template vars as needed...
+        """
+        Displays the JSME interface for creating reactant and product sets.
+        """
+        return render_template("reactions/reaction_sketch.html") #add in template vars as needed...
 
 @app.route("/submit_reaction")
 def accept_reaction():
-	"""
-	Handles reactant and product input from users and runs SiC³ on them.
-	"""
-	return "a response"
+        """
+        Handles reactant and product input from users and runs SiC³ on them.
+        """
+        return "a response"
