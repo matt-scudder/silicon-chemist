@@ -55,7 +55,7 @@ def label_sources(sources,molecule):
             #here is where you wish Python had a switch statement
             if source_type == "Y:":
                 #only one atom to label, might as well do it here
-                source["atoms"]["Y"] = molecule.atoms[group[0]]
+		source["atoms"]["Y:"] = molecule.atoms[group[0]]
             sources.append(source)
     return sources
 
