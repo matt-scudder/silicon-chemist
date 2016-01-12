@@ -31,12 +31,11 @@ class ReactionType():
     def __init__(self, sources, sinks):
         """
         Attaches sources and sinks to this object, and sets the initial cross check
-        score to 0. cross_check() need not modify the score if the reaction
-        is extremely unlikely.
+        score to a sentinel value, so that cross_check() needs only to be run once.
         """
         self.sources = sources
         self.sinks = sinks
-        self.cross_check_score = 0.0
+        self.cross_check_score = -2.0 
 
     def cross_check():
         """
