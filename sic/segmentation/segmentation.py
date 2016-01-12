@@ -29,11 +29,8 @@ def segment_molecule(molecule):
     Each of these two lists will consist of objects that have the following properties:
 
     - "subtype" : Type of generic source or sink the object represents, such as "Y-L" or "Y=C-L"
-    - "atoms" : List of objects that have the following properties:
-        
-        - "atom" : The actual Pybel Atom object in question
-        - "part" : Which of the parts of the generic source/sink the atom belongs to. For example,
-                    in a Y-L, there would be one atom labeled "Y", and another labeled "L".
+    - "atoms" : An object which has keys for each of the "pieces" of the source/sink,
+        and a value for the actual atom.
     """
     result = {"sources" : [], "sinks" : []}
     result["sources"] = label_sources(result["sources"],molecule)
@@ -54,11 +51,11 @@ def label_sources(sources,molecule):
         smarts = pybel.Smarts(SOURCES[source_type])
         groups = get_real_indices(smarts.findall(molecule))
         for group in groups:
-            source = {"subtype":source_type,"atoms":[]}
+            source = {"subtype":source_type,"atoms":{}}
             #here is where you wish Python had a switch statement
             if source_type == "Y:":
                 #only one atom to label, might as well do it here
-                source["atoms"].append({"atom":molecule.atoms[group[0]],"part":"Y"})
+                source["atoms"]["Y"] = molecule.atoms[group[0]]
             sources.append(source)
     return sources
 
@@ -71,4 +68,18 @@ def label_sinks(sinks,molecule):
     While superficially similar to label_sources in the basic sense, merging them could get problematic and
     hard to read later.
     """
-    raise NotImplementedError("Haven't done this yet.")
+    for sink_type in SINKS:
+        smarts = pybel.Smarts(SINKS[sink_type])
+        groups = get_real_indices(smarts.findall(molecule))
+        for group in groups:
+            sink = {"subtype":sink_type,"atoms":{}}
+            if sink_type == "H-L":
+                #hydrogens are usually after all the other atoms, but we shouldn't assume this until optimization stage
+                for atom_idx in group:
+                    if molecule.atoms[atom_idx].atomicnum == 1:
+                        sink["atoms"]["H"] = molecule.atoms[atom_idx]
+                    else:
+                        #assume identification was correct, OpenBabel is old.
+                        sink["atoms"]["L"] = molecule.atoms[atom_idx]
+            sinks.append(sink)
+    return sinks
