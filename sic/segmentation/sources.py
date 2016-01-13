@@ -10,7 +10,7 @@ to the "letters" in the source name) should be left in the segmentation module.
 
 #TODO: Add support for C-
 SOURCES = {
-            "Y:":"[O!X3,S!X3,N!X4,FX0,ClX0,BrX0,IX0]"
+            "Y:":"[O!X3,S!X3,N!X4,F-,Cl-,Br-,I-]"
             #finds anything with lone pairs, whether - charge or not. The awkward X is because you can't group
             #the X primitives as far as I've been able to find out.
         }

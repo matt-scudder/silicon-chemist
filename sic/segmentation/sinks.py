@@ -8,6 +8,7 @@ Logic to handle atomic tagging (see specs - object that maps the "pieces" of a s
 to the "letters" in the source name) should be left in the segmentation module.
 """
 #TODO: Figure out how to exclude pKa 40+ stuff from consideration; maybe prune after the source/sink list is built?
+#TODO: Add carbon acids to the H-L sink list
 SINKS = {
 		"H-L":"[O,S,N,F,Cl,Br,I]([H])"
 	#anything we know can bond to hydrogen, bonded with it
