@@ -4,7 +4,7 @@
 Carries out the proton transfer reaction.
 """
 from reaction_type import ReactionType
-from ..utils import make_bond, break_bond
+from ..structure import struct_ops
 
 class ProtonTransfer(ReactionType):
     """
@@ -51,9 +51,9 @@ class ProtonTransfer(ReactionType):
         sink = self.sinks[0]
         #TODO: Make this work so it supports more than just Y, see cross_check above.
         #make Y-H bond
-        make_bond(source["Y:"],sink["H"])
+        struct_ops.make_bond(source["Y:"],sink["H"])
         #break H-L bond
-        break_bond(sink["L"],sink["H"])
+        struct_ops.break_bond(sink["L"],sink["H"])
 
     def disarrange():
         """
@@ -64,6 +64,6 @@ class ProtonTransfer(ReactionType):
         sink = self.sinks[0]
         #TODO: Make this work so it supports more than just Y, see cross_check above.
         #make H-L bond
-        make_bond(sink["L"],sink["H"]) #always start from non-H for consistency!
+        struct_ops.make_bond(sink["L"],sink["H"]) #always start from non-H for consistency!
         #break Y-H bond
-        break_bond(source["Y:"],sink["H"])
+        struct_ops.break_bond(source["Y:"],sink["H"])
