@@ -18,7 +18,7 @@ class WaterPkaTest(unittest.TestCase):
 		for w_string in self.waters:
 			mol = readstring("smi",w_string)
 			mol.addh()
-			mol = pka.get_all_pka(mol)
+			pka.get_all_pka(mol)
 			water_mols.append(mol)
 		#get_all_pka modifies state so now let's iterate through atoms
 		for atom in water_mols[0]:
