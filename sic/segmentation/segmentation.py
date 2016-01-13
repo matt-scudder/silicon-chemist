@@ -30,7 +30,9 @@ def segment_molecule(molecule):
 
     - "subtype" : Type of generic source or sink the object represents, such as "Y-L" or "Y=C-L"
     - "atoms" : An object which has keys for each of the "pieces" of the source/sink,
-        and a value for the actual atom.
+        and a dict for the actual atom, which has both the atom itself, and its corresponding molecule.
+        The last bit exists because Atom objects aren't "real" in that they are generated from scratch
+        every time you access a Molecule's atoms.
     """
     result = {"sources" : [], "sinks" : []}
     result["sources"] = label_sources(result["sources"],molecule)
@@ -55,7 +57,7 @@ def label_sources(sources,molecule):
             #here is where you wish Python had a switch statement
             if source_type == "Y:":
                 #only one atom to label, might as well do it here
-		source["atoms"]["Y:"] = molecule.atoms[group[0]]
+                source["atoms"]["Y:"] = {"atom": molecule.atoms[group[0]], "molecule": molecule}
             sources.append(source)
     return sources
 
@@ -77,9 +79,9 @@ def label_sinks(sinks,molecule):
                 #hydrogens are usually after all the other atoms, but we shouldn't assume this until optimization stage
                 for atom_idx in group:
                     if molecule.atoms[atom_idx].atomicnum == 1:
-                        sink["atoms"]["H"] = molecule.atoms[atom_idx]
+                        sink["atoms"]["H"] = {"atom": molecule.atoms[atom_idx], "molecule": molecule}
                     else:
                         #assume identification was correct, OpenBabel is old.
-                        sink["atoms"]["L"] = molecule.atoms[atom_idx]
+                        sink["atoms"]["L"] = {"atom": molecule.atoms[atom_idx], "molecule": molecule}
             sinks.append(sink)
     return sinks

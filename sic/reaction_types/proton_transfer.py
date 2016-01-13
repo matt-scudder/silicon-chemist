@@ -5,6 +5,7 @@ Carries out the proton transfer reaction.
 """
 from reaction_type import ReactionType
 from ..structure import struct_ops
+from ..pka import pka
 
 class ProtonTransfer(ReactionType):
     """
@@ -26,8 +27,8 @@ class ProtonTransfer(ReactionType):
             sink = self.sinks[0]
             #get pKa_HA of the H, and pKa_BH of the Y
             #TODO: Update this code so that it supports more than just Y, maybe use a dict? H-L works always.
-            pKa_BH = source["Y:"].pka_value
-            pKa_HA = sink["H"].pka_value
+	    pKa_BH = pka.get_pka(source["Y:"]["atom"],source["Y:"]["molecule"]).pka_value
+            pKa_HA = pka.get_pka(sink["H"]["atom"],sink["H"]["molecule"]).pka_value
             dpKa = pKa_BH - pKa_HA
             if dpKa < -10: 
                 self.cross_check_score = 0.0

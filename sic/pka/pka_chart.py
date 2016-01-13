@@ -14,7 +14,8 @@ The rest of the program should read these accordingly.
 #NOTE: The huge amount of ([H]) below are because otherwise the hydrogens we so desperately care about won't get matched in the expression, and we run into problems.
 PKA_CHART = [
     #Water
-    {"[OH2X2]([H])([H])":{"pKa_HA":15.7,"pKa_BH":-1.7}}, #X2 required because it would match e.g. protonated carboxylics otherwise, which have diff. pKa
+    {"[OHv1]([H])":{"pKa_HA": None, "pKa_BH": 15.7}}, #v1 because otherwise every alcohol ever would match it. Put in a separate case for alcohols...
+    {"[OH2v2]([H])([H])":{"pKa_HA":15.7,"pKa_BH":-1.7}}, #v2 required because it would match e.g. protonated carboxylics otherwise, which have diff. pKa
     {"[OH3]([H])([H])([H])":{"pKa_HA":-1.7,"pKa_BH":None}}, #can't add another H to OH3+, so None for BH
     #Halogens - no pKa_BH for the acids, pretty sure stuff like H2I doesn't exist.
     {"[IH1]([H])":{"pKa_HA":-10,"pKa_BH":None}},
