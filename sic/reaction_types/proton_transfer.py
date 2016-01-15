@@ -52,19 +52,7 @@ class ProtonTransfer(ReactionType):
         sink = self.sinks[0]
         #TODO: Make this work so it supports more than just Y, see cross_check above.
         #make Y-H bond
-        struct_ops.make_bond(source["Y:"],sink["H"])
+        struct_ops.make_bond(source["atoms"]["Y:"],sink["atoms"]["H"])
         #break H-L bond
-        struct_ops.break_bond(sink["L"],sink["H"])
+        struct_ops.break_bond(sink["atoms"]["L"],sink["atoms"]["H"])
 
-    def disarrange():
-        """
-        Reverses the changes made by rearrange().
-        Should only be called after calling rearrange.
-        """
-        source = self.sources[0]
-        sink = self.sinks[0]
-        #TODO: Make this work so it supports more than just Y, see cross_check above.
-        #make H-L bond
-        struct_ops.make_bond(sink["L"],sink["H"]) #always start from non-H for consistency!
-        #break Y-H bond
-        struct_ops.break_bond(source["Y:"],sink["H"])
