@@ -34,13 +34,11 @@ def segment_molecule(molecule):
         The last bit exists because Atom objects aren't "real" in that they are generated from scratch
         every time you access a Molecule's atoms.
     """
-    result = {"sources" : [], "sinks" : []}
-    result["sources"] = label_sources(result["sources"],molecule)
-    result["sinks"] = label_sinks(result["sinks"],molecule)
+    result = {"sources" : label_sources(molecule), "sinks" : label_sources(molecule)}
     #do any additional processing here
     return result
 
-def label_sources(sources,molecule):
+def label_sources(molecule):
     """
     Handles the logic of actually looking at the SMILES patterns and producing a list of sources
     based on a molecule.
@@ -49,6 +47,8 @@ def label_sources(sources,molecule):
     While superficially similar to label_sinks in the basic sense, merging them could get problematic and
     hard to read later.
     """
+    sources = []
+    mol_atoms = molecule.atoms #so that we don't do a list processing every time, given that molecule.atoms would regenerate itself
     for source_type in SOURCES:
         smarts = pybel.Smarts(SOURCES[source_type])
         groups = get_real_indices(smarts.findall(molecule))
@@ -57,11 +57,11 @@ def label_sources(sources,molecule):
             #here is where you wish Python had a switch statement
             if source_type == "Y:":
                 #only one atom to label, might as well do it here
-                source["atoms"]["Y:"] = {"atom": molecule.atoms[group[0]], "molecule": molecule}
+                source["atoms"]["Y:"] = {"atom": mol_atoms[group[0]], "molecule": molecule}
             sources.append(source)
     return sources
 
-def label_sinks(sinks,molecule):
+def label_sinks(molecule):
     """
     Handles the logic of actually looking at the SMILES patterns and producing a list of sinks 
     based on a molecule.
@@ -70,6 +70,8 @@ def label_sinks(sinks,molecule):
     While superficially similar to label_sources in the basic sense, merging them could get problematic and
     hard to read later.
     """
+    sinks = []
+    mol_atoms = molecule.atoms
     for sink_type in SINKS:
         smarts = pybel.Smarts(SINKS[sink_type])
         groups = get_real_indices(smarts.findall(molecule))
@@ -79,9 +81,9 @@ def label_sinks(sinks,molecule):
                 #hydrogens are usually after all the other atoms, but we shouldn't assume this until optimization stage
                 for atom_idx in group:
                     if molecule.atoms[atom_idx].atomicnum == 1:
-                        sink["atoms"]["H"] = {"atom": molecule.atoms[atom_idx], "molecule": molecule}
+                        sink["atoms"]["H"] = {"atom": mol_atoms[atom_idx], "molecule": molecule}
                     else:
                         #assume identification was correct, OpenBabel is old.
-                        sink["atoms"]["L"] = {"atom": molecule.atoms[atom_idx], "molecule": molecule}
+                        sink["atoms"]["L"] = {"atom": mol_atoms[atom_idx], "molecule": molecule}
             sinks.append(sink)
     return sinks
