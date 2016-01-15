@@ -19,14 +19,12 @@ class ReactionType():
     a score between 0 and 1, usually involving the ΔpKa rule.
 
     A rearrangement is defined as the shift in bonds between the source
-    and the sink, resulting in a new molecular state. It is referred to as
-    "reversible", because the object should be able to reverse the bond changes
-    made in the case that this reaction path does not get us closer to product.
+    and the sink, resulting in a new molecular state. 
 
     Because of the fact that we need to keep discrete molecular state in order
     to list the final reaction pathway, as well as walk back and forth between it,
-    a ReactionType should take as input a #copy# of the current molecular state,
-    and to leave the state as close to it originally was if calling.
+    a ReactionType should take as input a #copy# of the current molecular state;
+    the copy can be disposed of later on if "showing our work" is not required.
     """
     def __init__(self, sources, sinks):
         """
@@ -53,11 +51,3 @@ class ReactionType():
         """
         raise NotImplementedError("This is an abstract class and should not be used.")
 
-    def disarrange():
-        """
-        Reverses anything done by rearrange. It might be necessary to put in a boolean
-        that prevents this method from being called when rearrange has not been,
-        but for now the assumption is that the convention will prevent callers
-        from doing this.
-        """
-        raise NotImplementedError("This is an abstract class and should not be used.")
