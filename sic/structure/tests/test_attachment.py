@@ -1,0 +1,38 @@
+#!/usr/bin/python
+#coding=utf-8
+"""
+Tests whether attaching two groups together works.
+Uses a carbocation bonding to an O lone pair to test whether the two groups bond to each other.
+O- is used so that there's only one source and one sink here.
+"""
+
+from .. import struct_ops, similarity
+from ...segmentation import segmentation
+import unittest
+from pybel import readstring
+
+class GroupAttachmentTest(unittest.TestCase):
+    def setUp(self):
+        reactants = readstring("smi","CCCCCC[O-].C[C+](C)C")
+        products = readstring("smi","CCCCCCOC(C)(C)C")
+        reactants.addh()
+        products.addh()
+        self.reactants = reactants
+        self.products = products
+        self.sources = segmentation.label_sources(reactants)
+        self.sinks = segmentation.label_sinks(reactants)
+
+    def testAttachment(self):
+        #make bond from OH to the C+
+        print self.sinks
+        Y = self.sources[0]["atoms"]["Y:"]
+        C = self.sinks[0]["atoms"]["C+"] 
+        print Y["atom"].idx
+        print C["atom"].idx
+        struct_ops.make_bond(Y,C)
+        print self.reactants.write("smiles")
+        self.assertTrue(similarity.is_same_molecule(self.reactants,self.products))
+
+if __name__ == "__main__":
+    unittest.main()
+

@@ -36,15 +36,13 @@ class SingleAtomMovementTest(unittest.TestCase):
 	Y = self.sources[0]["atoms"]["Y:"]
 	H = self.sinks[0]["atoms"]["H"]
 	L = self.sinks[0]["atoms"]["L"]
-	print L["atom"].idx
-	print Y["atom"].idx
 	log.debug("Y: index: %s; H index %s" % (Y["atom"].idx,H["atom"].idx))
         struct_ops.make_bond(Y,H)
 	log.debug(self.reactants.write("smiles"))
 	log.debug("L index: %s; H index %s" % (L["atom"].idx,H["atom"].idx))
         struct_ops.break_bond(L,H)
 	log.debug(self.reactants.write("smiles"))
-	self.assertTrue(self.reactants.write("smiles") == self.products.write("smiles"))
+	self.assertTrue(similarity.is_same_molecule(self.reactants,self.products))
 
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stderr)

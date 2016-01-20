@@ -34,6 +34,8 @@ def make_bond(start,end):
     success = start_mol.OBMol.AddBond(start_atom.idx,end_atom.idx,1)
     #TODO: add routine that checks for double bond stuff
     start_atom.OBAtom.SetFormalCharge(start_atom.OBAtom.GetFormalCharge() + 1)
+    if end_atom.atomicnum != 1: #hydrogen behaves oddly w.r.t. formal charges
+        end_atom.OBAtom.SetFormalCharge(end_atom.OBAtom.GetFormalCharge() - 1)
     if not success:
         raise ValueError("AddBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
                             %(start_atom.idx,start_atom.atomicnum,end_atom.idx,end_atom.atomicnum))
