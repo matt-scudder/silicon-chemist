@@ -63,9 +63,7 @@ def break_bond(start,end):
     #this is slow - figure out a better way someday
     found = False
     for bond in openbabel.OBMolBondIter(start_mol.OBMol):
-        print "(%s,%s)" % (bond.GetBeginAtomIdx(),bond.GetEndAtomIdx())
         if (bond.GetBeginAtomIdx() == start_atom.idx and bond.GetEndAtomIdx() == end_atom.idx)  or (bond.GetBeginAtomIdx() == end_atom.idx and bond.GetEndAtomIdx() == start_atom.idx):
-            print "calling delete bond"
             success = start_mol.OBMol.DeleteBond(bond)
             found = True
             if not success:
