@@ -85,5 +85,8 @@ def label_sinks(molecule):
                     else:
                         #assume identification was correct, OpenBabel is old.
                         sink["atoms"]["L"] = {"atom": mol_atoms[atom_idx], "molecule": molecule}
+            elif sink_type == "C+":
+                #only one atom in group, just label it
+                sink["atoms"]["C+"] = {"atom": mol_atoms[group[0]], "molecule": molecule}
             sinks.append(sink)
     return sinks
