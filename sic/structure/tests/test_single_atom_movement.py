@@ -17,6 +17,7 @@ from pybel import readstring,Smarts
 import logging
 import sys
 
+#NOTE: impossibility of ΔpKa < -10 reactions is left to the logic that calls this code...
 class SingleAtomMovementTest(unittest.TestCase):
     def setUp(self):
 	reactants = readstring("smi","F.O")
