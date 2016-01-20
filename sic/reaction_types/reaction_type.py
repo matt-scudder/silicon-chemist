@@ -35,7 +35,7 @@ class ReactionType():
         self.sinks = sinks
         self.cross_check_score = -2.0 
 
-    def cross_check():
+    def cross_check(self):
         """
         Produces a score on a [0,1] scale based on how likely the source-sink
         interaction attached to this reaction is. Exceedingly unlikely (e.g. ΔpKa < -10)
@@ -44,7 +44,7 @@ class ReactionType():
         """
         raise NotImplementedError("This is an abstract class and should not be used.")
 
-    def rearrange():
+    def rearrange(self):
         """
         Rearranges the atoms in the source and sink, in effect carrying out the reaction
         by making the connectivity changes necessary.
