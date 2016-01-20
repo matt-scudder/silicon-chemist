@@ -17,26 +17,10 @@ def tanimoto(mol1,mol2):
 
 def is_same_state(state1,state2):
     """
-    Finds out whether one state is the same as another by taking the Tanimoto coefficient between the molecules.
-    If there is a mapping from state1 to state2 such that the Tanimoto coefficient of each pair is 1,
-    then we conclude that state1 is the same as state2.
+    Returns True if both states are composed of the same SMILES strings.
+    If we can't tell the molecules apart based on SMILES, we can conclude that they are the same -
+    since SMILES is our input, that is the highest level of resolution that we get.
     """
-    #first, return False if lists aren't the same length. Explicit atom balance is still a thing.
-    if len(state1) != len(state2):
-        return False
-    copy_state1 = set(state1)
-    copy_state2 = set(state2)
-    for st1_mol in copy_state1:
-        remove = False
-        for st2_mol in copy_state2:
-            if tanimoto(st1_mol,st2_mol) == 1:
-                print "st2 removed"
-                remove = st2_mol
-                break
-        if remove:
-            copy_state2.remove(st2_mol)
-
-    if len(copy_state2) < 1:
-        return True
-    return False
-
+    state1_strings = set([x.write("smiles") for x in state1])
+    state2_strings = set([x.write("smiles") for x in state2])
+    return state1_strings == state2_strings
