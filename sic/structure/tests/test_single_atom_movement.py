@@ -19,32 +19,32 @@ import sys
 
 class SingleAtomMovementTest(unittest.TestCase):
     def setUp(self):
-        acid = readstring("smi","F")
-        acid.addh()
-        self.acid = acid
-        base = readstring("smi","O")
-        base.addh()
-        self.base = base
-        conj_base = readstring("smi","[F-]")
-        conj_base.addh()
-        self.conj_base = conj_base
-        conj_acid = readstring("smi","[OH3+]")
-        self.conj_acid = conj_acid
-        #since we know that acid is sink and base is source, let's just do normal labeling
-        self.sources = segmentation.label_sources(base)
-        self.sinks = segmentation.label_sinks(acid)
+	reactants = readstring("smi","F.O")
+	reactants.addh()
+	self.reactants = reactants
+	products = readstring("smi","[F-].[OH3+]")
+	products.addh()
+	self.products = products
+	self.sources = segmentation.label_sources(reactants)
+	self.sinks = segmentation.label_sinks(reactants)
 
     def testSingleAtomMovement(self):
         #this test has two parts, because we *must* ensure that bond breaking happens before bond breaking
         #but tests are normally run in any order.
         log = logging.getLogger("arf")
-        struct_ops.make_bond(self.sources[0]["atoms"]["Y:"],self.sinks[0]["atoms"]["H"],single_atom=True)
-        log.debug(self.base.write("smiles"))
-        log.debug(self.conj_acid.write("smiles"))
-        self.assertTrue(similarity.tanimoto(self.base,self.conj_acid) == 1.0) #because self.base got modified...
-        struct_ops.break_bond(self.sinks[0]["atoms"]["L"],self.sinks[0]["atoms"]["H"],single_atom=True)
-        log.debug(self.acid.write("smiles"))
-        self.assertTrue(similarity.tanimoto(self.acid,self.conj_base) == 1.0)
+	log.debug(self.reactants.write("smiles"))
+	Y = self.sources[0]["atoms"]["Y:"]
+	H = self.sinks[0]["atoms"]["H"]
+	L = self.sinks[0]["atoms"]["L"]
+	print L["atom"].idx
+	print Y["atom"].idx
+	log.debug("Y: index: %s; H index %s" % (Y["atom"].idx,H["atom"].idx))
+        struct_ops.make_bond(Y,H)
+	log.debug(self.reactants.write("smiles"))
+	log.debug("L index: %s; H index %s" % (L["atom"].idx,H["atom"].idx))
+        struct_ops.break_bond(L,H)
+	log.debug(self.reactants.write("smiles"))
+	self.assertTrue(self.reactants.write("smiles") == self.products.write("smiles"))
 
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stderr)

@@ -53,3 +53,12 @@ def pretty_print_mechanism(reaction_state_list):
 	mechanism. Similar to SiC's original functionality, but cooler.
 	"""
 	raise NotImplementedError("Can't do this yet. ReactionState format still undecided.")
+
+def create_state_smiles(molecules):
+	"""
+	Creates a combined SMILES string by concatenating them with dots. Nothing fancy.
+	"""
+	combined_smiles = molecules[0]
+	for molecule in molecules[1:]:
+		combined_smiles += "." + molecule
+	return combined_smiles
