@@ -12,6 +12,9 @@ class ReactionType():
     and a list of sinks. While usually only one source and one sink
     will be involved, this is left open for strange reaction types.
 
+    A Reaction has a type, which is stored as a static string for
+    all instances.
+
     A Reaction has a cross check, and a reversible rearrangement.
 
     A cross check is defined as a set of checks
@@ -25,7 +28,13 @@ class ReactionType():
     to list the final reaction pathway, as well as walk back and forth between it,
     a ReactionType should take as input a #copy# of the current molecular state;
     the copy can be disposed of later on if "showing our work" is not required.
+
+    All ReactionTypes also include a method to convert themselves to a dictionary,
+    which only really stores the cross check and a string denoting the ReactionType,
+    in order to make this class palatable by the browser and usable for teaching
+    students.
     """
+    self.reaction_type = None
     def __init__(self, sources, sinks):
         """
         Attaches sources and sinks to this object, and sets the initial cross check
@@ -51,3 +60,12 @@ class ReactionType():
         """
         raise NotImplementedError("This is an abstract class and should not be used.")
 
+    def to_json_dict(self):
+	"""
+	Creates a dictionary that will be equivalent to a JSON representation of this object,
+	for regeneration in the browser.
+	"""
+	json_dict = {}
+	json_dict["reaction_type"] = self.reaction_type
+	json_dict["cross_check_score"] = self.cross_check_score
+	return json_dict
