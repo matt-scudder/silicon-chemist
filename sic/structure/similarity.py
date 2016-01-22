@@ -30,3 +30,9 @@ def is_same_molecule(mol1,mol2):
     Determines whether two Molecule objects are the same thing.
     """
     return mol1.write("smiles") == mol2.write("smiles")
+
+def closer_to_product(state1,state2,product):
+    """
+    Checks whether one state is closer to product than another.
+    """
+    return True #TODO: implement this for real
