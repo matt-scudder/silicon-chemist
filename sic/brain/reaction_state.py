@@ -15,13 +15,14 @@ At any point where molecules need to be rearranged by a mechanism, a new Molecul
 on that SMILES string. This new Molecule should then be rearranged before creating a new ReactionState.
 """
 import json
+import sortedcontainers
 
 class ReactionState():
     def __init__(self,molecule,parent_state=None,parent_reaction=None):
         self.state = molecule
         self.parent_state = None #doesn't matter if None gets assigned
         self.parent_reaction = None
-        self.possibilities = []
+	self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: x.cross_check())
     
     def to_json_dict(self):
         """
