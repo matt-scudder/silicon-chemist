@@ -22,7 +22,7 @@ class ReactionState():
         self.state = molecule
         self.parent_state = None #doesn't matter if None gets assigned
         self.parent_reaction = None
-	self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: x.cross_check())
+	self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: x.parent_reaction.cross_check())
     
     def to_json_dict(self):
         """
