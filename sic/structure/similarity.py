@@ -34,5 +34,7 @@ def is_same_molecule(mol1,mol2):
 def closer_to_product(state1,state2,product):
     """
     Checks whether one state is closer to product than another.
+    Expects Pybel Molecule objects as input.
+    Returns True/False depending on closeness to product.
     """
     return True #TODO: implement this for real
