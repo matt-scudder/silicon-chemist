@@ -8,6 +8,7 @@ Uses all the segmentation and pka tools in the other modules.
 from ..segmentation import segmentation
 from ..pka import pka
 from ..structure import similarity
+from ..structure import struct_ops 
 from ..reaction_types import reaction_type_factory #there's going to be too many of these...
 from ..reaction_types import interactions
 import pybel
@@ -33,8 +34,26 @@ def generate_choices(state):
                 interaction_sink = [sink]
             for interaction in possible_interactions:
                 reaction = reaction_type_factory.produce_reaction_type(interaction,interaction_source,interaction_sink)
-                state.possibility.add(pybel.readstring("smi",state.state.write("smiles")),parent_state=state,parent_reaction=reaction)
+                if reaction.cross_check() > 0: #make sure it is actually a possibility
+                    state.possibility.add(ReactionState(struct_ops.copy_molecule(state.state),parent_state=state,parent_reaction=reaction))
     #don't return anything, this just modifies the state and adds in possibilities
+
+def go_up_a_level(state,master):
+    """
+    Utility function for get_mechanism.
+    Takes a state and goes up a level if there is a level to rise, returning
+    the parent of the current state.
+    Flags the state as "already examined fully" since this function is called
+    when all the possibilities below are known to not get us closer to product, and
+    removes it from the master reaction track.
+    If there is no level, raises a ValueError with a message indicating the problem.
+    """
+    if state.parent_state:
+        state.examined = True #mark state as examined
+        master.pop()
+        return state.parent_state
+    else:
+        raise ValueError("Tried to go up a level but already at root.")
 
 def get_mechanism(reactants,products,solvent=False):
     """
@@ -53,16 +72,22 @@ def get_mechanism(reactants,products,solvent=False):
     while not similarity.is_same_molecule(current_state.state,prod_mol):
         #from current_state, generate choices
         generate_choices(current_state)
-        for possibility in current_state.possibilities:
-            #rearrange the atoms
-            possibility.parent_reaction.rearrange() #move the atoms around
-            #check if closer to product
-            if similarity.closer_to_product(possibility.state,current_state.state,prod_mol): 
-                current_state = possibility
-                break
+        if len(current_state.possibilities) > 0:
+            for possibility in current_state.possibilities:
+                if not possibility.examined: #if we didn't look at it and conclude none of its paths get us to product...
+                    #rearrange the atoms
+                    possibility.parent_reaction.rearrange() #move the atoms around
+                    #check if closer to product
+                    if similarity.closer_to_product(possibility.state,current_state.state,prod_mol): 
+                        current_state = possibility
+                        MASTER_STATE.append(possibility.state)
+                        break
+            else:
+                #none of the possibilities are closer, did not encounter break statement, so go up a level
+                current_state = go_up_a_level(current_state,MASTER_STATE)
+
+        else:
+            #if there's no further paths and we're still not at product, go up a level too
+            current_state = go_up_a_level(current_state,MASTER_STATE)
     #when we hit product, return
     return MASTER_STATE
-    
-
-    
-

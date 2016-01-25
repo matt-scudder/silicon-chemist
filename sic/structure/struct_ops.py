@@ -7,9 +7,18 @@ Usually deals with cross-molecule stuff, which OpenBabel is not generally used t
 
 import openbabel
 import pybel
-import copy
 
-#TODO: Figure out whether single_atom flag is enough, and whether we might want to do more per reaction_type. Also figure out how big Ls work here.
+def copy_molecule(mol):
+    """
+    Copies a molecule by using the operator= of OBMol, and returns the copy.
+    Used such that atom indexing for "closer to product" mappings can be kept
+    consistent throughout a mechanism.
+    """
+    intermediate = openbabel.OBMol() #Molecule's constructor only takes OBMol objects, so first make an empty one
+    new_mol = pybel.Molecule(intermediate) #add it to a new Molecule object
+    new_mol.OBMol = mol.OBMol #copy by way of operator=, see OBMol docs
+    return new_mol
+
 #TODO: Figure out whether we always want order=1 bonds!
 def make_bond(start,end):
     """
