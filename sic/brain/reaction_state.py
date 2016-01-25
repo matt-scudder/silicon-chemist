@@ -11,18 +11,27 @@ Each ReactionState keeps track of:
     - The possible paths from this ReactionState, which are themselves ReactionStates.
     - The Molecule object that represents this reaction state (called "state").
 
+All ReactionStates share a "product" object, which ensures the tree structure and allows for utility functions
+related to how close a ReactionState is to product. Modify self.product at your own risk.
+
 At any point where molecules need to be rearranged by a mechanism, a new Molecule should be created by doing mol.write("smiles") and using readstring
 on that SMILES string. This new Molecule should then be rearranged before creating a new ReactionState.
+
+This class also contains utility functions to check the position of a 
 """
 import json
 import sortedcontainers
+from ..structure import similarity
 
 class ReactionState():
-    def __init__(self,molecule,parent_state=None,parent_reaction=None):
+    self.product = None
+    def __init__(self,molecule,parent_state=None,parent_reaction=None,prod=None)::
         self.state = molecule
         self.parent_state = None #doesn't matter if None gets assigned
         self.parent_reaction = None
 	self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: x.parent_reaction.cross_check())
+        if not self.product and prod:
+            self.product = prod
     
     def to_json_dict(self):
         """
@@ -36,3 +45,18 @@ class ReactionState():
 	json_dict["possibilities"] = map(lambda child: child.to_json_dict(), self.possibilities)
 	return json_dict
 
+    def matches_product(self):
+        """
+        Checks whether this reaction state is equal to the product.
+        """
+        return similarity.is_same_molecule(self.state,self.product)
+
+    def closer_to_product(self):
+        """
+        Examines how close the current ReactionState is to product, and returns True if it is
+        closer than its parent.
+        If called on the root node, this method raises a ValueError.
+        """
+        if not self.parent_state:
+            raise ValueError('Root node cannot be checked for "closer to product" since it is the base.')
+        return True #not implemented but we need it!

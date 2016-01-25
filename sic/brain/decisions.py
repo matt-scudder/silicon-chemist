@@ -7,7 +7,6 @@ Uses all the segmentation and pka tools in the other modules.
 
 from ..segmentation import segmentation
 from ..pka import pka
-from ..structure import similarity
 from ..structure import struct_ops 
 from ..reaction_types import reaction_type_factory #there's going to be too many of these...
 from ..reaction_types import interactions
@@ -67,9 +66,9 @@ def get_mechanism(reactants,products,solvent=False):
     react_mol.addh()
     prod_mol.addh()
     #now create a ReactionState out of the reactants - this will be the root
-    current_state = ReactionState(react_mol)
+    current_state = ReactionState(react_mol,prod=prod_mol) #product becomes part of the tree
     MASTER_STATE.append(react_mol) #since the first state HAS to be the first step in the mechanism
-    while not similarity.is_same_molecule(current_state.state,prod_mol):
+    while not current_state.matches_product():
         #from current_state, generate choices
         generate_choices(current_state)
         if len(current_state.possibilities) > 0:
@@ -78,9 +77,9 @@ def get_mechanism(reactants,products,solvent=False):
                     #rearrange the atoms
                     possibility.parent_reaction.rearrange() #move the atoms around
                     #check if closer to product
-                    if similarity.closer_to_product(possibility.state,current_state.state,prod_mol): 
+                    if possibility.closer_to_product():
                         current_state = possibility
-                        MASTER_STATE.append(possibility.state)
+                        MASTER_STATE.append(possibility)
                         break
             else:
                 #none of the possibilities are closer, did not encounter break statement, so go up a level
