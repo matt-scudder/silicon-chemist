@@ -16,40 +16,42 @@ import re #for "arbitrary delimiter" support
 import sys #for exit codes
 import io #for parsing SiC-format input files
 import logging #for debug logs - worry about this later
+import brain #where the magic happens
 
 SIC_PATH = "/home/sic/sic/sic" #that's just sic.
 
 #not sure why you'd want to import this package, but it's good practice to wrap all argparse calls in this
 if __name__ == "__main__":
-        parser = argparse.ArgumentParser(description="Command-line interface to SiC³")
-        parser.add_argument("-i","--input-file",help="Path to the SiC-format input file. See SiC thesis for details. If \
-                        -r and -p are present, they will be prioritized over this argument.")
-        parser.add_argument("-o","--output-file",help="Redirect all output produced by SiC³ to this file")
-        parser.add_argument("-d","--debug",help="Include debug output")
-        parser.add_argument("-r","--reactant",help="Reactant molecules, as a SMILES string. Takes in multiple arguments",action="append")
-        parser.add_argument("-p","--product",help="Product molecules, as a SMILES string. Takes in multiple arguments",action="append")
-        parser.add_argument("-s","--solvent",help="Solvent molecules, as a SMILES string. Takes in multiple arguments. \
-                        Not currently implemented, and will raise a NotImplementedError",action="append")
-        parser.add_argument("-g","--graphics",help="Produces a graphical representation of reactant, product, solvent, and intermediate \
-                        molecules. Not currently implemented, and will raise a NotImplementedError",action="store_true")
-        args = parser.parse_args()
-        react_obj = False #will get filled in the if block below
-        if args.solvent:
-            raise NotImplementedError("Solvents aren't implemented yet.")
-        if args.graphics:
-            raise NotImplementedError("Graphical representations aren't implemented yet.")
-	if args.reactant and args.product:
-            react_obj = {"reactants": args.reactant, "product": args.product}
+    parser = argparse.ArgumentParser(description="Command-line interface to SiC³")
+    parser.add_argument("-i","--input-file",help="Path to the SiC-format input file. See SiC thesis for details. If \
+            -r and -p are present, they will be prioritized over this argument.")
+    parser.add_argument("-o","--output-file",help="Redirect all output produced by SiC³ to this file")
+    parser.add_argument("-d","--debug",help="Include debug output")
+    parser.add_argument("-r","--reactant",help="Reactant molecules, as a SMILES string. Takes in multiple arguments",action="append")
+    parser.add_argument("-p","--product",help="Product molecules, as a SMILES string. Takes in multiple arguments",action="append")
+    parser.add_argument("-s","--solvent",help="Solvent molecules, as a SMILES string. Takes in multiple arguments. \
+            Not currently implemented, and will raise a NotImplementedError",action="append")
+    parser.add_argument("-g","--graphics",help="Produces a graphical representation of reactant, product, solvent, and intermediate \
+            molecules. Not currently implemented, and will raise a NotImplementedError",action="store_true")
+    args = parser.parse_args()
+    react_obj = False #will get filled in the if block below
+    if args.solvent:
+        raise NotImplementedError("Solvents aren't implemented yet.")
+    if args.graphics:
+        raise NotImplementedError("Graphical representations aren't implemented yet.")
+    if args.reactant and args.product:
+        react_obj = {"reactants": args.reactant, "product": args.product}
+    else:
+        if args.input_file:
+        sic_input = open(args.input_file) #if there's an exception the user should see it, catching it does no good
+        react_obj = io.parse_sic_file(sic_input)
         else:
-            if args.input_file:
-                sic_input = open(args.input_file) #if there's an exception the user should see it, catching it does no good
-                react_obj = io.parse_sic_file(sic_input)
-            else:
-                print("Reactants and Products need to be provided, whether by input file or by arguments, in order for SiC³ to find a mechanism.")
-                sys.exit(1)
-        reactants = io.create_state_smiles(react_obj["reactants"])
-        products = io.create_state_smiles(react_obj["products"])
-        #solvent = io.create_state_smiles(react_obj["solvent"]) if react_obj["solvent"] else False
+        print("Reactants and Products need to be provided, whether by input file or by arguments, in order for SiC³ to find a mechanism.")
+        sys.exit(1)
+    reactants = io.create_state_smiles(react_obj["reactants"])
+    products = io.create_state_smiles(react_obj["products"])
+    #solvent = io.create_state_smiles(react_obj["solvent"]) if react_obj["solvent"] else False
+    print find_mechanism(reactants,products)
 
 
 
@@ -61,4 +63,8 @@ def find_mechanism(reactants,products,solvent=False):
     other programs (such as SiGC) can access the full functionality without
     having to import a bunch of stuff.
     """
-    raise NotImplementedError("Can't find mechanisms yet. Working on it.")
+    try:
+	mech = brain.get_mechanism(reactants,products,solvent=solvent)
+    except ValueError as e:
+    	print(e)
+    return io.write_up_mechanism(mech,solvent=solvent)
