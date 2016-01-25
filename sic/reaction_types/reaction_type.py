@@ -19,7 +19,11 @@ class ReactionType():
 
     A cross check is defined as a set of checks
     on the interaction between the source and the sink which produce
-    a score between 0 and 1, usually involving the ΔpKa rule.
+    a score between 0 and 1, usually involving the ΔpKa rule. A score
+    of 0 means that the reaction cannot take place (and so should
+    not be added to the list of possibilities), and a score of 1 means
+    that the reaction is exceedingly likely to take place, and so should
+    have high priority among all the possibilities.
 
     A rearrangement is defined as the shift in bonds between the source
     and the sink, resulting in a new molecular state. 
