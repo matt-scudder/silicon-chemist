@@ -21,17 +21,17 @@ This class also contains utility functions to check the position of a
 """
 import json
 import sortedcontainers
-from ..structure import similarity
+import structure.similarity as similarity
 
 class ReactionState():
-    self.product = None
-    def __init__(self,molecule,parent_state=None,parent_reaction=None,prod=None)::
+    product = None
+    def __init__(self,molecule,parent_state=None,parent_reaction=None,prod=None):
         self.state = molecule
         self.parent_state = None #doesn't matter if None gets assigned
         self.parent_reaction = None
 	self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: x.parent_reaction.cross_check())
-        if not self.product and prod:
-            self.product = prod
+        if not type(self).product and prod:
+            type(self).product = prod
     
     def to_json_dict(self):
         """

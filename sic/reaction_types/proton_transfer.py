@@ -4,8 +4,8 @@
 Carries out the proton transfer reaction.
 """
 from reaction_type import ReactionType
-from ..structure import struct_ops
-from ..pka import pka
+import structure.struct_ops as struct_ops
+import pka.pka as pka
 
 class ProtonTransfer(ReactionType):
     """

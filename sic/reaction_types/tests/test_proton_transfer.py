@@ -7,9 +7,9 @@ Tests all the characteristics of a proton transfer:
 """
 
 from .. import proton_transfer
-from ...segmentation import segmentation
-from ...structure import similarity
-from ...pka import pka
+import segmentation.segmentation as segmentation
+import structure.similarity as similarity
+import pka.pka as pka
 import unittest
 from pybel import readstring,Smarts
 
