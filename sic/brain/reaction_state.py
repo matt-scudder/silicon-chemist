@@ -27,8 +27,8 @@ class ReactionState(object):
     product = None
     def __init__(self,molecule,parent_state=None,parent_reaction=None,prod=None):
         self.state = molecule
-        self.parent_state = None #doesn't matter if None gets assigned
-        self.parent_reaction = None
+        self.parent_state = parent_state #doesn't matter if None gets assigned
+        self.parent_reaction = parent_reaction
 	self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: x.parent_reaction.cross_check())
         if not type(self).product and prod:
             type(self).product = prod
