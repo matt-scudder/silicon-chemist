@@ -38,7 +38,7 @@ class ReactionType():
     in order to make this class palatable by the browser and usable for teaching
     students.
     """
-    self.reaction_type = None
+    reaction_type = None
     def __init__(self, sources, sinks):
         """
         Attaches sources and sinks to this object, and sets the initial cross check

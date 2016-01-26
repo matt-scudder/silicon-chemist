@@ -11,6 +11,7 @@ class ProtonTransfer(ReactionType):
     """
     ReactionType object that carries out a proton transfer.
     """
+    reaction_type = "proton_transfer"
 
     def cross_check(self):
         """
