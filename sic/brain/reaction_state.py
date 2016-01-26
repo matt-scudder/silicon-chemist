@@ -23,7 +23,7 @@ import json
 import sortedcontainers
 import structure.similarity as similarity
 
-class ReactionState():
+class ReactionState(object):
     product = None
     def __init__(self,molecule,parent_state=None,parent_reaction=None,prod=None):
         self.state = molecule

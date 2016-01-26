@@ -6,7 +6,7 @@ Defines basic methods that all reaction types
 should be able to execute, as well as data members.
 """
 
-class ReactionType():
+class ReactionType(object):
     """
     A Reaction is defined as an interaction between a list of sources
     and a list of sinks. While usually only one source and one sink
