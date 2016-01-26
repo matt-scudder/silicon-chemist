@@ -4,6 +4,7 @@
 Handles all File I/O and related functions.
 Primarily used for convenience in sic.py.
 """
+import re
 SMILES_CHARS = re.escape("+[]()=#@/\-") #special characters involved in SMILES, see spec as described in parse_sic_file
 
 def parse_sic_file(sic_input):
@@ -61,7 +62,7 @@ def write_up_mechanism(reaction_state_list,solvent=False):
     reactants = reactants_state.state.write("smiles")
     product = reactants_state.product.write("smiles")
     solv_string = solvent.write("smiles")
-        master_string = "%s>>%s>>%s\n"%(reactants,solv_string,product)
+    master_string = "%s>>%s>>%s\n"%(reactants,solv_string,product)
     if len(reaction_state_list) < 2:
         master_string += "Trivial mechanism, already at products."
         return master_string

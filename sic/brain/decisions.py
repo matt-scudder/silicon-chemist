@@ -5,11 +5,11 @@ Decision-making engine for SiC³. Invoked by sic.py (and by extension sigc.py) t
 Uses all the segmentation and pka tools in the other modules.
 """
 
-from ..segmentation import segmentation
-from ..pka import pka
-from ..structure import struct_ops 
-from ..reaction_types import reaction_type_factory #there's going to be too many of these...
-from ..reaction_types import interactions
+import segmentation.segmentation as segmentation
+import pka.pka as pka
+import structure.struct_ops as struct_ops
+import reaction_types.reaction_type_factory as reaction_type_factory #too many of these
+import reaction_types.interactions as interactions
 import pybel
 from reaction_state import ReactionState
     

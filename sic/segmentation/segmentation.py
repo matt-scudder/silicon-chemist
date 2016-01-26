@@ -10,7 +10,7 @@ will use to make sure things are rearranged properly when a reaction occurs.
 from sources import SOURCES
 from sinks import SINKS
 import pybel
-from ..utils import get_real_indices 
+from utils import get_real_indices 
 
 #TODO: Potentially use the fact that only a very small section of the molecule changes
 #at each step in order to optimize segmentation into sources/sinks

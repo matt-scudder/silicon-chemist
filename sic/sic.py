@@ -14,11 +14,25 @@ import argparse
 import os #for making/destroying files for the sake of SiC, whose -I argument works a little oddly.
 import re #for "arbitrary delimiter" support
 import sys #for exit codes
-import io #for parsing SiC-format input files
+from io import io#for parsing SiC-format input files
 import logging #for debug logs - worry about this later
-import brain #where the magic happens
+from brain import decisions
 
 SIC_PATH = "/home/sic/sic/sic" #that's just sic.
+
+def find_mechanism(reactants,products,solvent=False):
+    """
+    Where the magic happens. Finds the mechanism by copying the current reaction state into a
+    new set of Molecule objects, generating choices, and picking the best one.
+    Most of the work is done outside of this module, but the core is left here so that
+    other programs (such as SiGC) can access the full functionality without
+    having to import a bunch of stuff.
+    """
+    try:
+	mech = decisions.get_mechanism(reactants,products,solvent=solvent)
+    except ValueError as e:
+    	print(e)
+    return io.write_up_mechanism(mech,solvent=solvent)
 
 #not sure why you'd want to import this package, but it's good practice to wrap all argparse calls in this
 if __name__ == "__main__":
@@ -40,14 +54,14 @@ if __name__ == "__main__":
     if args.graphics:
         raise NotImplementedError("Graphical representations aren't implemented yet.")
     if args.reactant and args.product:
-        react_obj = {"reactants": args.reactant, "product": args.product}
+        react_obj = {"reactants": args.reactant, "products": args.product}
     else:
         if args.input_file:
-        sic_input = open(args.input_file) #if there's an exception the user should see it, catching it does no good
-        react_obj = io.parse_sic_file(sic_input)
+            sic_input = open(args.input_file) #if there's an exception the user should see it, catching it does no good
+            react_obj = io.parse_sic_file(sic_input)
         else:
-        print("Reactants and Products need to be provided, whether by input file or by arguments, in order for SiC³ to find a mechanism.")
-        sys.exit(1)
+            print("Reactants and Products need to be provided, whether by input file or by arguments, in order for SiC³ to find a mechanism.")
+            sys.exit(1)
     reactants = io.create_state_smiles(react_obj["reactants"])
     products = io.create_state_smiles(react_obj["products"])
     #solvent = io.create_state_smiles(react_obj["solvent"]) if react_obj["solvent"] else False
@@ -55,16 +69,3 @@ if __name__ == "__main__":
 
 
 
-def find_mechanism(reactants,products,solvent=False):
-    """
-    Where the magic happens. Finds the mechanism by copying the current reaction state into a
-    new set of Molecule objects, generating choices, and picking the best one.
-    Most of the work is done outside of this module, but the core is left here so that
-    other programs (such as SiGC) can access the full functionality without
-    having to import a bunch of stuff.
-    """
-    try:
-	mech = brain.get_mechanism(reactants,products,solvent=solvent)
-    except ValueError as e:
-    	print(e)
-    return io.write_up_mechanism(mech,solvent=solvent)
