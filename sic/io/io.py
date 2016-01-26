@@ -5,6 +5,7 @@ Handles all File I/O and related functions.
 Primarily used for convenience in sic.py.
 """
 import re
+from utils import write_mol
 SMILES_CHARS = re.escape("+[]()=#@/\-") #special characters involved in SMILES, see spec as described in parse_sic_file
 
 def parse_sic_file(sic_input):
@@ -48,6 +49,7 @@ def parse_sic_file(sic_input):
                     react_obj[key] = re.split("[^a-zA-Z0-9%s]"%SMILES_CHARS,react_obj[key]) 
     return react_obj
 
+
 def write_up_mechanism(reaction_state_list,solvent=False):
     """
     Given a list of ReactionState objects, makes a pretty-print representation of the
@@ -59,15 +61,15 @@ def write_up_mechanism(reaction_state_list,solvent=False):
     Uses the fact that all ReactionState objects contain a reference to the product.
     """
     reactants_state = reaction_state_list[0]
-    reactants = reactants_state.state.write("smiles")
-    product = reactants_state.product.write("smiles")
-    solv_string = solvent.write("smiles")
+    reactants = write_mol(reactants_state.state)
+    product = write_mol(reactants_state.product)
+    solv_string = write_mol(solvent) if solvent else ""
     master_string = "%s>>%s>>%s\n"%(reactants,solv_string,product)
     if len(reaction_state_list) < 2:
         master_string += "Trivial mechanism, already at products."
         return master_string
     for i in range(1,len(reaction_state_list)):
-        master_string += "Step %s: %s>>%s>>%s\n"%(i,reaction_state_list[i-1].state.write("smiles"),solv_string,reaction_state_list[i].state.write("smiles"))
+        master_string += "Step %s: %s>>%s>>%s\n"%(i,write_mol(reaction_state_list[i-1].state),solv_string,write_mol(reaction_state_list[i].state))
         master_string += "Reaction type: %s\n" % reaction_state_list[i].parent_reaction
     return master_string
 
