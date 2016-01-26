@@ -67,7 +67,7 @@ def get_mechanism(reactants,products,solvent=False):
     prod_mol.addh()
     #now create a ReactionState out of the reactants - this will be the root
     current_state = ReactionState(react_mol,prod=prod_mol) #product becomes part of the tree
-    MASTER_STATE.append(react_mol) #since the first state HAS to be the first step in the mechanism
+    MASTER_STATE.append(current_state) #since the first state HAS to be the first step in the mechanism
     while not current_state.matches_product():
         #from current_state, generate choices
         generate_choices(current_state)
