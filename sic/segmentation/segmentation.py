@@ -34,7 +34,7 @@ def segment_molecule(molecule):
         The last bit exists because Atom objects aren't "real" in that they are generated from scratch
         every time you access a Molecule's atoms.
     """
-    result = {"sources" : label_sources(molecule), "sinks" : label_sources(molecule)}
+    result = {"sources" : label_sources(molecule), "sinks" : label_sinks(molecule)}
     #do any additional processing here
     return result
 
