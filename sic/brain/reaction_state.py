@@ -17,7 +17,8 @@ related to how close a ReactionState is to product. Modify self.product at your 
 At any point where molecules need to be rearranged by a mechanism, a new Molecule should be created by doing mol.write("smiles") and using readstring
 on that SMILES string. This new Molecule should then be rearranged before creating a new ReactionState.
 
-This class also contains utility functions to check the position of a 
+This class also contains utility functions to check whether a reaction state is closer to product than its parent,
+and whether it matches the product exactly.
 """
 import json
 import sortedcontainers
@@ -29,7 +30,10 @@ class ReactionState(object):
         self.state = molecule
         self.parent_state = parent_state #doesn't matter if None gets assigned
         self.parent_reaction = parent_reaction
-	self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: x.parent_reaction.cross_check())
+        #sortedcontainers sorts from lowest to highest, so we sort it "backwards".
+        #since cross_check() is on [0,1], subtract score from 1 and take abs.
+        #in this scheme, 1 -> 0 and 0 -> 1, making it go in the right order.
+        self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: 1.0 - x.parent_reaction.cross_check())
         if not type(self).product and prod:
             type(self).product = prod
     

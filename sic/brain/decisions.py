@@ -12,6 +12,7 @@ import reaction_types.reaction_type_factory as reaction_type_factory #too many o
 import reaction_types.interactions as interactions
 import pybel
 from reaction_state import ReactionState
+import copy
     
 def generate_choices(state):
     #first, assign pka and get sources/sinks
@@ -32,9 +33,16 @@ def generate_choices(state):
             if type(sink) != type([]):
                 interaction_sink = [sink]
             for interaction in possible_interactions:
-                reaction = reaction_type_factory.produce_reaction_type(interaction,interaction_source,interaction_sink)
+                new_mol = struct_ops.copy_molecule(state.state)
+                reaction = reaction_type_factory.produce_reaction_type(interaction,interaction_source,interaction_sink,mol=new_mol)
                 if reaction.cross_check() > 0: #make sure it is actually a possibility
-                    state.possibility.add(ReactionState(struct_ops.copy_molecule(state.state),parent_state=state,parent_reaction=reaction))
+                    new_state = ReactionState(new_mol,parent_state=state,parent_reaction=reaction)
+                    state.possibilities.add(new_state)
+    #TODO: Make this logging.debug...
+#    print "%s possibilities" % len(state.possibilities)
+#    print "cross check of possibilities:"
+#    for possibility in state.possibilities:
+#        print possibility.parent_reaction.cross_check()
     #don't return anything, this just modifies the state and adds in possibilities
 
 def go_up_a_level(state,master):
@@ -68,13 +76,13 @@ def get_mechanism(reactants,products,solvent=False):
     #now create a ReactionState out of the reactants - this will be the root
     current_state = ReactionState(react_mol,prod=prod_mol) #product becomes part of the tree
     MASTER_STATE.append(current_state) #since the first state HAS to be the first step in the mechanism
+    counter = 0
     while not current_state.matches_product():
         #from current_state, generate choices
         generate_choices(current_state)
         if len(current_state.possibilities) > 0:
             for possibility in current_state.possibilities:
-                if not possibility.examined: #if we didn't look at it and conclude none of its paths get us to product...
-                    #rearrange the atoms
+                if not hasattr(possibility,'examined'): #if we didn't look at it and conclude none of its paths get us to product...
                     possibility.parent_reaction.rearrange() #move the atoms around
                     #check if closer to product
                     if possibility.closer_to_product():
@@ -88,5 +96,8 @@ def get_mechanism(reactants,products,solvent=False):
         else:
             #if there's no further paths and we're still not at product, go up a level too
             current_state = go_up_a_level(current_state,MASTER_STATE)
+        counter += 1
+        if counter > 20:
+            break
     #when we hit product, return
     return MASTER_STATE

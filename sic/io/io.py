@@ -70,7 +70,7 @@ def write_up_mechanism(reaction_state_list,solvent=False):
         return master_string
     for i in range(1,len(reaction_state_list)):
         master_string += "Step %s: %s>>%s>>%s\n"%(i,write_mol(reaction_state_list[i-1].state),solv_string,write_mol(reaction_state_list[i].state))
-        master_string += "Reaction type: %s\n" % reaction_state_list[i].parent_reaction
+        master_string += "Reaction type: %s\n" % reaction_state_list[i].parent_reaction.reaction_type
     return master_string
 
 def create_state_smiles(molecules):
