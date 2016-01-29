@@ -8,7 +8,7 @@ processing as possible to the other modules.
 import traceback #never know when you'll need this.
 from flask import Flask
 from flask import render_template
-from .. import sic #where the magic happens - note the relative import!
+import sic #no relative import - this should only be run by runserver.py
 
 app = Flask(__name__)
 

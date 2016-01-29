@@ -14,7 +14,7 @@ import argparse
 import os #for making/destroying files for the sake of SiC, whose -I argument works a little oddly.
 import re #for "arbitrary delimiter" support
 import sys #for exit codes
-from io import io#for parsing SiC-format input files
+from sic_io import sic_io#for parsing SiC-format input files
 import logging #for debug logs - worry about this later
 from brain import decisions
 
