@@ -10,13 +10,18 @@ import pybel
 
 def copy_molecule(mol):
     """
-    Copies a molecule by using the operator= of OBMol, and returns the copy.
+    Copies a molecule by using the operator= of OBMol as well as inserting references
+    to the objects added to Molecule objects by our program in the new Molecule object.
     Used such that atom indexing for "closer to product" mappings can be kept
     consistent throughout a mechanism.
     """
-    intermediate = openbabel.OBMol() #Molecule's constructor only takes OBMol objects, so first make an empty one
+    intermediate = openbabel.OBMol(mol.OBMol) #Molecule's constructor only takes OBMol objects, so first copy the one from the original
+    #using the OBMol constructor, which copies all atoms
     new_mol = pybel.Molecule(intermediate) #add it to a new Molecule object
-    new_mol.OBMol = mol.OBMol #copy by way of operator=, see OBMol docs
+    #copy the properties only in the case when they aren't there, to prevent strange bugs
+    #when people call this function as a utility for other purposes.
+    if hasattr(mol,"pka_index"):
+        new_mol.pka_index = mol.pka_index
     return new_mol
 
 #TODO: Figure out whether we always want order=1 bonds!

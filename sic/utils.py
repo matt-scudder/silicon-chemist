@@ -4,8 +4,8 @@
 Utilities module for dealing with the idiosyncracies of the various libraries
 involved in the project.
 """
-
-import copy
+from pybel import Molecule, Atom
+from openbabel import OBMolBondIter, OBAtom
 
 def get_real_indices(indices):
     """
@@ -36,3 +36,46 @@ def write_mol(state):
     Therefore this function.
     """
     return state.write("smiles").rstrip()
+
+def deepcopy_ignoring_mol(item,new_mol):
+    """
+    Copies our source or sink objects while ignoring Molecule objects,
+    since they cannot be deepcopied due to the fact that SWIG gdoes
+    not support it directly.
+    """
+    new_mol_atoms = new_mol.atoms #for copying Atom objects
+    if isinstance(item,dict):
+        return dict(map(lambda kv: (kv[0], deepcopy_ignoring_mol(kv[1],new_mol)), item.items()))
+    elif isinstance(item,Molecule):
+        return new_mol
+    elif isinstance(item,Atom):
+        return new_mol_atoms[item.idx-1]
+    else:
+        return item
+
+def shift_molecule_references(class_list,new_mol):
+    """
+    Shifts the molecule references of lists of either source or sink objects
+    to the molecule in new_mol by creating a new list, creating copies
+    of the source/sink objects, and returns the new list.
+    """
+    new_list = []
+    for generic_class in class_list:
+        new_list.append(deepcopy_ignoring_mol(generic_class,new_mol))
+    return new_list 
+
+def write_all_bonds(mol):
+    """
+    Returns a string of all bonds in a Molecule object with the following format:
+    
+    (start_idx,end_idx;order)
+
+    Useful for debugging.
+    """
+    all_bonds = ""
+    for bond in OBMolBondIter(mol.OBMol):
+        all_bonds += ("(%s,%s;%s)\n"%(bond.GetBeginAtomIdx(),bond.GetEndAtomIdx(),bond.GetBO()))
+    return all_bonds
+
+
+
