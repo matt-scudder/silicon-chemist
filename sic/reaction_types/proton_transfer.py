@@ -28,7 +28,7 @@ class ProtonTransfer(ReactionType):
             sink = self.sinks[0]
             #get pKa_HA of the H, and pKa_BH of the Y
             #TODO: Update this code so that it supports more than just Y, maybe use a dict? H-L works always.
-	    pKa_BH = pka.get_pka(source["atoms"]["Y"]["atom"],source["atoms"]["Y"]["molecule"])
+            pKa_BH = pka.get_pka(source["atoms"]["Y"]["atom"],source["atoms"]["Y"]["molecule"])
             pKa_HA = pka.get_pka(sink["atoms"]["H"]["atom"],sink["atoms"]["H"]["molecule"])
             dpKa = pKa_BH - pKa_HA
             if dpKa < -10: 
