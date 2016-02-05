@@ -21,9 +21,10 @@ def jsme_display():
         """
         return render_template("reactions/reaction_sketch.html") #add in template vars as needed...
 
-@app.route("/submit_reaction")
+@app.route("/submit_reaction",methods=["POST"])
 def accept_reaction():
         """
         Handles reactant and product input from users and runs SiC³ on them.
         """
-        return sic.find_mechanism(request.json.reactants,request.json.products,solvent=request.json.solvent)
+        if request.method == "POST":
+            return sic.find_mechanism(request.json["reactants"],request.json["products"],solv=request.json["solvent"])

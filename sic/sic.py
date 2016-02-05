@@ -20,7 +20,7 @@ from brain import decisions
 
 SIC_PATH = "/home/sic/sic/sic" #that's just sic.
 
-def find_mechanism(reactants,products,solvent=False):
+def find_mechanism(reac,prod,solv=False):
     """
     Where the magic happens. Finds the mechanism by copying the current reaction state into a
     new set of Molecule objects, generating choices, and picking the best one.
@@ -28,6 +28,11 @@ def find_mechanism(reactants,products,solvent=False):
     other programs (such as SiGC) can access the full functionality without
     having to import a bunch of stuff.
     """
+    #first convert them to our "state SMILES". SMILES is ASCII so make sure to change into that,
+    #specifically because OBabel will choke on Unicode since it doesn't match std::string.
+    reactants = sic_io.create_state_smiles(reac).encode("ascii","ignore")
+    products = sic_io.create_state_smiles(prod).encode("ascii","ignore")
+    solvent = sic_io.create_state_smiles(solv).encode("ascii","ignore") if solv else False
     try:
         mech = decisions.get_mechanism(reactants,products,solvent=solvent)
     except ValueError as e:
@@ -62,10 +67,7 @@ if __name__ == "__main__":
         else:
             print("Reactants and Products need to be provided, whether by input file or by arguments, in order for SiC³ to find a mechanism.")
             sys.exit(1)
-    reactants = sic_io.create_state_smiles(react_obj["reactants"])
-    products = sic_io.create_state_smiles(react_obj["products"])
-    #solvent = sic_io.create_state_smiles(react_obj["solvent"]) if react_obj["solvent"] else False
-    print find_mechanism(reactants,products)
+    print find_mechanism(react_obj["reactants"],react_obj["products"],solv=(react_obj["solvent"] if react_obj.has_key("solvent") else False))
 
 
 
