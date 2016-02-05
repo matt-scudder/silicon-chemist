@@ -47,7 +47,7 @@ function create_reaction_object(){
 	     products:products,
 	     solvent: (solvent.length > 0) ? solvent : false
        }; 
-       return JSON.stringify(create_reaction_object())
+       return JSON.stringify(output_object);
 }
 
 function send_reaction_to_sic(){
