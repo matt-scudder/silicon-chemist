@@ -13,6 +13,6 @@ SINKS = {
         "H-L":"[O!v1,S,N,F,Cl,Br,I]([H])",
     #anything we know can bond to hydrogen, bonded with it
     #NOTE: This ignores stuff like NaH (because H is "alone" and not bonded)
-        "C+":"[C+]", #carbocations - only take in the carbon!
+        "C+":"[#6+]", #carbocations - only take in the carbon! Need 6 in case of carbocations in a ring.
         "C-L":"[#6X4]([!#1&!#6])" #C-L is an sp3 carbon (i.e. 4 connections), and the L is not a C (6) or an H (1), since atomic number is the only way to get SMARTS to understand that.
     }
