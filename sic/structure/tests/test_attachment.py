@@ -5,9 +5,9 @@ Tests whether attaching two groups together works.
 Uses a carbocation bonding to an O lone pair to test whether the two groups bond to each other.
 O- is used so that there's only one source and one sink here.
 """
-
-from .. import struct_ops, similarity
-from ...segmentation import segmentation
+import structure.struct_ops as struct_ops
+import structure.similarity as similarity
+import segmentation.segmentation as segmentation
 import unittest
 from pybel import readstring
 
