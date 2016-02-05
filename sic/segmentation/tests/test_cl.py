@@ -25,11 +25,14 @@ class CLIdentificationTest(unittest.TestCase):
             mol.addh()
             results = smarts.findall(mol)
             self.assertTrue(len(results) == 1) #only one set of atoms 
+            self.assertTrue(len(results[0]) == 2) #and the group should be composed of two
         for match in self.cl[3:]:
             mol = readstring("smi",match)
             mol.addh()
             results = smarts.findall(mol)
             self.assertTrue(len(results) == 2) # two carbon atoms have an L in both of these.
+            for result in results:
+                self.assertTrue(len(result) == 2) #and each should have two atoms
         for not_match in self.not_cl:
             mol = readstring("smi",not_match)
             mol.addh()
