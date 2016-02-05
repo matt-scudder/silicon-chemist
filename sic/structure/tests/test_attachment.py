@@ -25,7 +25,7 @@ class GroupAttachmentTest(unittest.TestCase):
     def testAttachment(self):
         #make bond from OH to the C+
         print self.sinks
-        Y = self.sources[0]["atoms"]["Y:"]
+        Y = self.sources[0]["atoms"]["Y"]
         C = self.sinks[0]["atoms"]["C+"] 
         print Y["atom"].idx
         print C["atom"].idx

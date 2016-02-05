@@ -36,3 +36,32 @@ function jsmeOnLoad() {
 	$("#add_product").click(function() { add_molecule(jsmeApplet.smiles(),"product");});
 	//$("#add_solvent").click(function() { add_molecule(jsmeApplet.smiles(),"solvent");});
 }
+
+function create_reaction_object(){
+	/*
+	 * This function generates the JSON for the reaction based on the user's inputted reactants and products.
+	 * Separated from send_reaction_to_sic() for modularity.
+	 */
+       output_object = {
+	     reactants:reactants,
+	     products:products,
+	     solvent: (solvent.length > 0) ? solvent : false
+       }; 
+       return JSON.stringify(create_reaction_object())
+}
+
+function send_reaction_to_sic(){
+	$.ajax("/submit_reaction",
+			{
+				data: create_reaction_object(),
+				method:"POST",
+				dataType:"text",
+				contentType:"application/json",
+				success: function(responseData) {
+					$("#output_header").show();
+					$("#output_container").html(responseData);
+				}
+			});
+}
+
+$("#send_button").click(send_reaction_to_sic);

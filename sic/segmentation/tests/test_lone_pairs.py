@@ -23,7 +23,7 @@ class LonePairIdentificationTest(unittest.TestCase):
 		"""
 		Tests whether we can identify oxygen sources without also identifying oxygens with no lone pairs.
 		"""
-		smarts = Smarts(self.SOURCES["Y:"])
+		smarts = Smarts(self.SOURCES["Y"])
 		for oxygen_pair in self.oxygen_pairs:
 			mol = readstring("smi",oxygen_pair)
 			mol.addh()
@@ -41,7 +41,7 @@ class LonePairIdentificationTest(unittest.TestCase):
 		"""
 		Tests whether we can identify nitrogen sources without also identifying nitrogens with no lone pairs.
 		"""
-		smarts = Smarts(self.SOURCES["Y:"])
+		smarts = Smarts(self.SOURCES["Y"])
 		for nitrogen_pair in self.nitrogen_pairs:
 			mol = readstring("smi",nitrogen_pair)
 			mol.addh()
@@ -59,7 +59,7 @@ class LonePairIdentificationTest(unittest.TestCase):
 		"""
 		Tests whether we can identify sulfur sources without also identifying sulfurs with no lone pairs.
 		"""
-		smarts = Smarts(self.SOURCES["Y:"])
+		smarts = Smarts(self.SOURCES["Y"])
 		for sulfur_pair in self.sulfur_pairs:
 			mol = readstring("smi",sulfur_pair)
 			mol.addh()

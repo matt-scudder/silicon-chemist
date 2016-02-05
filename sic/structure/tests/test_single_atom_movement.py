@@ -34,10 +34,10 @@ class SingleAtomMovementTest(unittest.TestCase):
         #but tests are normally run in any order.
         log = logging.getLogger("arf")
 	log.debug(self.reactants.write("smiles"))
-	Y = self.sources[0]["atoms"]["Y:"]
+	Y = self.sources[0]["atoms"]["Y"]
 	H = self.sinks[0]["atoms"]["H"]
 	L = self.sinks[0]["atoms"]["L"]
-	log.debug("Y: index: %s; H index %s" % (Y["atom"].idx,H["atom"].idx))
+	log.debug("Y index: %s; H index %s" % (Y["atom"].idx,H["atom"].idx))
         struct_ops.make_bond(Y,H)
 	log.debug(self.reactants.write("smiles"))
 	log.debug("L index: %s; H index %s" % (L["atom"].idx,H["atom"].idx))

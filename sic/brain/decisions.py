@@ -67,6 +67,7 @@ def get_mechanism(reactants,products,solvent=False):
     Takes in the reactaants and products as SMILES strings with . separating each molecule in both,
     and returns a list with the ReactionState objects that represent how we got there.
     """
+    #TODO: Add check for atom balance, raise ValueError if wrong.
     MASTER_STATE = [] #keeps track of the reaction state that we want to print out at the end
     #read in reactants and products
     react_mol = pybel.readstring("smi",reactants)

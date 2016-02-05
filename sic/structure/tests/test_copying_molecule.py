@@ -56,7 +56,7 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         segment = segmentation.segment_molecule(orig_mol)
         #copy using struct_ops
         copy_mol = struct_ops.copy_molecule(orig_mol)
-        struct_ops.make_bond(segment["sources"][0]["atoms"]["Y:"],segment["sinks"][0]["atoms"]["H"])
+        struct_ops.make_bond(segment["sources"][0]["atoms"]["Y"],segment["sinks"][0]["atoms"]["H"])
         struct_ops.break_bond(segment["sinks"][0]["atoms"]["L"],segment["sinks"][0]["atoms"]["H"])
         self.assertTrue(orig_mol.write("smiles") == self.prod_mol.write("smiles"))
         self.assertFalse(orig_mol.write("smiles") == copy_mol.write("smiles"))
@@ -71,7 +71,7 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         #shift references using utility function
         new_sources = utils.shift_molecule_references(self.sources,copy_mol)
         new_sinks = utils.shift_molecule_references(self.sinks,copy_mol)
-        Y = new_sources[0]["atoms"]["Y:"]
+        Y = new_sources[0]["atoms"]["Y"]
         H = new_sinks[0]["atoms"]["H"]
         L = new_sinks[0]["atoms"]["L"]
         struct_ops.make_bond(Y,H)

@@ -14,7 +14,7 @@ class HalogenIdentificationTest(unittest.TestCase):
     def setUp(self):
         self.halogen_c_bases = ["[Cl-]","[F-]","[Br-]","[I-]"]
         self.halogen_acids = ["Cl","F","Br","I"]
-        self.halogen_not_match = ["CCl","CF","CBr","CI"] #these shouldn't match either Y: or H-L
+        self.halogen_not_match = ["CCl","CF","CBr","CI"] #these shouldn't match either Y or H-L
         self.SOURCES = sources.SOURCES
         self.SINKS = sinks.SINKS
         
@@ -23,7 +23,7 @@ class HalogenIdentificationTest(unittest.TestCase):
         Tests whether the haloges are correctly identified as sources when they are,
         and correctly NOT identified as sources when they aren't.
         """
-        smarts = Smarts(self.SOURCES["Y:"])
+        smarts = Smarts(self.SOURCES["Y"])
         for c_base in self.halogen_c_bases:
             mol = readstring("smi",c_base)
             mol.addh()

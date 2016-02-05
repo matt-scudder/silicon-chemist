@@ -8,6 +8,7 @@ processing as possible to the other modules.
 import traceback #never know when you'll need this.
 from flask import Flask
 from flask import render_template
+from flask import request
 import sic #no relative import - this should only be run by runserver.py
 
 app = Flask(__name__)
@@ -25,4 +26,4 @@ def accept_reaction():
         """
         Handles reactant and product input from users and runs SiC³ on them.
         """
-        return "a response"
+        return sic.find_mechanism(request.json.reactants,request.json.products,solvent=request.json.solvent)

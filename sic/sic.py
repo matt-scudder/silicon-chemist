@@ -29,10 +29,10 @@ def find_mechanism(reactants,products,solvent=False):
     having to import a bunch of stuff.
     """
     try:
-	mech = decisions.get_mechanism(reactants,products,solvent=solvent)
+        mech = decisions.get_mechanism(reactants,products,solvent=solvent)
     except ValueError as e:
-    	print(e)
-    return io.write_up_mechanism(mech,solvent=solvent)
+        print(e)
+    return sic_io.write_up_mechanism(mech,solvent=solvent)
 
 #not sure why you'd want to import this package, but it's good practice to wrap all argparse calls in this
 if __name__ == "__main__":
@@ -58,13 +58,13 @@ if __name__ == "__main__":
     else:
         if args.input_file:
             sic_input = open(args.input_file) #if there's an exception the user should see it, catching it does no good
-            react_obj = io.parse_sic_file(sic_input)
+            react_obj = sic_io.parse_sic_file(sic_input)
         else:
             print("Reactants and Products need to be provided, whether by input file or by arguments, in order for SiC³ to find a mechanism.")
             sys.exit(1)
-    reactants = io.create_state_smiles(react_obj["reactants"])
-    products = io.create_state_smiles(react_obj["products"])
-    #solvent = io.create_state_smiles(react_obj["solvent"]) if react_obj["solvent"] else False
+    reactants = sic_io.create_state_smiles(react_obj["reactants"])
+    products = sic_io.create_state_smiles(react_obj["products"])
+    #solvent = sic_io.create_state_smiles(react_obj["solvent"]) if react_obj["solvent"] else False
     print find_mechanism(reactants,products)
 
 
