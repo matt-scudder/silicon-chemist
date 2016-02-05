@@ -40,6 +40,9 @@ def make_bond(start,end):
     
     In this program, we can make the assumption that make_bond is always called before break_bond,
     so any strange hypervalent situations (such as H bonded to two atoms) can be left as-is.
+
+    This function does not use Atom objects in order to make shifting atom references
+    less necessary.
     """
     start_mol = start["molecule"]
     end_mol = end["molecule"]
@@ -47,9 +50,9 @@ def make_bond(start,end):
     end_atom = end["atom"]
     success = start_mol.OBMol.AddBond(start_atom.idx,end_atom.idx,1)
     #TODO: add routine that checks for double bond stuff
-    start_atom.OBAtom.SetFormalCharge(start_atom.OBAtom.GetFormalCharge() + 1)
+    start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() + 1)
     if end_atom.atomicnum != 1: #hydrogen behaves oddly w.r.t. formal charges
-        end_atom.OBAtom.SetFormalCharge(end_atom.OBAtom.GetFormalCharge() - 1)
+        end_atom.OBAtom.SetFormalCharge(end_mol.OBMol.GetAtom(end_atom.idx).GetFormalCharge() - 1)
     if not success:
         raise ValueError("AddBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
                             %(start_atom.idx,start_atom.atomicnum,end_atom.idx,end_atom.atomicnum))
@@ -88,7 +91,7 @@ def break_bond(start,end):
     if not found:
         raise ValueError("Bond not found between %s (atomno: %s) and %s (atomno: %s)."
                 %(start_atom.OBAtom.GetIdx(),start_atom.atomicnum,end_atom.OBAtom.GetIdx(),end_atom.atomicnum))
-    start_atom.OBAtom.SetFormalCharge(start_atom.OBAtom.GetFormalCharge() -1) #TODO: check for double bonds and stuff...
+    start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() -1) #TODO: check for double bonds and stuff...
     if end_atom.valence < 1:
         #if no bonds left, delete the atom
         #this may be lies, so make sure this actually works
