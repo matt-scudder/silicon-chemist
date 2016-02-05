@@ -58,7 +58,8 @@ function send_reaction_to_sic(){
 				dataType:"text",
 				contentType:"application/json",
 				success: function(responseData) {
-					$("#output_header").show();
+					$("#output_header").removeClass("hidden");
+					$("#output_container").removeClass("hidden");
 					$("#output_container").html(responseData);
 				}
 			});
