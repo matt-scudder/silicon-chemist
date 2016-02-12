@@ -7,6 +7,15 @@ Usually deals with cross-molecule stuff, which OpenBabel is not generally used t
 
 import openbabel
 import pybel
+import copy
+
+def get_bonds(atom_obj):
+    """
+    Takes in an atom object (such as source["atoms"]["Y"]), and gets the indices of the atoms it's bound to
+    based on the molecule connectivity table.
+    Utility function for less typing.
+    """
+    return atom_obj["molecule"].connectivity_table[atom_obj["atom"].idx]
 
 def add_bond_connectivity_table(start_atom,end_atom,table):
     """
@@ -73,7 +82,7 @@ def copy_molecule(mol):
     if hasattr(mol,"pka_index"):
         new_mol.pka_index = mol.pka_index
     if hasattr(mol,"connectivity_table"):
-        new_mol.connectivity_table = mol.connectivity_table
+        new_mol.connectivity_table = copy.deepcopy(mol.connectivity_table)
     return new_mol
 
 #TODO: Figure out whether we always want order=1 bonds!
@@ -104,8 +113,10 @@ def make_bond(start,end):
     success = start_mol.OBMol.AddBond(start_atom.idx,end_atom.idx,1)
     #TODO: add routine that checks for double bond stuff
     start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() + 1)
+    #TODO: Figure out wtf is going on with formal charges
     if end_atom.atomicnum != 1: #hydrogen behaves oddly w.r.t. formal charges
-        end_atom.OBAtom.SetFormalCharge(end_mol.OBMol.GetAtom(end_atom.idx).GetFormalCharge() - 1)
+        #end_atom.OBAtom.SetFormalCharge(end_mol.OBMol.GetAtom(end_atom.idx).GetFormalCharge() + 1)
+        pass
     #update the connectivity table if the molecule has one - it always should, but callers of this library might not think of that.
     if not success:
         raise ValueError("AddBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
@@ -148,6 +159,7 @@ def break_bond(start,end):
         raise ValueError("Bond not found between %s (atomno: %s) and %s (atomno: %s)."
                 %(start_atom.OBAtom.GetIdx(),start_atom.atomicnum,end_atom.OBAtom.GetIdx(),end_atom.atomicnum))
     start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() -1) #TODO: check for double bonds and stuff...
+    #TODO: Make end_atom have +1 formal charge?
     if hasattr(start_mol,"connectivity_table"):
         remove_bond_connectivity_table(start_atom.idx,end_atom.idx,start_mol.connectivity_table)
 

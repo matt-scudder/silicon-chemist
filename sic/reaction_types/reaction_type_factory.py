@@ -9,6 +9,7 @@ NOTE: The reaction types given MUST be the same as the ones in interactions.py!
 """
 
 from proton_transfer import ProtonTransfer
+from sn2 import SN2 
 from structure.struct_ops import copy_molecule
 from pybel import Molecule
 import utils
@@ -29,3 +30,5 @@ def produce_reaction_type(r_type,sources,sinks,mol=False):
         new_sinks = sinks
     if r_type == "proton_transfer":
         return ProtonTransfer(new_sources,new_sinks)
+    elif r_type == "SN2":
+        return SN2(new_sources,new_sinks)

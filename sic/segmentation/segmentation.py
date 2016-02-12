@@ -88,5 +88,12 @@ def label_sinks(molecule):
             elif sink_type == "C+":
                 #only one atom in group, just label it
                 sink["atoms"]["C+"] = {"atom": mol_atoms[group[0]], "molecule": molecule}
+            elif sink_type == "C-L":
+                for atom_idx in group:
+                    #TODO: Figure out what to do if the L is also a C...
+                    if molecule.atoms[atom_idx].atomicnum == 6:
+                        sink["atoms"]["C"] = {"atom": mol_atoms[atom_idx], "molecule": molecule}
+                    else:
+                        sink["atoms"]["L"] = {"atom": mol_atoms[atom_idx], "molecule": molecule}
             sinks.append(sink)
     return sinks
