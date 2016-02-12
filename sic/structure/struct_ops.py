@@ -111,7 +111,7 @@ def make_bond(start,end):
         raise ValueError("AddBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
                             %(start_atom.idx,start_atom.atomicnum,end_atom.idx,end_atom.atomicnum))
     if hasattr(start_mol,"connectivity_table"):
-        add_bond_connectivity_table(start_atom.idx,end_atom.idx,start_mol) 
+        add_bond_connectivity_table(start_atom.idx,end_atom.idx,start_mol.connectivity_table) 
 
 def break_bond(start,end):
     """
@@ -149,5 +149,5 @@ def break_bond(start,end):
                 %(start_atom.OBAtom.GetIdx(),start_atom.atomicnum,end_atom.OBAtom.GetIdx(),end_atom.atomicnum))
     start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() -1) #TODO: check for double bonds and stuff...
     if hasattr(start_mol,"connectivity_table"):
-        remove_bond_connectivity_table(start_atom.idx,end_atom.idx,start_mol)
+        remove_bond_connectivity_table(start_atom.idx,end_atom.idx,start_mol.connectivity_table)
 
