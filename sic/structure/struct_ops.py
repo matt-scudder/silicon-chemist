@@ -8,6 +8,56 @@ Usually deals with cross-molecule stuff, which OpenBabel is not generally used t
 import openbabel
 import pybel
 
+def add_bond_connectivity_table(start_atom,end_atom,table):
+    """
+    Adds a bond to the connectivity table.
+    This is called several times throughout struct_ops, so it's a function.
+    """
+    if start_atom not in table:
+        table[start_atom] = set([end_atom])
+    else:
+        table[start_atom].add(end_atom)
+    if end_atom not in table:
+        table[end_atom] = set([start_atom])
+    else:
+        table[end_atom].add(start_atom)
+
+def remove_bond_connectivity_table(start_atom,end_atom,table):
+    """
+    Removes a bond from the connectivity table.
+    If attempting to remove a bond that doesn't exist, does not change
+    the connectivity table.
+    This is called several times throughout struct_ops, so it's a function.
+    """
+    #find start atom, remove end_atom from its set
+    #if start atom is not in the table, no worries - it already "doesn't have any bonds",
+    #so removing them isn't relevant and we can fail silently.
+    if start_atom in table:
+        table[start_atom].remove(end_atom)
+    if end_atom in table: #end_atom should be present iff start_atom is present, but might as well clean up.
+        table[end_atom].remove(start_atom)
+
+def generate_connectivity_table(mol):
+    """
+    Takes as input a molecule and attaches a connectivity table to said molecule,
+    which is a dict holding the same information as OBMolBondIter, but in a more easily-searchable fashion.
+    This way, we can get bond information for several disparate bonds in succession without having to iterate
+    through the entire BondIter every time a search is required.
+    The format of the dict is as follows:
+
+    {atom_idx : set([bonded_atom_idx,bonded_atom_idx,bonded_atom_idx,bonded_atom_idx])}
+
+    This is reversible, i.e. if atom 1 is bonded to atom 2, then 1 will be present with 2 among its bonds,
+    and 2 will be present with 1 among its bonds.
+    """
+    table = {}
+    for bond in openbabel.OBMolBondIter(mol.OBMol):
+        start_atom = bond.GetBeginAtomIdx()
+        end_atom = bond.GetEndAtomIdx()
+        add_bond_connectivity_table(start_atom,end_atom,table)
+    mol.connectivity_table = table
+
+
 def copy_molecule(mol):
     """
     Copies a molecule by using the operator= of OBMol as well as inserting references
@@ -22,6 +72,8 @@ def copy_molecule(mol):
     #when people call this function as a utility for other purposes.
     if hasattr(mol,"pka_index"):
         new_mol.pka_index = mol.pka_index
+    if hasattr(mol,"connectivity_table"):
+        new_mol.connectivity_table = mol.connectivity_table
     return new_mol
 
 #TODO: Figure out whether we always want order=1 bonds!
@@ -44,6 +96,7 @@ def make_bond(start,end):
     This function does not use Atom objects in order to make shifting atom references
     less necessary.
     """
+    #because of infrastructure changes, start_mol == end_mol always
     start_mol = start["molecule"]
     end_mol = end["molecule"]
     start_atom = start["atom"]
@@ -53,9 +106,12 @@ def make_bond(start,end):
     start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() + 1)
     if end_atom.atomicnum != 1: #hydrogen behaves oddly w.r.t. formal charges
         end_atom.OBAtom.SetFormalCharge(end_mol.OBMol.GetAtom(end_atom.idx).GetFormalCharge() - 1)
+    #update the connectivity table if the molecule has one - it always should, but callers of this library might not think of that.
     if not success:
         raise ValueError("AddBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
                             %(start_atom.idx,start_atom.atomicnum,end_atom.idx,end_atom.atomicnum))
+    if hasattr(start_mol,"connectivity_table"):
+        add_bond_connectivity_table(start_atom.idx,end_atom.idx,start_mol) 
 
 def break_bond(start,end):
     """
@@ -92,10 +148,6 @@ def break_bond(start,end):
         raise ValueError("Bond not found between %s (atomno: %s) and %s (atomno: %s)."
                 %(start_atom.OBAtom.GetIdx(),start_atom.atomicnum,end_atom.OBAtom.GetIdx(),end_atom.atomicnum))
     start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() -1) #TODO: check for double bonds and stuff...
-    if end_atom.valence < 1:
-        #if no bonds left, delete the atom
-        #this may be lies, so make sure this actually works
-        success = start_mol.OBMol.DeleteAtom(end_atom.OBAtom)
-        if not success:
-            raise ValueError("DeleteAtom failed for %s (atomno: %s)."
-                            %(end_atom.OBAtom.GetIdx(),end_atom.atomicnum))
+    if hasattr(start_mol,"connectivity_table"):
+        remove_bond_connectivity_table(start_atom.idx,end_atom.idx,start_mol)
+
