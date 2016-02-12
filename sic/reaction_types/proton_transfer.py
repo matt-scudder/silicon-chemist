@@ -33,16 +33,13 @@ class ProtonTransfer(ReactionType):
             dpKa = pKa_BH - pKa_HA
             if dpKa < -10: 
                 self.cross_check_score = 0.0
-                return self.cross_check_score
             elif dpKa <= 0:
                 self.cross_check_score = 0.6 - (0.6*abs(dpKa/ 10.0))
-                return self.cross_check_score
             elif dpKa > 10:
                 self.cross_check_score = 1.0
-                return self.cross_check_score
             else:
                 self.cross_check_score = 0.6 + (0.4*abs(dpKa/ 10.0))
-                return self.cross_check_score
+            return self.cross_check_score
 
     def rearrange(self):
         """
