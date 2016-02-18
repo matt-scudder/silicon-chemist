@@ -8,5 +8,6 @@ We assume that all sources can map to all sinks, and vice versa.
 
 INTERACTIONS = {
         ("Y","H-L"):["proton_transfer"],
-        ("Y","C-L"):["SN2"]
+        ("Y","C-L"):["SN2"],
+        ("Y","C+"):["AN"]
         }
