@@ -49,14 +49,12 @@ class SN2Test(unittest.TestCase):
         reaction = reaction_type_factory.produce_reaction_type("SN2",self.primary_sources,self.primary_sinks)
         self.assertTrue(reaction.cross_check() == 1.0)
         reaction.rearrange()
-        print self.primary.write("smiles")
         self.assertTrue(similarity.is_same_molecule(self.primary,self.primary_products))
 
     def testSecondary(self):
         reaction = reaction_type_factory.produce_reaction_type("SN2",self.secondary_sources,self.secondary_sinks)
         self.assertTrue(reaction.cross_check() == 0.6)
         reaction.rearrange()
-        print self.secondary.write("smiles")
         self.assertTrue(similarity.is_same_molecule(self.secondary,self.secondary_products))
 
     def testTertiary(self):
