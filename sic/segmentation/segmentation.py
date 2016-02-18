@@ -36,6 +36,12 @@ def segment_molecule(molecule):
     """
     result = {"sources" : label_sources(molecule), "sinks" : label_sinks(molecule)}
     #do any additional processing here
+    for sink in result["sinks"]:
+        #check for C-Ls that might fall apart
+        if sink["subtype"] == "C-L":
+            #add a dummy source to sources, just one is enough to pair with all the C-Ls
+            result["sources"].append({"subtype":"DUM","atoms":{}})
+            break
     return result
 
 def label_sources(molecule):

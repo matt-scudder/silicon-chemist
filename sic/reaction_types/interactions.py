@@ -9,5 +9,8 @@ We assume that all sources can map to all sinks, and vice versa.
 INTERACTIONS = {
         ("Y","H-L"):["proton_transfer"],
         ("Y","C-L"):["SN2"],
-        ("Y","C+"):["AN"]
+        ("Y","C+"):["AN"],
+        ("DUM","C-L"):["DN"], #because DN is basically "the sink interacting with itself and falling apart", we want one DUM for every C-L
+        ("DUM","H-L"):[], #to avoid KeyErrors. Figure out how to fix this in a more general way later.
+        ("DUM","C+"):[]
         }
