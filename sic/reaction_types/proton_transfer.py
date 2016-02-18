@@ -52,5 +52,5 @@ class ProtonTransfer(ReactionType):
         #make Y-H bond
         struct_ops.make_bond(source["atoms"]["Y"],sink["atoms"]["H"])
         #break H-L bond
-        struct_ops.break_bond(sink["atoms"]["L"],sink["atoms"]["H"])
+        struct_ops.break_bond(sink["atoms"]["H"],sink["atoms"]["L"])
 

@@ -102,6 +102,10 @@ def make_bond(start,end):
     In this program, we can make the assumption that make_bond is always called before break_bond,
     so any strange hypervalent situations (such as H bonded to two atoms) can be left as-is.
 
+    "start" should be a source of electrons, and "end" be a species that is being given electrons,
+    otherwise the formal charges won't work out. "start" will have its formal charge increased by 1,
+    and end will have its formal charge decreased by 1.
+
     This function does not use Atom objects in order to make shifting atom references
     less necessary.
     """
@@ -113,10 +117,7 @@ def make_bond(start,end):
     success = start_mol.OBMol.AddBond(start_atom.idx,end_atom.idx,1)
     #TODO: add routine that checks for double bond stuff
     start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() + 1)
-    #TODO: Figure out wtf is going on with formal charges
-    if end_atom.atomicnum != 1: #hydrogen behaves oddly w.r.t. formal charges
-        #end_atom.OBAtom.SetFormalCharge(end_mol.OBMol.GetAtom(end_atom.idx).GetFormalCharge() + 1)
-        pass
+    end_atom.OBAtom.SetFormalCharge(end_mol.OBMol.GetAtom(end_atom.idx).GetFormalCharge() - 1)
     #update the connectivity table if the molecule has one - it always should, but callers of this library might not think of that.
     if not success:
         raise ValueError("AddBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
@@ -136,7 +137,7 @@ def break_bond(start,end):
     We make the assumption that make_bond is always called before this to avoid the previously-discussed
     problem.
     The "end" atom is considered to be things like hydrogens or leaving groups, which after breaking the bond
-    may no longer have any ties to the molecule and may be deleted because of it.
+    have its formal charge lowered, and the "start" atom would have its formal charge increased.
     """
     #first check if we're on the same molecule
     start_mol = start["molecule"]
@@ -158,8 +159,8 @@ def break_bond(start,end):
     if not found:
         raise ValueError("Bond not found between %s (atomno: %s) and %s (atomno: %s)."
                 %(start_atom.OBAtom.GetIdx(),start_atom.atomicnum,end_atom.OBAtom.GetIdx(),end_atom.atomicnum))
-    start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() -1) #TODO: check for double bonds and stuff...
-    #TODO: Make end_atom have +1 formal charge?
+    start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() +1) #TODO: check for double bonds and stuff...
+    end_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(end_atom.idx).GetFormalCharge() - 1)
     if hasattr(start_mol,"connectivity_table"):
         remove_bond_connectivity_table(start_atom.idx,end_atom.idx,start_mol.connectivity_table)
 
