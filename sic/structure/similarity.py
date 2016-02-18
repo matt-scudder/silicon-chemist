@@ -21,12 +21,12 @@ def is_same_state(state1,state2):
     If we can't tell the molecules apart based on SMILES, we can conclude that they are the same -
     since SMILES is our input, that is the highest level of resolution that we get.
     """
-    state1_strings = set([x.write("smiles") for x in state1])
-    state2_strings = set([x.write("smiles") for x in state2])
+    state1_strings = set([x.write("can") for x in state1])
+    state2_strings = set([x.write("can") for x in state2])
     return state1_strings == state2_strings
 
 def is_same_molecule(mol1,mol2):
     """
     Determines whether two Molecule objects are the same thing.
     """
-    return mol1.write("smiles") == mol2.write("smiles")
+    return mol1.write("can") == mol2.write("can")

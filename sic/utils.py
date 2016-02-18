@@ -35,7 +35,7 @@ def write_mol(state):
     I don't.
     Therefore this function.
     """
-    return state.write("smiles").rstrip()
+    return state.write("can").rstrip()
 
 def deepcopy_ignoring_mol(item,new_mol):
     """
