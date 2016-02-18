@@ -7,7 +7,6 @@ rearrangements are not implemented.
 """
 from reaction_type import ReactionType
 import structure.struct_ops as struct_ops
-import utils
 
 class AN(ReactionType):
     """
