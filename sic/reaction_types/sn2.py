@@ -26,7 +26,7 @@ class SN2(ReactionType):
             return self.cross_check_score
         nucleophile = self.sources[0]
         sink = self.sinks[0]
-        FACTORS = {1: 1.0, 2: 0.6, 3: 0.0} #depends on how many non-carbon and non-L atoms are bound to it
+        FACTORS = {0: 1.0, 1: 0.95, 2: 0.6, 3: 0.0} #depends on how many non-carbon and non-L atoms are bound to it
         #first verify that we can even do sn2
         carbon_count = 0
         mol = sink["atoms"]["C"]["molecule"] # to check for atom types
@@ -47,7 +47,7 @@ class SN2(ReactionType):
         new_mol = struct_ops.copy_molecule(nucleophile["atoms"]["Y"]["molecule"]) #the molecule passed in is arbitrary - remember it's the same for source and sink
         new_sinks = utils.shift_molecule_references(self.sinks,new_mol)
         new_sink = new_sinks[0]
-        struct_ops.break_bond(new_sink["atoms"]["L"],new_sink["atoms"]["C"]) #this works because we use indices, not direct atom.OBAtom refs
+        struct_ops.break_bond(new_sink["atoms"]["C"],new_sink["atoms"]["L"]) #this works because we use indices, not direct atom.OBAtom refs
         #need to break L, C because otherwise C gets a - charge and L gets a + (and an implicit H by SMILES standards...)
         pka.get_all_pka(new_mol)
         pKa_BHL = pka.get_pka(new_sink["atoms"]["L"]["atom"],new_mol)
@@ -71,4 +71,4 @@ class SN2(ReactionType):
         source = self.sources[0]
         sink = self.sinks[0]
         struct_ops.make_bond(source["atoms"]["Y"],sink["atoms"]["C"])
-        struct_ops.break_bond(sink["atoms"]["L"],sink["atoms"]["C"])
+        struct_ops.break_bond(sink["atoms"]["C"],sink["atoms"]["L"])
