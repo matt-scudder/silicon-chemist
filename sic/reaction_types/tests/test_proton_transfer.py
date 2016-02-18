@@ -11,7 +11,7 @@ import segmentation.segmentation as segmentation
 import structure.similarity as similarity
 import pka.pka as pka
 import unittest
-from pybel import readstring,Smarts
+from pybel import readstring
 
 class ProtonTransferTest(unittest.TestCase):
     def setUp(self):
