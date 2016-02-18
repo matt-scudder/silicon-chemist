@@ -35,14 +35,14 @@ def get_all_pka(molecule):
         indices = get_real_indices(smarts.findall(molecule))
         for group in indices:
                 for atom_idx in group:
-                        atom = molecule.atoms[atom_idx]
-                        if atom.atomicnum == 1: #hydrogen
-                                molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_HA"] 
-                        elif atom.atomicnum in LONE_PAIR_ATOMS:
-                                molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_BH"]
-                        else:
-                                #TODO: Update this for C with lone pairs as well as borohydride stuff
-                                continue
+                    atom = molecule.atoms[atom_idx]
+                    if atom.atomicnum == 1: #hydrogen
+                            molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_HA"] 
+                    elif atom.atomicnum in LONE_PAIR_ATOMS:
+                            molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_BH"]
+                    else:
+                            #TODO: Update this for C with lone pairs as well as borohydride stuff
+                            continue
     #return nothing because this just modifies state
 
 def get_pka(atom,molecule):
