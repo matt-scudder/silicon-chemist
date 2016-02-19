@@ -5,6 +5,7 @@ Carries out an SN2 reaction.
 """
 from reaction_type import ReactionType
 import structure.struct_ops as struct_ops
+import structure.properties as properties
 import utils
 import pka.pka as pka
 
@@ -28,12 +29,7 @@ class SN2(ReactionType):
         sink = self.sinks[0]
         FACTORS = {0: 1.0, 1: 0.95, 2: 0.6, 3: 0.0} #depends on how many non-carbon and non-L atoms are bound to it
         #first verify that we can even do sn2
-        carbon_count = 0
-        mol = sink["atoms"]["C"]["molecule"] # to check for atom types
-        for bond in struct_ops.get_bonds(sink["atoms"]["C"]):
-            if not (mol.OBMol.GetAtom(bond).IsHydrogen()) and bond != sink["atoms"]["L"]["atom"].idx: 
-                #H bonds don't count toward primary, nor does the L
-                carbon_count += 1
+        carbon_count = properties.get_carbon_degree(sink) 
         final_multiplier = FACTORS[carbon_count]
         if final_multiplier == 0:
             self.cross_check_score = 0.0

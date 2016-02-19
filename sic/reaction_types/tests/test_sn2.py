@@ -47,7 +47,7 @@ class SN2Test(unittest.TestCase):
     #TODO: Update the below when we get C-H...
     def testPrimary(self):
         reaction = reaction_type_factory.produce_reaction_type("SN2",self.primary_sources,self.primary_sinks)
-        self.assertTrue(reaction.cross_check() == 1.0)
+        self.assertTrue(reaction.cross_check() == 0.95)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.primary,self.primary_products))
 

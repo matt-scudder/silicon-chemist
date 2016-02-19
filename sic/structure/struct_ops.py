@@ -9,13 +9,6 @@ import openbabel
 import pybel
 import copy
 
-def get_bonds(atom_obj):
-    """
-    Takes in an atom object (such as source["atoms"]["Y"]), and gets the indices of the atoms it's bound to
-    based on the molecule connectivity table.
-    Utility function for less typing.
-    """
-    return atom_obj["molecule"].connectivity_table[atom_obj["atom"].idx]
 
 def add_bond_connectivity_table(start_atom,end_atom,table):
     """
