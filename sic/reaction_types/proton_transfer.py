@@ -6,6 +6,7 @@ Carries out the proton transfer reaction.
 from reaction_type import ReactionType
 import structure.struct_ops as struct_ops
 import pka.pka as pka
+import structure.scoring as scoring
 
 class ProtonTransfer(ReactionType):
     """
@@ -33,12 +34,10 @@ class ProtonTransfer(ReactionType):
             dpKa = pKa_BH - pKa_HA
             if dpKa < -10: 
                 self.cross_check_score = 0.0
-            elif dpKa <= 0:
-                self.cross_check_score = 0.6 - (0.6*abs(dpKa/ 10.0))
             elif dpKa > 10:
                 self.cross_check_score = 1.0
             else:
-                self.cross_check_score = 0.6 + (0.4*abs(dpKa/ 10.0))
+                self.cross_check_score = scoring.score_pka(10,0.6,dpKa)
             return self.cross_check_score
 
     def rearrange(self):
