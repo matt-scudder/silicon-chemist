@@ -68,7 +68,8 @@ def get_mechanism(reactants,products,solvent=False):
     and returns a list with the ReactionState objects that represent how we got there.
     """
     #TODO: Add check for atom balance, raise ValueError if wrong.
-    MASTER_STATE = [] #keeps track of the reaction state that we want to print out at the end
+    path_to_product = [] #keeps track of the reaction state that we want to print out at the end
+    #path_to_product holds onyl the states that get you to the product, and nothing else in the tree.
     #read in reactants and products
     react_mol = pybel.readstring("smi",reactants)
     prod_mol = pybel.readstring("smi",products)
@@ -77,7 +78,7 @@ def get_mechanism(reactants,products,solvent=False):
     prod_mol.addh()
     #now create a ReactionState out of the reactants - this will be the root
     current_state = ReactionState(react_mol,prod=prod_mol) #product becomes part of the tree
-    MASTER_STATE.append(current_state) #since the first state HAS to be the first step in the mechanism
+    path_to_product.append(current_state) #since the first state HAS to be the first step in the mechanism
     counter = 0
     while not current_state.matches_product():
         #from current_state, generate choices
@@ -89,17 +90,17 @@ def get_mechanism(reactants,products,solvent=False):
                     #check if closer to product
                     if possibility.closer_to_product():
                         current_state = possibility
-                        MASTER_STATE.append(possibility)
+                        path_to_product.append(possibility)
                         break
             else:
                 #none of the possibilities are closer, did not encounter break statement, so go up a level
-                current_state = go_up_a_level(current_state,MASTER_STATE)
+                current_state = go_up_a_level(current_state,path_to_product)
 
         else:
             #if there's no further paths and we're still not at product, go up a level too
-            current_state = go_up_a_level(current_state,MASTER_STATE)
+            current_state = go_up_a_level(current_state,path_to_product)
         counter += 1
         if counter > 20:
             break
     #when we hit product, return
-    return MASTER_STATE
+    return path_to_product
