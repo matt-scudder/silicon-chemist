@@ -17,8 +17,8 @@ import copy
 def generate_choices(state):
     #first, assign pka and get sources/sinks
     #NOTE: Figure out how to optimize so we don't recalculate these too much, especially pKa
-    pka.get_all_pka(state.state)
-    possible_sites = segmentation.segment_molecule(state.state)
+    pka.get_all_pka(state.molecule)
+    possible_sites = segmentation.segment_molecule(state.molecule)
     #and now for each source-sink pair, get the interactions
     for source in possible_sites["sources"]:
         for sink in possible_sites["sinks"]:
@@ -33,7 +33,7 @@ def generate_choices(state):
             if type(sink) != type([]):
                 interaction_sink = [sink]
             for interaction in possible_interactions:
-                new_mol = struct_ops.copy_molecule(state.state)
+                new_mol = struct_ops.copy_molecule(state.molecule)
                 reaction = reaction_type_factory.produce_reaction_type(interaction,interaction_source,interaction_sink,mol=new_mol)
                 if reaction.cross_check() > 0: #make sure it is actually a possibility
                     new_state = ReactionState(new_mol,parent_state=state,parent_reaction=reaction)

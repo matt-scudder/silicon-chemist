@@ -9,7 +9,7 @@ Each ReactionState keeps track of:
     - The state that got it there (if any; root has none)
     - The ReactionType that got it there (if any; root has none). This contains the cross_check score, which allows you to give the user messages.
     - The possible paths from this ReactionState, which are themselves ReactionStates.
-    - The Molecule object that represents this reaction state (called "state").
+    - The Molecule object that represents this reaction state.
 
 All ReactionStates share a "product" object, which ensures the tree structure and allows for utility functions
 related to how close a ReactionState is to product. Modify self.product at your own risk.
@@ -27,7 +27,7 @@ import structure.similarity as similarity
 class ReactionState(object):
     product = None
     def __init__(self,molecule,parent_state=None,parent_reaction=None,prod=None):
-        self.state = molecule
+        self.molecule = molecule
         self.parent_state = parent_state #doesn't matter if None gets assigned
         self.parent_reaction = parent_reaction
         #sortedcontainers sorts from lowest to highest, so we sort it "backwards".
@@ -53,7 +53,7 @@ class ReactionState(object):
         """
         Checks whether this reaction state is equal to the product.
         """
-        return similarity.is_same_molecule(self.state,self.product)
+        return similarity.is_same_molecule(self.molecule,self.product)
 
     def closer_to_product(self):
         """

@@ -61,7 +61,7 @@ def write_up_mechanism(reaction_state_list,solvent=False):
     Uses the fact that all ReactionState objects contain a reference to the product.
     """
     reactants_state = reaction_state_list[0]
-    reactants = write_mol(reactants_state.state)
+    reactants = write_mol(reactants_state.molecule)
     product = write_mol(reactants_state.product)
     solv_string = write_mol(solvent) if solvent else ""
     master_string = "%s>>%s>>%s\n"%(reactants,solv_string,product)
@@ -69,7 +69,7 @@ def write_up_mechanism(reaction_state_list,solvent=False):
         master_string += "Trivial mechanism, already at products."
         return master_string
     for i in range(1,len(reaction_state_list)):
-        master_string += "Step %s: %s>>%s>>%s\n"%(i,write_mol(reaction_state_list[i-1].state),solv_string,write_mol(reaction_state_list[i].state))
+        master_string += "Step %s: %s>>%s>>%s\n"%(i,write_mol(reaction_state_list[i-1].molecule),solv_string,write_mol(reaction_state_list[i].molecule))
         master_string += "Reaction type: %s\n" % reaction_state_list[i].parent_reaction.reaction_type
     return master_string
 
