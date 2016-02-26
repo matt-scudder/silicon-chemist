@@ -33,16 +33,16 @@ class SingleAtomMovementTest(unittest.TestCase):
         #this test has two parts, because we *must* ensure that bond breaking happens before bond breaking
         #but tests are normally run in any order.
         log = logging.getLogger("arf")
-	log.debug(self.reactants.write("smiles"))
+	log.debug(self.reactants.write("can"))
 	Y = self.sources[0]["atoms"]["Y"]
 	H = self.sinks[0]["atoms"]["H"]
 	L = self.sinks[0]["atoms"]["L"]
 	log.debug("Y index: %s; H index %s" % (Y["atom"].idx,H["atom"].idx))
         struct_ops.make_bond(Y,H)
-	log.debug(self.reactants.write("smiles"))
+	log.debug(self.reactants.write("can"))
 	log.debug("L index: %s; H index %s" % (L["atom"].idx,H["atom"].idx))
         struct_ops.break_bond(L,H)
-	log.debug(self.reactants.write("smiles"))
+	log.debug(self.reactants.write("can"))
 	self.assertTrue(similarity.is_same_molecule(self.reactants,self.products))
 
 if __name__ == "__main__":

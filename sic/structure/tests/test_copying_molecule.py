@@ -58,8 +58,8 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         copy_mol = struct_ops.copy_molecule(orig_mol)
         struct_ops.make_bond(segment["sources"][0]["atoms"]["Y"],segment["sinks"][0]["atoms"]["H"])
         struct_ops.break_bond(segment["sinks"][0]["atoms"]["L"],segment["sinks"][0]["atoms"]["H"])
-        self.assertTrue(orig_mol.write("smiles") == self.prod_mol.write("smiles"))
-        self.assertFalse(orig_mol.write("smiles") == copy_mol.write("smiles"))
+        self.assertTrue(orig_mol.write("can") == self.prod_mol.write("can"))
+        self.assertFalse(orig_mol.write("can") == copy_mol.write("can"))
 
     def testOriginalNotModifiedAfterModifyingCopy(self):
         """
@@ -76,8 +76,8 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         L = new_sinks[0]["atoms"]["L"]
         struct_ops.make_bond(Y,H)
         struct_ops.break_bond(L,H)
-        self.assertTrue(copy_mol.write("smiles") == self.prod_mol.write("smiles"))
-        self.assertFalse(self.orig_mol.write("smiles") == copy_mol.write("smiles"))
+        self.assertTrue(copy_mol.write("can") == self.prod_mol.write("can"))
+        self.assertFalse(self.orig_mol.write("can") == copy_mol.write("can"))
 
 if __name__ == "__main__":
     unittest.main()

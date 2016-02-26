@@ -30,7 +30,7 @@ class GroupAttachmentTest(unittest.TestCase):
         print Y["atom"].idx
         print C["atom"].idx
         struct_ops.make_bond(Y,C)
-        print self.reactants.write("smiles")
+        print self.reactants.write("can")
         self.assertTrue(similarity.is_same_molecule(self.reactants,self.products))
 
 if __name__ == "__main__":
