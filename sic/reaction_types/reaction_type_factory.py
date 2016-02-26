@@ -11,6 +11,7 @@ NOTE: The reaction types given MUST be the same as the ones in interactions.py!
 from proton_transfer import ProtonTransfer
 from sn2 import SN2 
 from an import AN
+from dn import DN
 from structure.struct_ops import copy_molecule
 from pybel import Molecule
 import utils
@@ -22,7 +23,8 @@ def produce_reaction_type(r_type,sources,sinks,mol=False):
     If a molecule is provided, copies the information in sources and sinks
     to be attached to the new molecule.
     """
-    orig_mol =  sources[0]["atoms"][sources[0]["atoms"].keys()[0]]["molecule"]
+    #NOTE: sinks need to be used because there are dummy sources, but never dummy sinks.
+    orig_mol =  sinks[0]["atoms"][sinks[0]["atoms"].keys()[0]]["molecule"]
     if mol:
         new_sources = utils.shift_molecule_references(sources,mol)
         new_sinks = utils.shift_molecule_references(sinks,mol)
@@ -35,3 +37,5 @@ def produce_reaction_type(r_type,sources,sinks,mol=False):
         return SN2(new_sources,new_sinks)
     elif r_type == "AN":
         return AN(new_sources,new_sinks)
+    elif r_type == "DN":
+        return DN(new_sources,new_sinks)
