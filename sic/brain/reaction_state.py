@@ -14,7 +14,7 @@ Each ReactionState keeps track of:
 All ReactionStates share a "product" object, which ensures the tree structure and allows for utility functions
 related to how close a ReactionState is to product. Modify self.product at your own risk.
 
-At any point where molecules need to be rearranged by a mechanism, a new Molecule should be created by doing mol.write("smiles") and using readstring
+At any point where molecules need to be rearranged by a mechanism, a new Molecule should be created by doing mol.write("can") and using readstring
 on that SMILES string. This new Molecule should then be rearranged before creating a new ReactionState.
 
 This class also contains utility functions to check whether a reaction state is closer to product than its parent,
@@ -45,7 +45,7 @@ class ReactionState(object):
 	"""
 	json_dict = {}
 	json_dict["parent_reaction"] = self.parent_reaction.to_json_dict() 
-	json_dict["state"] = molecule.write("smiles") #this state need not be preserved up top
+	json_dict["state"] = molecule.write("can") #this state need not be preserved up top
 	json_dict["possibilities"] = map(lambda child: child.to_json_dict(), self.possibilities)
 	return json_dict
 
