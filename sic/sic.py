@@ -16,7 +16,7 @@ import re #for "arbitrary delimiter" support
 import sys #for exit codes
 from sic_io import sic_io#for parsing SiC-format input files
 import logging #for debug logs - worry about this later
-from brain import decisions
+from brain import decision_engine
 
 SIC_PATH = "/home/sic/sic/sic" #that's just sic.
 
@@ -34,7 +34,7 @@ def find_mechanism(reac,prod,solv=False):
     products = sic_io.create_state_smiles(prod).encode("ascii","ignore")
     solvent = sic_io.create_state_smiles(solv).encode("ascii","ignore") if solv else False
     try:
-        mech = decisions.get_mechanism(reactants,products,solvent=solvent)
+        mech = decision_engine.get_mechanism(reactants,products,solvent=solvent)
     except ValueError as e:
         print(e)
     return sic_io.write_up_mechanism(mech,solvent=solvent)
