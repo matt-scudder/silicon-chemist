@@ -6,16 +6,16 @@ reaction. Scores based on bonds oon the carbon.
 Depends on DUM type for sources because this is essentially
 a sink interacting with itself.
 """
-from reaction_type import ReactionType
+from reaction import Reaction
 import structure.struct_ops as struct_ops
 import structure.properties as properties
 import utils
 import pka.pka as pka
 import structure.scoring as scoring
 
-class DN(ReactionType):
+class DN(Reaction):
     """
-    ReactionType object that carries out a DN reaction.
+    Reaction object that carries out a DN reaction.
     """
 
     reaction_type = "DN"

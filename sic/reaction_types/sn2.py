@@ -3,16 +3,16 @@
 """
 Carries out an SN2 reaction.
 """
-from reaction_type import ReactionType
+from reaction import Reaction 
 import structure.struct_ops as struct_ops
 import structure.properties as properties
 import utils
 import pka.pka as pka
 import structure.scoring as scoring
 
-class SN2(ReactionType):
+class SN2(Reaction):
     """
-    ReactionType object that carries out an SN2 reaction.
+    Reaction object that carries out an SN2 reaction.
     """
     reaction_type = "SN2"
 

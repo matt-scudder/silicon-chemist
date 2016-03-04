@@ -3,14 +3,14 @@
 """
 Carries out the proton transfer reaction.
 """
-from reaction_type import ReactionType
+from reaction import Reaction
 import structure.struct_ops as struct_ops
 import pka.pka as pka
 import structure.scoring as scoring
 
-class ProtonTransfer(ReactionType):
+class ProtonTransfer(Reaction):
     """
-    ReactionType object that carries out a proton transfer.
+    Reaction object that carries out a proton transfer.
     """
     reaction_type = "proton_transfer"
 

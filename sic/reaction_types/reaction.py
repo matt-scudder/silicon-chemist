@@ -6,7 +6,7 @@ Defines basic methods that all reaction types
 should be able to execute, as well as data members.
 """
 
-class ReactionType(object):
+class Reaction(object):
     """
     A Reaction is defined as an interaction between a list of sources
     and a list of sinks. While usually only one source and one sink
@@ -30,11 +30,11 @@ class ReactionType(object):
 
     Because of the fact that we need to keep discrete molecular state in order
     to list the final reaction pathway, as well as walk back and forth between it,
-    a ReactionType should take as input a #copy# of the current molecular state;
+    a Reaction should take as input a #copy# of the current molecular state;
     the copy can be disposed of later on if "showing our work" is not required.
 
-    All ReactionTypes also include a method to convert themselves to a dictionary,
-    which only really stores the cross check and a string denoting the ReactionType,
+    All Reactions also include a method to convert themselves to a dictionary,
+    which only really stores the cross check and a string denoting the Reaction's type,
     in order to make this class palatable by the browser and usable for teaching
     students.
     """

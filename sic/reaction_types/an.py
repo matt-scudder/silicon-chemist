@@ -5,12 +5,12 @@ Carries out an AN (association to positively-charged carbon center)
 reaction. Currently is just a 1.0 score, since
 rearrangements are not implemented.
 """
-from reaction_type import ReactionType
+from reaction import Reaction
 import structure.struct_ops as struct_ops
 
-class AN(ReactionType):
+class AN(Reaction):
     """
-    ReactionType object that carries out an AN reaction.
+    Reaction object that carries out an AN reaction.
     """
     reaction_type = "AN"
 
