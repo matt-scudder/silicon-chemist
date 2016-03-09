@@ -471,10 +471,10 @@ public class RXNFileManipulator extends BasicDebugger {
 //                            System.out.println("Mol  " + molecule.getID());
                         }
                     } else {
-                        err.println("error: Fingerprint can't be generated for this molecule " + SmilesGenerator.generic().create(molecule));
+                        err.println("error: Fingerprint can't be generated for this molecule " + SmilesGenerator.unique().create(molecule));
                     }
                 } else {
-                    err.println("error: Mol file should contain atleast one atom! " + SmilesGenerator.generic().create(molecule));
+                    err.println("error: Mol file should contain atleast one atom! " + SmilesGenerator.unique().create(molecule));
                 }
             } catch (CDKException ex) {
                 ex.printStackTrace();

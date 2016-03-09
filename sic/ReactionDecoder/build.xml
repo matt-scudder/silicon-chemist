@@ -70,7 +70,14 @@
     nbproject/build-impl.xml file. 
 
     -->
-    
+   <!-- Because junit isn't seen by ant by default, and Asad is lucky. --> 
+   <junit printsummary="yes">
+	   <classpath>
+		   <fileset dir="/usr/share/java/">
+			   <include name="**/junit.jar" />
+		   </fileset>
+	   </classpath>
+    </junit>
     <!-- Added by Asad. -->
     <target name="package-for-store" depends="jar">
 

@@ -85,7 +85,6 @@ import org.openscience.cdk.interfaces.IReaction;
 import static org.openscience.cdk.interfaces.IReaction.Direction.BIDIRECTIONAL;
 import org.openscience.cdk.layout.StructureDiagramGenerator;
 import org.openscience.cdk.smiles.SmilesGenerator;
-import static org.openscience.cdk.smiles.SmilesGenerator.generic;
 import static org.openscience.cdk.smiles.SmilesGenerator.unique;
 import static org.openscience.cdk.tools.manipulator.AtomContainerManipulator.getBondArray;
 import static org.openscience.cdk.tools.manipulator.AtomContainerSetManipulator.getTotalFormalCharge;
@@ -1193,7 +1192,7 @@ public class Reactor extends AbstractReactor implements Serializable {
             err.println("Processed");
             printAtoms(cloneMolecule);
             err.println("canonicalMolecule: "
-                    + generic().create(cloneMolecule)
+                    + unique().create(cloneMolecule)
                     + "\n\n");
         }
 

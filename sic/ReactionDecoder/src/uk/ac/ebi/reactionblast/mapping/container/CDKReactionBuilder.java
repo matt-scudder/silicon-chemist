@@ -46,7 +46,6 @@ import org.openscience.cdk.interfaces.IReaction;
 import static org.openscience.cdk.interfaces.IReaction.Direction.BIDIRECTIONAL;
 import org.openscience.cdk.interfaces.IReactionSet;
 import org.openscience.cdk.smiles.SmilesGenerator;
-import static org.openscience.cdk.smiles.SmilesGenerator.generic;
 import static org.openscience.cdk.smiles.SmilesGenerator.unique;
 import org.openscience.smsd.Substructure;
 import uk.ac.ebi.reactionblast.containers.MolContainer;
@@ -351,10 +350,10 @@ public class CDKReactionBuilder extends BasicDebugger implements Serializable, I
                             moleculeMap.put(molID, molecule);
                         }
                     } else {
-                        err.println("error: Fingerprint can't be generated for this molecule " + SmilesGenerator.generic().create(molecule));
+                        err.println("error: Fingerprint can't be generated for this molecule " + SmilesGenerator.unique().create(molecule));
                     }
                 } else {
-                    err.println("error: Mol file should contain atleast one atom! " + SmilesGenerator.generic().create(molecule));
+                    err.println("error: Mol file should contain atleast one atom! " + SmilesGenerator.unique().create(molecule));
                 }
             } catch (CDKException ex) {
                 getLogger(CDKReactionBuilder.class.getName()).log(SEVERE, null, ex);
@@ -532,7 +531,7 @@ public class CDKReactionBuilder extends BasicDebugger implements Serializable, I
         }
         if (DEBUG) {
             try {
-                out.println("Q=mol " + generic().create(queryMol));
+                out.println("Q=mol " + unique().create(queryMol));
             } catch (CDKException ex) {
                 getLogger(CDKReactionBuilder.class.getName()).log(SEVERE, null, ex);
             }
@@ -554,7 +553,7 @@ public class CDKReactionBuilder extends BasicDebugger implements Serializable, I
         }
         if (DEBUG) {
             try {
-                out.println("T=mol " + generic().create(targetMol));
+                out.println("T=mol " + unique().create(targetMol));
             } catch (CDKException ex) {
                 getLogger(ReactionMechanismTool.class.getName()).log(SEVERE, null, ex);
             }

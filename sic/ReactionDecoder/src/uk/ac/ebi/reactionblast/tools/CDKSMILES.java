@@ -30,7 +30,7 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IPseudoAtom;
 import static org.openscience.cdk.smiles.CanonSmiAdapter.create;
 import org.openscience.cdk.smiles.SmilesGenerator;
-import static org.openscience.cdk.smiles.SmilesGenerator.generic;
+import static org.openscience.cdk.smiles.SmilesGenerator.unique;
 import org.openscience.cdk.tools.ILoggingTool;
 import static org.openscience.cdk.tools.LoggingToolFactory.createLoggingTool;
 import static uk.ac.ebi.reactionblast.tools.ExtAtomContainerManipulator.aromatizeDayLight;
@@ -126,7 +126,7 @@ public class CDKSMILES {
         }
         try {
             SmilesGenerator g;
-            g = generic().aromatic();
+            g = unique().aromatic();
             return g.create(molecule);
         } catch (CDKException ex) {
             logger.error("ERROR : in generating CDK SMILES" + molecule.getID());

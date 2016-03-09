@@ -50,7 +50,6 @@ import static org.openscience.cdk.interfaces.IBond.Order.TRIPLE;
 import org.openscience.cdk.interfaces.IMapping;
 import org.openscience.cdk.interfaces.IReaction;
 import org.openscience.cdk.smiles.SmilesGenerator;
-import static org.openscience.cdk.smiles.SmilesGenerator.generic;
 import static org.openscience.cdk.smiles.SmilesGenerator.unique;
 import org.openscience.cdk.tools.ILoggingTool;
 import static org.openscience.cdk.tools.LoggingToolFactory.createLoggingTool;
@@ -226,7 +225,7 @@ public class ReactionMechanismTool implements Serializable {
             }
             if (DEBUG) {
                 try {
-                    out.println("Q=mol " + generic().create(q));
+                    out.println("Q=mol " + unique().create(q));
                 } catch (CDKException ex) {
                     getLogger(ReactionMechanismTool.class.getName()).log(SEVERE, null, ex);
                 }
@@ -249,7 +248,7 @@ public class ReactionMechanismTool implements Serializable {
             }
             if (DEBUG) {
                 try {
-                    out.println("T=mol " + generic().create(t));
+                    out.println("T=mol " + unique().create(t));
                 } catch (CDKException ex) {
                     getLogger(ReactionMechanismTool.class.getName()).log(SEVERE, null, ex);
                 }

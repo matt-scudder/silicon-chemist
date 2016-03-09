@@ -174,16 +174,14 @@ public class ReactionDecoder extends Annotator {
 
     private void FormatTextToFile(StringBuilder doc, String fileName) throws UnsupportedEncodingException, FileNotFoundException, IOException {
         File file = new File(fileName + ".txt");
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8")) {
-            writer.write(doc.toString());
-        }
+        //try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8")) {
+        //    writer.write(doc.toString());
+        //}
 
-        out.println("Output is presented in text format: " + file.getAbsolutePath());
+        //out.println("Output is presented in text format: " + file.getAbsolutePath());
 
-        if (DEBUG) {
-            // Show output on console during development
-            out.println(doc.toString());
-        }
+    	// Show output on console during development
+	out.println(doc.toString());
     }
 
     private void AAMTask(CommandLine aamLine, Options createAAMOptions)
