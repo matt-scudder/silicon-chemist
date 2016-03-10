@@ -5,6 +5,8 @@ Utilities module for dealing with the idiosyncracies of the various libraries
 involved in the project.
 """
 from pybel import Molecule, Atom
+from segmentation.sink import Sink
+from segmentation.source import Source
 from openbabel import OBMolBondIter, OBAtom
 
 def get_real_indices(indices):
@@ -50,6 +52,12 @@ def deepcopy_ignoring_mol(item,new_mol):
         return new_mol
     elif isinstance(item,Atom):
         return new_mol_atoms[item.idx-1]
+    elif isinstance(item,Source):
+        item.molecule = new_mol
+        return item
+    elif isinstance(item,Sink):
+        item.molecule = new_mol
+        return item
     else:
         return item
 

@@ -79,14 +79,10 @@ def copy_molecule(mol):
     return new_mol
 
 #TODO: Figure out whether we always want order=1 bonds!
-def make_bond(start,end):
+def make_bond(start,end,molecule):
     """
-    Makes a bond between two atoms by updating connectivity tables.
-    The atom objects that are passed in are the same kind of "atom objects"
-    that are used in source/sink identification, i.e. objects that contain
-    an "atom" key for the actual Python Atom object, and a "molecule" key
-    for the Python Molecule object. Do not change this - the OBMol objects
-    cannot be compared.
+    Makes a bond between two atoms by updating connectivity tables in a modified Pybel Molecule object.
+    start and end are atom indices.
     
     Since the "combined SMILES" approach we take means that everything is on the 
     SAME Molecule (and thus OBMol) object, we don't need to do strange copying
@@ -98,62 +94,52 @@ def make_bond(start,end):
     "start" should be a source of electrons, and "end" be a species that is being given electrons,
     otherwise the formal charges won't work out. "start" will have its formal charge increased by 1,
     and end will have its formal charge decreased by 1.
-
-    This function does not use Atom objects in order to make shifting atom references
-    less necessary.
     """
-    #because of infrastructure changes, start_mol == end_mol always
-    start_mol = start["molecule"]
-    end_mol = end["molecule"]
-    start_atom = start["atom"]
-    end_atom = end["atom"]
-    success = start_mol.OBMol.AddBond(start_atom.idx,end_atom.idx,1)
-    #TODO: add routine that checks for double bond stuff
-    start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() + 1)
-    end_atom.OBAtom.SetFormalCharge(end_mol.OBMol.GetAtom(end_atom.idx).GetFormalCharge() - 1)
-    #update the connectivity table if the molecule has one - it always should, but callers of this library might not think of that.
+    obmol = molecule.OBMol
+    success = obmol.AddBond(start,end,1)
+    start_atom = obmol.GetAtom(start)
+    end_atom = obmol.GetAtom(end)
     if not success:
         raise ValueError("AddBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
-                            %(start_atom.idx,start_atom.atomicnum,end_atom.idx,end_atom.atomicnum))
-    if hasattr(start_mol,"connectivity_table"):
-        add_bond_connectivity_table(start_atom.idx,end_atom.idx,start_mol.connectivity_table) 
+                            %(start,start_atom.GetAtomicNum(),end,end_atom.GetAtomicNum()))
+    #TODO: add routine that checks for double bond stuff
+    start_atom.SetFormalCharge(start_atom.GetFormalCharge() + 1)
+    end_atom.SetFormalCharge(end_atom.GetFormalCharge() - 1)
+    #update the connectivity table if the molecule has one - it always should, but callers of this library might not think of that.
+    if hasattr(molecule,"connectivity_table"):
+        add_bond_connectivity_table(start,end,molecule.connectivity_table) 
 
-def break_bond(start,end):
+def break_bond(start,end,molecule):
     """
-    Removes a bond between two atoms by updating connectivity tables.
-    The atom objects that are passed in are the same kind of "atom objects"
-    that are used in source/sink identification, i.e. objects that contain
-    an "atom" key for the actual Python Atom object, and a "molecule" key
-    for the Python Molecule object. Do not change this - the OBMol objects
-    cannot be compared.
-    The atoms should always live on the same molecule - if they don't, we have problems.
+    Removes a bond between two atoms by updating connectivity tables in a modified Pybel Molecule object.
+    start and end are atom indices.
+
     We make the assumption that make_bond is always called before this to avoid the previously-discussed
     problem.
+
     The "end" atom is considered to be things like hydrogens or leaving groups, which after breaking the bond
     have its formal charge lowered, and the "start" atom would have its formal charge increased.
     """
-    #first check if we're on the same molecule
-    start_mol = start["molecule"]
-    end_mol = end["molecule"]
-    start_atom = start["atom"]
-    end_atom = end["atom"]
+    obmol = molecule.OBMol
+    start_atom = obmol.GetAtom(start)
+    end_atom = obmol.GetAtom(end)
     #iterate through all the bonds until we find the one we need to remove
     #this is slow - figure out a better way someday
     found = False
-    for bond in openbabel.OBMolBondIter(start_mol.OBMol):
-        if (bond.GetBeginAtomIdx() == start_atom.idx and bond.GetEndAtomIdx() == end_atom.idx)  or (bond.GetBeginAtomIdx() == end_atom.idx and bond.GetEndAtomIdx() == start_atom.idx):
-            success = start_mol.OBMol.DeleteBond(bond)
+    for bond in openbabel.OBMolBondIter(obmol):
+        if (bond.GetBeginAtomIdx() == start and bond.GetEndAtomIdx() == end)  or (bond.GetBeginAtomIdx() == end and bond.GetEndAtomIdx() == start):
+            success = obmol.DeleteBond(bond)
             found = True
             if not success:
                 raise ValueError("DeleteBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
-                                            %(start_atom.OBAtom.GetIdx(),start_atom.atomicnum,end_atom.OBAtom.GetIdx(),end_atom.atomicnum))
+                                            %(start,start_atom.GetAtomicNum(),end,end_atom.GetAtomicNum()))
             break
     #don't try for/else here. Doesn't work. Don't know why.
     if not found:
         raise ValueError("Bond not found between %s (atomno: %s) and %s (atomno: %s)."
-                %(start_atom.OBAtom.GetIdx(),start_atom.atomicnum,end_atom.OBAtom.GetIdx(),end_atom.atomicnum))
-    start_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(start_atom.idx).GetFormalCharge() +1) #TODO: check for double bonds and stuff...
-    end_atom.OBAtom.SetFormalCharge(start_mol.OBMol.GetAtom(end_atom.idx).GetFormalCharge() - 1)
-    if hasattr(start_mol,"connectivity_table"):
-        remove_bond_connectivity_table(start_atom.idx,end_atom.idx,start_mol.connectivity_table)
+                %(start_atom.GetIdx(),start_atom.GetAtomicNum(),end_atom.GetIdx(),end_atom.GetAtomicNum()))
+    start_atom.SetFormalCharge(obmol.GetAtom(start).GetFormalCharge() +1) #TODO: check for double bonds and stuff...
+    end_atom.SetFormalCharge(obmol.GetAtom(end).GetFormalCharge() - 1)
+    if hasattr(molecule,"connectivity_table"):
+        remove_bond_connectivity_table(start,end,molecule.connectivity_table)
 

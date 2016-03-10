@@ -38,9 +38,9 @@ class ConnectivityTableTest(unittest.TestCase):
         """
         ctable = self.mol.connectivity_table #typing is hard
         #sinks[2] is the F, not the O.
-        O = self.sources[0]["atoms"]["Y"]
-        H = self.sinks[2]["atoms"]["H"]
-        struct_ops.make_bond(O,H)
+        O = self.sources[0].get_atom("Y")
+        H = self.sinks[2].get_atom("H")
+        struct_ops.make_bond(O,H,self.mol)
         self.assertTrue(1 in ctable and 5 in ctable[1])
         self.assertTrue(5 in ctable and 1 in ctable[5])
 
@@ -49,9 +49,9 @@ class ConnectivityTableTest(unittest.TestCase):
         Tests whether removing a bond updates the table.
         """
         ctable = self.mol.connectivity_table #typing is hard
-        F = self.sinks[2]["atoms"]["L"]
-        H = self.sinks[2]["atoms"]["H"]
-        struct_ops.break_bond(F,H)
+        F = self.sinks[2].get_atom("L")
+        H = self.sinks[2].get_atom("H")
+        struct_ops.break_bond(H,F,self.mol)
         self.assertFalse(2 in ctable and 5 in ctable[2])
         self.assertFalse(5 in ctable and 2 in ctable[5])
 

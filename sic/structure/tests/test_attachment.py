@@ -17,19 +17,20 @@ class GroupAttachmentTest(unittest.TestCase):
         products = readstring("smi","CCCCCCOC(C)(C)C")
         reactants.addh()
         products.addh()
+        struct_ops.generate_connectivity_table(reactants)
         self.reactants = reactants
         self.products = products
         self.sources = segmentation.label_sources(reactants)
         self.sinks = segmentation.label_sinks(reactants)
 
     def testAttachment(self):
-        #make bond from OH to the C+
-        print self.sinks
-        Y = self.sources[0]["atoms"]["Y"]
-        C = self.sinks[0]["atoms"]["C+"] 
-        print Y["atom"].idx
-        print C["atom"].idx
-        struct_ops.make_bond(Y,C)
+        #make bond from [O-] to the C+
+        Y = self.sources[0].get_atom("Y")
+        C = self.sinks[0].get_atom("C+")
+        print Y
+        print C
+        print self.reactants.write("can")
+        struct_ops.make_bond(Y,C,self.reactants) #self.reactants is a Molecule object
         print self.reactants.write("can")
         self.assertTrue(similarity.is_same_molecule(self.reactants,self.products))
 

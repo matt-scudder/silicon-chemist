@@ -23,9 +23,11 @@ and whether it matches the product exactly.
 import json
 import sortedcontainers
 import structure.similarity as similarity
+import structure.properties as properties
 
 class ReactionState(object):
     product = None
+    mapping = None #one mapping from reactants to products for all states, because it is a property of each atom...
     def __init__(self,molecule,parent_state=None,parent_reaction=None,prod=None):
         self.molecule = molecule
         self.parent_state = parent_state #doesn't matter if None gets assigned
@@ -36,6 +38,9 @@ class ReactionState(object):
         self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: 1.0 - x.parent_reaction.cross_check())
         if not type(self).product and prod:
             type(self).product = prod
+        if not type(self).mapping:
+            #initialize mapping, do NOT redo mapping, ever!
+            type(self).mapping = properties.get_mapping(self.molecule,type(self).product)
     
     def to_json_dict(self):
         """

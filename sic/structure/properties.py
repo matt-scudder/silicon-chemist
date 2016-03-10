@@ -18,7 +18,6 @@ def get_mapping(reactants,products):
     mapping = {}
     #write out reactants/products string
     input_smiles = "%s>>%s" % (utils.write_mol(reactants),utils.write_mol(products))
-    print input_smiles
     AAM_output = subprocess.check_output(["java","-jar","%s/usableRDT.jar"%REACTION_DECODER_PATH,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"])
     found_mapping = False
     mapping_string = None
