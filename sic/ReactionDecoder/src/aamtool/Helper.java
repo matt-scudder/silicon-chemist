@@ -45,41 +45,41 @@ class Helper extends ChemicalFormatParser {
     private static final Logger LOG = getLogger(Helper.class.getName());
 
     protected static void getHeader() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("!--------------------------------------------------------");
-        sb.append(NEW_LINE);
-        sb.append("Reaction Decoder Tool (RDT)");
-        sb.append(NEW_LINE);
-        sb.append(NEW_LINE);
-        sb.append("Author: Syed Asad Rahman");
-        sb.append(NEW_LINE);
-        sb.append("e-mail: asad@ebi.ac.uk");
-        sb.append(NEW_LINE);
-        sb.append("c/o EMBL-European BioInformatics Institute (EBI)");
-        sb.append(NEW_LINE);
-        sb.append("WTGC, CB10 1SD Hinxton");
-        sb.append(NEW_LINE);
-        sb.append("UK");
-        sb.append(NEW_LINE);
-        sb.append(NEW_LINE);
-        sb.append("Note: The copyright of this software belongs to the author");
-        sb.append(NEW_LINE);
-        sb.append("and EMBL-European BioInformatics Institute (EBI).");
-        sb.append(NEW_LINE);
-        sb.append(NEW_LINE);
-
-        sb.append("Reference");
-        sb.append(NEW_LINE);
-        sb.append("Rahman, S.A. et.al.(2016) Reaction Decoder Tool (RDT):");
-        sb.append(NEW_LINE);
-        sb.append("Extracting Features from Chemical Reactions, Bioinformatics (2016)");
-        sb.append(NEW_LINE);
-        sb.append("doi: 10.1093/bioinformatics/btw096");
-        sb.append(NEW_LINE);
-        sb.append("!--------------------------------------------------------");
-        sb.append(NEW_LINE);
-        out.println(sb.toString());
+//        StringBuilder sb = new StringBuilder();
+//
+//        sb.append("!--------------------------------------------------------");
+//        sb.append(NEW_LINE);
+//        sb.append("Reaction Decoder Tool (RDT)");
+//        sb.append(NEW_LINE);
+//        sb.append(NEW_LINE);
+//        sb.append("Author: Syed Asad Rahman");
+//        sb.append(NEW_LINE);
+//        sb.append("e-mail: asad@ebi.ac.uk");
+//        sb.append(NEW_LINE);
+//        sb.append("c/o EMBL-European BioInformatics Institute (EBI)");
+//        sb.append(NEW_LINE);
+//        sb.append("WTGC, CB10 1SD Hinxton");
+//        sb.append(NEW_LINE);
+//        sb.append("UK");
+//        sb.append(NEW_LINE);
+//        sb.append(NEW_LINE);
+//        sb.append("Note: The copyright of this software belongs to the author");
+//        sb.append(NEW_LINE);
+//        sb.append("and EMBL-European BioInformatics Institute (EBI).");
+//        sb.append(NEW_LINE);
+//        sb.append(NEW_LINE);
+//
+//        sb.append("Reference");
+//        sb.append(NEW_LINE);
+//        sb.append("Rahman, S.A. et.al.(2016) Reaction Decoder Tool (RDT):");
+//        sb.append(NEW_LINE);
+//        sb.append("Extracting Features from Chemical Reactions, Bioinformatics (2016)");
+//        sb.append(NEW_LINE);
+//        sb.append("doi: 10.1093/bioinformatics/btw096");
+//        sb.append(NEW_LINE);
+//        sb.append("!--------------------------------------------------------");
+//        sb.append(NEW_LINE);
+//        out.println(sb.toString());
 
     }
 

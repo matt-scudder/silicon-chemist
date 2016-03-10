@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Level.OFF;
+import java.util.logging.Handler;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 import static java.util.logging.Logger.getLogger;
 import javax.xml.parsers.DocumentBuilder;
@@ -68,6 +71,21 @@ public class ReactionDecoder extends Annotator {
      */
     public static void main(String[] args) {
         try {
+	    //Override their stupid logging stuff
+	    Logger topLogger = Logger.getLogger("");
+	    Handler consoleHandler = null;
+	    for (Handler handler : topLogger.getHandlers()) {
+		    if (handler instanceof ConsoleHandler) {
+			    consoleHandler = handler;
+			    break;
+			   }
+		}
+
+	    if (consoleHandler == null) {
+		    consoleHandler = new ConsoleHandler();
+		    topLogger.addHandler(consoleHandler);
+		   }
+	    consoleHandler.setLevel(OFF);
             CommandLineOptions cmd = new CommandLineOptions();
             Options createAAMOptions = cmd.createAAMOptions();
             Options createCompareOptions = cmd.createCompareOptions();
@@ -88,7 +106,7 @@ public class ReactionDecoder extends Annotator {
             if (aamLine.hasOption('j') && aamLine.getOptionValue("j").equalsIgnoreCase("AAM")
                     && aamLine.hasOption('Q') && aamLine.hasOption('q') && aamLine.hasOption('f')) {
 
-                out.println("-- AAM --");
+    //            out.println("-- AAM --");
                 ReactionDecoder rxn = new ReactionDecoder();
                 rxn.AAMTask(aamLine, createAAMOptions);
 
