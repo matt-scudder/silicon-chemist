@@ -12,6 +12,9 @@
 - openbabel (which requires the OpenBabel package - see http://openbabel.org/docs/2.3.1/Installation/install.html#compile-bindings for details)
 - sortedcontainers (to automatically keep choices sorted)
 
+#Java
+- ReactionDecoder (https://github.com/asad/ReactionDecoder), included in install, requires modified version.
+
 #Linux Packages (for full WSGI setup; not needed for basic install)
 - python-dev
 - apache2
