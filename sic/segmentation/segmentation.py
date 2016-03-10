@@ -9,6 +9,8 @@ will use to make sure things are rearranged properly when a reaction occurs.
 
 from sources import SOURCES
 from sinks import SINKS
+import source
+import sink
 import pybel
 from utils import get_real_indices 
 
@@ -23,24 +25,16 @@ def segment_molecule(molecule):
 
     Returns an object with two properties:
 
-    - sources: List of all sources in the molecule
-    - sinks: List of all sinks in the molecule
-
-    Each of these two lists will consist of objects that have the following properties:
-
-    - "subtype" : Type of generic source or sink the object represents, such as "Y-L" or "Y=C-L"
-    - "atoms" : An object which has keys for each of the "pieces" of the source/sink,
-        and a dict for the actual atom, which has both the atom itself, and its corresponding molecule.
-        The last bit exists because Atom objects aren't "real" in that they are generated from scratch
-        every time you access a Molecule's atoms.
+    - sources: List of all sources in the molecule, as Source objects
+    - sinks: List of all sinks in the molecule, as Sink objects
     """
     result = {"sources" : label_sources(molecule), "sinks" : label_sinks(molecule)}
     #do any additional processing here
     for sink in result["sinks"]:
         #check for C-Ls that might fall apart
-        if sink["subtype"] == "C-L":
+        if sink.subtype == "C-L":
             #add a dummy source to sources, just one is enough to pair with all the C-Ls
-            result["sources"].append({"subtype":"DUM","atoms":{}})
+            result["sources"].append(source.Source("DUM",[],molecule))
             break
     return result
 
@@ -57,14 +51,9 @@ def label_sources(molecule):
     mol_atoms = molecule.atoms #so that we don't do a list processing every time, given that molecule.atoms would regenerate itself
     for source_type in SOURCES:
         smarts = pybel.Smarts(SOURCES[source_type])
-        groups = get_real_indices(smarts.findall(molecule))
+        groups = smarts.findall(molecule)
         for group in groups:
-            source = {"subtype":source_type,"atoms":{}}
-            #here is where you wish Python had a switch statement
-            if source_type == "Y":
-                #only one atom to label, might as well do it here
-                source["atoms"]["Y"] = {"atom": mol_atoms[group[0]], "molecule": molecule}
-            sources.append(source)
+            sources.append(source.Source(source_type,group,molecule))
     return sources
 
 def label_sinks(molecule):
@@ -80,26 +69,7 @@ def label_sinks(molecule):
     mol_atoms = molecule.atoms
     for sink_type in SINKS:
         smarts = pybel.Smarts(SINKS[sink_type])
-        groups = get_real_indices(smarts.findall(molecule))
+        groups = smarts.findall(molecule)
         for group in groups:
-            sink = {"subtype":sink_type,"atoms":{}}
-            if sink_type == "H-L":
-                #hydrogens are usually after all the other atoms, but we shouldn't assume this until optimization stage
-                for atom_idx in group:
-                    if molecule.atoms[atom_idx].atomicnum == 1:
-                        sink["atoms"]["H"] = {"atom": mol_atoms[atom_idx], "molecule": molecule}
-                    else:
-                        #assume identification was correct, OpenBabel is old.
-                        sink["atoms"]["L"] = {"atom": mol_atoms[atom_idx], "molecule": molecule}
-            elif sink_type == "C+":
-                #only one atom in group, just label it
-                sink["atoms"]["C+"] = {"atom": mol_atoms[group[0]], "molecule": molecule}
-            elif sink_type == "C-L":
-                for atom_idx in group:
-                    #TODO: Figure out what to do if the L is also a C...
-                    if molecule.atoms[atom_idx].atomicnum == 6:
-                        sink["atoms"]["C"] = {"atom": mol_atoms[atom_idx], "molecule": molecule}
-                    else:
-                        sink["atoms"]["L"] = {"atom": mol_atoms[atom_idx], "molecule": molecule}
-            sinks.append(sink)
+            sinks.append(sink.Sink(sink_type,group,molecule))
     return sinks
