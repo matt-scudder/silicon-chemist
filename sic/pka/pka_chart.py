@@ -25,5 +25,11 @@ PKA_CHART = [
     {"[ClH1]([H])":{"pKa_HA":-7,"pKa_BH":None}},
     {"[Cl!H1]":{"pKa_HA":None,"pKa_BH":-7}},
     {"[FH1]([H])":{"pKa_HA":3.2,"pKa_BH":None}},
-    {"[F!H1]":{"pKa_HA":None,"pKa_BH":3.2}}
+    {"[F!H1]":{"pKa_HA":None,"pKa_BH":3.2}},
+    #Alcohols
+    {"[CH0][O]([H])":{"pKa_HA": 19, "pKa_BH": -2.4}}, #tertiary
+    {"[CH1][O]([H])":{"pKa_HA": 18, "pKa_BH": -2.4}}, #secondary
+    {"[CH2][O]([H])":{"pKa_HA": 16, "pKa_BH": -2.4}}, #primary
+    {"[CH3][O]([H])":{"pKa_HA": 15.5, "pKa_BH": -2.4}} #methyl
+
 ]
