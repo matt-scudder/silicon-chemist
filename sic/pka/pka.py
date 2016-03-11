@@ -35,6 +35,7 @@ def get_all_pka(molecule):
         indices = smarts.findall(molecule)
         obmol = molecule.OBMol
         for group in indices:
+            #TODO: Make it so that only the stuff bound to the hydrogen is actually counted here, instead of this
                 for atom_idx in group:
                     atom = obmol.GetAtom(atom_idx)
                     if atom.GetAtomicNum() == 1: #hydrogen
