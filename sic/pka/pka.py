@@ -32,13 +32,14 @@ def get_all_pka(molecule):
     for pka_obj in PKA_CHART:
         pattern = pka_obj.keys()[0] #there's only one key, so this is fine
         smarts = pybel.Smarts(pattern)
-        indices = get_real_indices(smarts.findall(molecule))
+        indices = smarts.findall(molecule)
+        obmol = molecule.OBMol
         for group in indices:
                 for atom_idx in group:
-                    atom = molecule.atoms[atom_idx]
-                    if atom.atomicnum == 1: #hydrogen
+                    atom = obmol.GetAtom(atom_idx)
+                    if atom.GetAtomicNum() == 1: #hydrogen
                             molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_HA"] 
-                    elif atom.atomicnum in LONE_PAIR_ATOMS:
+                    elif atom.GetAtomicNum() in LONE_PAIR_ATOMS:
                             molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_BH"]
                     else:
                             #TODO: Update this for C with lone pairs as well as borohydride stuff
@@ -58,7 +59,7 @@ def get_pka(atom,molecule):
     We assume that pka_index is an attribute of molecule. If this is not the case, then this method will
     raise an AttributeError.
     """
-    index = atom - 1 #because idx is 1-indexed
+    index = atom
     if molecule.pka_index.has_key(index):
         return molecule.pka_index[index]
     else:
