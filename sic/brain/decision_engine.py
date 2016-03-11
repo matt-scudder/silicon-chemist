@@ -8,7 +8,7 @@ Uses all the segmentation and pka tools in the other modules.
 import segmentation.segmentation as segmentation
 import pka.pka as pka
 import structure.struct_ops as struct_ops
-import reaction_types.reaction_type_factory as reaction_type_factory #too many of these
+import reaction_types.reaction_factory as reaction_factory #too many of these
 import reaction_types.interactions as interactions
 import pybel
 from reaction_state import ReactionState
@@ -22,7 +22,7 @@ def generate_choices(state):
     #and now for each source-sink pair, get the interactions
     for source in possible_sites["sources"]:
         for sink in possible_sites["sinks"]:
-            interaction_tuple = (source["subtype"],sink["subtype"])
+            interaction_tuple = (source.subtype,sink.subtype)
             possible_interactions = interactions.INTERACTIONS[interaction_tuple]
             #listify so that our interface works - if you have multiple sources or multiple sinks, this automagically takes care of it
             #but don't listify if already a list
@@ -34,7 +34,7 @@ def generate_choices(state):
                 interaction_sink = [sink]
             for interaction in possible_interactions:
                 new_mol = struct_ops.copy_molecule(state.molecule)
-                reaction = reaction_type_factory.produce_reaction_type(interaction,interaction_source,interaction_sink,mol=new_mol)
+                reaction = reaction_factory.produce_reaction(interaction,interaction_source,interaction_sink,mol=new_mol)
                 if reaction.cross_check() > 0: #make sure it is actually a possibility
                     new_state = ReactionState(new_mol,parent_state=state,parent_reaction=reaction)
                     state.possibilities.add(new_state)

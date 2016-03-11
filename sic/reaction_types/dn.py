@@ -37,13 +37,13 @@ class DN(Reaction):
             self.cross_check_score = 0.0
             return self.cross_check_score
         #same check for pKa of L as in SN2, but this time there's no ΔpKa, we're just checking L pKa.
-        new_mol = struct_ops.copy_molecule(sink["atoms"]["C"]["molecule"])
+        new_mol = struct_ops.copy_molecule(sink.molecule)
         new_sinks = utils.shift_molecule_references(self.sinks,new_mol)
         new_sink = new_sinks[0]
-        struct_ops.break_bond(new_sink["atoms"]["C"],new_sink["atoms"]["L"]) #this works because we use indices, not direct atom.OBAtom refs
+        struct_ops.break_bond(new_sink.get_atom("C"),new_sink.get_atom("L")) #this works because we use indices, not direct atom.OBAtom refs
         #need to break L, C because otherwise C gets a - charge and L gets a + (and an implicit H by SMILES standards...)
         pka.get_all_pka(new_mol)
-        pKa_BHL = pka.get_pka(new_sink["atoms"]["L"]["atom"],new_mol)
+        pKa_BHL = pka.get_pka(new_sink.get_atom("L"),new_mol)
         if pKa_BHL > 6:
             self.cross_check_score = 0.0
         elif pKa_BHL < -6:
@@ -57,5 +57,5 @@ class DN(Reaction):
         Breaks the C-L bond.
         """
         sink = self.sinks[0]
-        struct_ops.break_bond(sink["atoms"]["C"],sink["atoms"]["L"])
+        struct_ops.break_bond(sink.get_atom("C"),sink.get_atom("L"))
 

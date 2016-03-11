@@ -47,7 +47,7 @@ def get_all_pka(molecule):
 
 def get_pka(atom,molecule):
     """
-    Takes in an Atom and its corresponding Molecule (because Atom objects don't have pointers to their parent Molecule)
+    Takes in an atom index and its corresponding Molecule,
     and returns the pKa value associated to the atom by checking the Molecule's pKa index.
 
     The Molecule object is required because OBMol (SWIG proxy object) does not seem to have persistent attributes,
@@ -58,7 +58,7 @@ def get_pka(atom,molecule):
     We assume that pka_index is an attribute of molecule. If this is not the case, then this method will
     raise an AttributeError.
     """
-    index = atom.idx - 1 #because idx is 1-indexed
+    index = atom - 1 #because idx is 1-indexed
     if molecule.pka_index.has_key(index):
         return molecule.pka_index[index]
     else:

@@ -24,7 +24,7 @@ def produce_reaction(r_type,sources,sinks,mol=False):
     to be attached to the new molecule.
     """
     #NOTE: sinks need to be used because there are dummy sources, but never dummy sinks.
-    orig_mol =  sinks[0]["atoms"][sinks[0]["atoms"].keys()[0]]["molecule"]
+    orig_mol =  sinks[0].molecule 
     if mol:
         new_sources = utils.shift_molecule_references(sources,mol)
         new_sinks = utils.shift_molecule_references(sinks,mol)

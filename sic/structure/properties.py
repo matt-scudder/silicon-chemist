@@ -69,10 +69,10 @@ def get_carbon_degree(s_obj,carbon_label=False):
     """
     carb_string = carbon_label if carbon_label else "C"
     carbon_count = 0
-    mol = s_obj["atoms"][carb_string]["molecule"]
-    has_L = "L" in s_obj["atoms"]
-    for bond in get_bonds(s_obj["atoms"][carb_string]):
-        if not (mol.OBMol.GetAtom(bond).IsHydrogen()) and (has_L and bond != s_obj["atoms"]["L"]["atom"].idx):
+    mol = s_obj.molecule
+    has_L = "L" in s_obj.atoms
+    for bond in get_bonds(s_obj.get_atom(carb_string)):
+        if not (mol.OBMol.GetAtom(bond).IsHydrogen()) and (has_L and bond != s_obj.get_atom("L")):
             #H bonds don't count, neither do L if any
             #TODO: Update the above conditional for species other than L that don't count
             carbon_count += 1
