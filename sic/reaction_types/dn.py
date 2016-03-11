@@ -40,7 +40,7 @@ class DN(Reaction):
         new_mol = struct_ops.copy_molecule(sink.molecule)
         new_sinks = utils.shift_molecule_references(self.sinks,new_mol)
         new_sink = new_sinks[0]
-        struct_ops.break_bond(new_sink.get_atom("C"),new_sink.get_atom("L")) #this works because we use indices, not direct atom.OBAtom refs
+        struct_ops.break_bond(new_sink.get_atom("C"),new_sink.get_atom("L"),new_sink.molecule) #this works because we use indices, not direct atom.OBAtom refs
         #need to break L, C because otherwise C gets a - charge and L gets a + (and an implicit H by SMILES standards...)
         pka.get_all_pka(new_mol)
         pKa_BHL = pka.get_pka(new_sink.get_atom("L"),new_mol)
@@ -57,5 +57,5 @@ class DN(Reaction):
         Breaks the C-L bond.
         """
         sink = self.sinks[0]
-        struct_ops.break_bond(sink.get_atom("C"),sink.get_atom("L"))
+        struct_ops.break_bond(sink.get_atom("C"),sink.get_atom("L"),sink.molecule)
 

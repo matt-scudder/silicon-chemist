@@ -52,13 +52,12 @@ def get_mapping(reactants,products):
     return mapping 
 
 
-def get_bonds(atom_obj):
+def get_bonds(atom,mol):
     """
-    Takes in an atom object (such as source["atoms"]["Y"]), and gets the indices of the atoms it's bound to
-    based on the molecule connectivity table.
-    Utility function for less typing.
+    Takes in an atom index and its matching molecule, and gets the indices of the atoms that it's bound to, based on the connectivity table.
+    Utility function for less typing and clearer meanings.
     """
-    return atom_obj["molecule"].connectivity_table[atom_obj["atom"].idx]
+    return mol.connectivity_table[atom]
 
 
 def get_carbon_degree(s_obj,carbon_label=False):
@@ -71,7 +70,7 @@ def get_carbon_degree(s_obj,carbon_label=False):
     carbon_count = 0
     mol = s_obj.molecule
     has_L = "L" in s_obj.atoms
-    for bond in get_bonds(s_obj.get_atom(carb_string)):
+    for bond in get_bonds(s_obj.get_atom(carb_string),mol):
         if not (mol.OBMol.GetAtom(bond).IsHydrogen()) and (has_L and bond != s_obj.get_atom("L")):
             #H bonds don't count, neither do L if any
             #TODO: Update the above conditional for species other than L that don't count
