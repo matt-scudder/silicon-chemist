@@ -41,6 +41,7 @@ import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IReaction;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import static org.openscience.cdk.smiles.SmilesGenerator.unique;
+import static org.openscience.cdk.smiles.SmilesGenerator.absolute;
 import static org.openscience.cdk.tools.manipulator.AtomContainerSetManipulator.getAtomCount;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -543,7 +544,7 @@ public class Annotator extends Helper {
                 }
             }
 
-            SmilesGenerator smiles = unique().aromatic().withAtomClasses();
+            SmilesGenerator smiles = absolute().aromatic().withAtomClasses();
             //Start of Fingerprint elements
             sb.append(NEW_LINE);
             sb.append("//");
