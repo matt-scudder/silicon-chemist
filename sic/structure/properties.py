@@ -77,4 +77,35 @@ def get_carbon_degree(s_obj,carbon_label=False):
             carbon_count += 1
     return carbon_count
 
+def get_bond_distance(mol1,mol2,mapping):
+    """
+    Gets the difference in bonds between two Molecule objects, using a 1:1 atom-to-atom mapping between them.
+    This mapping is assumed to be a dictionary with the following key:value format:
+
+    {atom_idx_in_mol1 : atom_idx_in_mol2}
+
+    Bond distance is calculated by checking how many match. If the distance is lower (closer to 0), then mol1 is close to mol2.
+    If this function returns 0, mol1 == mol2, chemically.
+    
+    This function assumes both Molecule objects have had a connectivity_table generated for them (see generate_connectivity_table above).
+    """
+    difference_counter = 0
+    print mol1.connectivity_table
+    print mol2.connectivity_table
+    print mapping
+    print mapping.keys()
+    atoms_to_map = set(mapping.keys()) #because we can only map non-H atoms
+    for atom in atoms_to_map: #important that we use mapping because we don't want to check the H atoms directly
+        #get the size of the intersection between the set of the bonds at a particular atom in mol1 ("reactants")
+        #and the set of the bonds at the same atom (as determined by the mapping) in mol2
+        #by making the number of the atoms in mol1's connectivity table be the numbers of the atoms as
+        #they were mapped to in mol2. This is a dense line.
+        mol1_bonds = set(mol1.connectivity_table[atom])
+        mol2_bonds = set(mol2.connectivity_table[mapping[atom]])
+        nonH_bonds_mol1 = set([mapping[x] for x in (mol1_bonds & atoms_to_map)]) #only take into account non-H atoms by the intersection
+        nonH_bonds_mol2 = mol2_bonds & atoms_to_map
+        difference_counter += len(nonH_bonds_mol1 - nonH_bonds_mol2) 
+        #that covers non-H atoms. Now let's cover hydrogens.
+        difference_counter += abs(len(mol1_bonds - atoms_to_map) - len(mol2_bonds - atoms_to_map))
+    return difference_counter
 
