@@ -9,57 +9,6 @@ import openbabel
 import pybel
 import copy
 
-
-def add_bond_connectivity_table(start_atom,end_atom,table):
-    """
-    Adds a bond to the connectivity table.
-    This is called several times throughout struct_ops, so it's a function.
-    """
-    if start_atom not in table:
-        table[start_atom] = set([end_atom])
-    else:
-        table[start_atom].add(end_atom)
-    if end_atom not in table:
-        table[end_atom] = set([start_atom])
-    else:
-        table[end_atom].add(start_atom)
-
-def remove_bond_connectivity_table(start_atom,end_atom,table):
-    """
-    Removes a bond from the connectivity table.
-    If attempting to remove a bond that doesn't exist, does not change
-    the connectivity table.
-    This is called several times throughout struct_ops, so it's a function.
-    """
-    #find start atom, remove end_atom from its set
-    #if start atom is not in the table, no worries - it already "doesn't have any bonds",
-    #so removing them isn't relevant and we can fail silently.
-    if start_atom in table:
-        table[start_atom].remove(end_atom)
-    if end_atom in table: #end_atom should be present iff start_atom is present, but might as well clean up.
-        table[end_atom].remove(start_atom)
-
-def generate_connectivity_table(mol):
-    """
-    Takes as input a molecule and attaches a connectivity table to said molecule,
-    which is a dict holding the same information as OBMolBondIter, but in a more easily-searchable fashion.
-    This way, we can get bond information for several disparate bonds in succession without having to iterate
-    through the entire BondIter every time a search is required.
-    The format of the dict is as follows:
-
-    {atom_idx : set([bonded_atom_idx,bonded_atom_idx,bonded_atom_idx,bonded_atom_idx])}
-
-    This is reversible, i.e. if atom 1 is bonded to atom 2, then 1 will be present with 2 among its bonds,
-    and 2 will be present with 1 among its bonds.
-    """
-    table = {}
-    for bond in openbabel.OBMolBondIter(mol.OBMol):
-        start_atom = bond.GetBeginAtomIdx()
-        end_atom = bond.GetEndAtomIdx()
-        add_bond_connectivity_table(start_atom,end_atom,table)
-    mol.connectivity_table = table
-
-
 def copy_molecule(mol):
     """
     Copies a molecule by using the operator= of OBMol as well as inserting references
