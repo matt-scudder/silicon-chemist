@@ -37,6 +37,9 @@ def generate_choices(state):
                 reaction = reaction_factory.produce_reaction(interaction,interaction_source,interaction_sink,mol=new_mol)
                 if reaction.cross_check() > 0: #make sure it is actually a possibility
                     new_state = ReactionState(new_mol,parent_state=state,parent_reaction=reaction)
+                    #NOTE: A mysterious bug happens wher eif you don't run this line here, suddenly the molecule attached to your sources is not the same as the one on the ReactionState...
+                    reaction.rearrange()
+                    #DO NOT MOVE REACTION.REARRANGE AWAY FROM HERE
                     state.possibilities.add(new_state)
     #TODO: Make this logging.debug...
 #    print "%s possibilities" % len(state.possibilities)
@@ -86,7 +89,6 @@ def get_mechanism(reactants,products,solvent=False):
         if len(current_state.possibilities) > 0:
             for possibility in current_state.possibilities:
                 if not hasattr(possibility,'examined'): #if we didn't look at it and conclude none of its paths get us to product...
-                    possibility.parent_reaction.rearrange() #move the atoms around
                     #check if closer to product
                     if possibility.closer_to_product():
                         current_state = possibility

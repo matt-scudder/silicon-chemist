@@ -41,6 +41,12 @@ class ReactionState(object):
         if not type(self).mapping:
             #initialize mapping, do NOT redo mapping, ever!
             type(self).mapping = properties.get_mapping(self.molecule,type(self).product)
+
+    def __repr__(self):
+        """
+        Returns a representation of this object for easy debugging.
+        """
+        return "ReactionState<ParentReaction:{},Possibilities:{}>".format(self.parent_reaction,self.possibilities)
     
     def to_json_dict(self):
         """

@@ -48,6 +48,12 @@ class Reaction(object):
         self.sinks = sinks
         self.cross_check_score = -2.0 
 
+    def __repr__(self):
+        """
+        Returns a representation of this object for easy debugging.
+        """
+        return "Reaction<Type:{},Cross-Check:{}>".format(self.reaction_type,self.cross_check_score)
+
     def cross_check(self):
         """
         Produces a score on a [0,1] scale based on how likely the source-sink
