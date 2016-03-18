@@ -66,6 +66,7 @@ def shift_molecule_references(class_list,new_mol):
     Shifts the molecule references of lists of either source or sink objects
     to the molecule in new_mol by creating a new list, creating copies
     of the source/sink objects, and returns the new list.
+    Be careful with this function - it's unstable.
     """
     new_list = []
     for generic_class in class_list:
