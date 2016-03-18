@@ -42,12 +42,10 @@ class SN2(Reaction):
         #we need to break the bond, see how that affects the pKa, and then use that number
         #for now, we copy the molecule, break the bond there, and recalc pKa
         new_mol = struct_ops.copy_molecule(nucleophile.molecule) #the molecule passed in is arbitrary - remember it's the same for source and sink
-        new_sinks = utils.shift_molecule_references(self.sinks,new_mol)
-        new_sink = new_sinks[0]
-        struct_ops.break_bond(new_sink.get_atom("C"),new_sink.get_atom("L")) #this works because we use indices, not direct atom.OBAtom refs
+        struct_ops.break_bond(sink.get_atom("C"),sink.get_atom("L"),new_mol) #this works because we use indices, not direct atom.OBAtom refs
         #need to break L, C because otherwise C gets a - charge and L gets a + (and an implicit H by SMILES standards...)
         pka.get_all_pka(new_mol)
-        pKa_BHL = pka.get_pka(new_sink.get_atom("L"),new_mol)
+        pKa_BHL = pka.get_pka(sink.get_atom("L"),new_mol)
         #hope the garbage collector kills new_mol here and move on
         dpKa = pKa_BHNu - pKa_BHL
         if dpKa < -10: 
@@ -65,5 +63,5 @@ class SN2(Reaction):
         """
         source = self.sources[0]
         sink = self.sinks[0]
-        struct_ops.make_bond(source.get_atom("Y"),sink.get_atom("C"))
-        struct_ops.break_bond(sink.get_atom("C"),sink.get_atom("L"))
+        struct_ops.make_bond(source.get_atom("Y"),sink.get_atom("C"),sink.molecule)
+        struct_ops.break_bond(sink.get_atom("C"),sink.get_atom("L"),sink.molecule)
