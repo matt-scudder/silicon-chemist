@@ -2,7 +2,7 @@
 #coding=utf-8
 import unittest
 import pka.pka as pka
-import reaction_types.reaction_type_factory as reaction_type_factory
+import reaction_types.reaction_factory as reaction_factory
 import structure.similarity as similarity
 import structure.struct_ops as struct_ops
 import segmentation.segmentation as segmentation
@@ -26,7 +26,7 @@ class DNTest(unittest.TestCase):
         self.cation_products.addh()
 
     def testCation(self):
-        reaction = reaction_type_factory.produce_reaction_type("DN",self.cation_sources,self.cation_sinks)
+        reaction = reaction_factory.produce_reaction("DN",self.cation_sources,self.cation_sinks)
         self.assertTrue(reaction.cross_check() == 1.0)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.cation,self.cation_products))
