@@ -30,5 +30,5 @@ class AN(Reaction):
         source = self.sources[0]
         sink = self.sinks[0]
         #TODO: Update for nucleophiles beyond Y
-        struct_ops.make_bond(source["atoms"]["Y"],sink["atoms"]["C+"])
+        struct_ops.make_bond(source.get_atom("Y"),sink.get_atom("C+"),sink.molecule)
         #no bond-breaking involved in an AN.
