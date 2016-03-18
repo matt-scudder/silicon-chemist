@@ -55,9 +55,7 @@ class ConnectivityTable(object):
         else: #full remove
             self.connectivity_table[start_atom].remove(end_atom)
             self.connectivity_table[end_atom].remove(start_atom)
-            print "Before removal: {}".format(self.closer_to_product_table)
             del self.closer_to_product_table[set_to_remove]
-            print "After removal: {}".format(self.closer_to_product_table)
 
     def __init__(self,mol):
         """
