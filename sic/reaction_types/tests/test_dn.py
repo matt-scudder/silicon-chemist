@@ -6,6 +6,7 @@ import reaction_types.reaction_type_factory as reaction_type_factory
 import structure.similarity as similarity
 import structure.struct_ops as struct_ops
 import segmentation.segmentation as segmentation
+import structure.connectivity_table as connectivity_table
 from pybel import readstring
 
 class DNTest(unittest.TestCase):
@@ -18,7 +19,7 @@ class DNTest(unittest.TestCase):
         self.cation = readstring("smi","CC(C)(C)Cl")
         self.cation.addh()
         pka.get_all_pka(self.cation)
-        struct_ops.generate_connectivity_table(self.cation)
+        self.cation.connectivity_table = connectivity_table.ConnectivityTable(self.cation)
         self.cation_sources = segmentation.label_sources(self.cation)
         self.cation_sinks = segmentation.label_sinks(self.cation)
         self.cation_products = readstring("smi","C[C+](C)C.[Cl-]")

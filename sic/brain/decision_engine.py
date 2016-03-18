@@ -10,6 +10,7 @@ import pka.pka as pka
 import structure.struct_ops as struct_ops
 import reaction_types.reaction_factory as reaction_factory #too many of these
 import reaction_types.interactions as interactions
+import structure.connectivity_table as connectivity_table
 import pybel
 from reaction_state import ReactionState
 import copy
@@ -77,7 +78,7 @@ def get_mechanism(reactants,products,solvent=False):
     react_mol = pybel.readstring("smi",reactants)
     prod_mol = pybel.readstring("smi",products)
     react_mol.addh()
-    struct_ops.generate_connectivity_table(react_mol)
+    react_mol.connectivity_table = connectivity_table.ConnectivityTable(react_mol)
     prod_mol.addh()
     #now create a ReactionState out of the reactants - this will be the root
     current_state = ReactionState(react_mol,prod=prod_mol) #product becomes part of the tree

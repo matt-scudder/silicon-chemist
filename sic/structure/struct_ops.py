@@ -8,6 +8,7 @@ Usually deals with cross-molecule stuff, which OpenBabel is not generally used t
 import openbabel
 import pybel
 import copy
+from structure.connectivity_table import ConnectivityTable
 
 def copy_molecule(mol):
     """
@@ -24,7 +25,7 @@ def copy_molecule(mol):
     if hasattr(mol,"pka_index"):
         new_mol.pka_index = mol.pka_index
     if hasattr(mol,"connectivity_table"):
-        new_mol.connectivity_table = copy.deepcopy(mol.connectivity_table)
+        new_mol.connectivity_table = ConnectivityTable(new_mol)
     return new_mol
 
 #TODO: Figure out whether we always want order=1 bonds!
