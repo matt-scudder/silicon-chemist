@@ -80,6 +80,7 @@ def get_mechanism(reactants,products,solvent=False):
     react_mol.addh()
     react_mol.connectivity_table = connectivity_table.ConnectivityTable(react_mol)
     prod_mol.addh()
+    prod_mol.connectivity_table = connectivity_table.ConnectivityTable(prod_mol)
     #now create a ReactionState out of the reactants - this will be the root
     current_state = ReactionState(react_mol,prod=prod_mol) #product becomes part of the tree
     path_to_product.append(current_state) #since the first state HAS to be the first step in the mechanism
