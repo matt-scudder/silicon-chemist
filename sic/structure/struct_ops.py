@@ -56,7 +56,7 @@ def make_bond(start,end,molecule):
     end_atom.SetFormalCharge(end_atom.GetFormalCharge() - 1)
     #update the connectivity table if the molecule has one - it always should, but callers of this library might not think of that.
     if hasattr(molecule,"connectivity_table"):
-        add_bond_connectivity_table(start,end,molecule.connectivity_table) 
+        molecule.connectivity_table.add_bond(start,end)
 
 def break_bond(start,end,molecule):
     """
@@ -90,5 +90,5 @@ def break_bond(start,end,molecule):
     start_atom.SetFormalCharge(obmol.GetAtom(start).GetFormalCharge() +1) #TODO: check for double bonds and stuff...
     end_atom.SetFormalCharge(obmol.GetAtom(end).GetFormalCharge() - 1)
     if hasattr(molecule,"connectivity_table"):
-        remove_bond_connectivity_table(start,end,molecule.connectivity_table)
+        molecule.connectivity_table.remove_bond(start,end)
 

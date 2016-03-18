@@ -3,6 +3,7 @@
 
 import unittest
 import structure.struct_ops as struct_ops
+import structure.connectivity_table as connectivity_table
 import pybel
 import segmentation.segmentation as segmentation
 
@@ -14,7 +15,8 @@ class ConnectivityTableTest(unittest.TestCase):
     def setUp(self):
         mol = pybel.readstring("smi","O.F")
         mol.addh()
-        struct_ops.generate_connectivity_table(mol) #can't put methods on the mol object sadly...
+        ctable = connectivity_table.ConnectivityTable(mol)
+        mol.connectivity_table = ctable
         self.sources = segmentation.label_sources(mol)
         self.sinks = segmentation.label_sinks(mol)
         self.mol = mol

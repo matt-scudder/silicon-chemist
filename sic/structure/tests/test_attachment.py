@@ -8,6 +8,7 @@ O- is used so that there's only one source and one sink here.
 import structure.struct_ops as struct_ops
 import structure.similarity as similarity
 import segmentation.segmentation as segmentation
+import structure.connectivity_table as connectivity_table
 import unittest
 from pybel import readstring
 
@@ -17,7 +18,8 @@ class GroupAttachmentTest(unittest.TestCase):
         products = readstring("smi","CCCCCCOC(C)(C)C")
         reactants.addh()
         products.addh()
-        struct_ops.generate_connectivity_table(reactants)
+        ctable = connectivity_table.ConnectivityTable(reactants)
+        reactants.connectivity_table = ctable
         self.reactants = reactants
         self.products = products
         self.sources = segmentation.label_sources(reactants)

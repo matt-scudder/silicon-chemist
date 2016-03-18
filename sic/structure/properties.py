@@ -70,12 +70,29 @@ def get_carbon_degree(s_obj,carbon_label=False):
     carbon_count = 0
     mol = s_obj.molecule
     has_L = "L" in s_obj.atoms
-    for bond in get_bonds(s_obj.get_atom(carb_string),mol):
+    for bond in mol.connectivity_table.get_atoms_bonded(s_obj.get_atom(carb_string)):
         if not (mol.OBMol.GetAtom(bond).IsHydrogen()) and (has_L and bond != s_obj.get_atom("L")):
             #H bonds don't count, neither do L if any
-            #TODO: Update the above conditional for species other than L that don't count
+            #Update the above conditional for species other than L that don't count
+            #though I'm fairly sure there aren't any.
             carbon_count += 1
     return carbon_count
+
+def remap_bonds(table,mapping):
+    """
+    Takes as input a closer_to_product_table, and returns a set of frozenset bonds
+    that have been mapped.
+    """
+    result_table = {}
+    for bond in table:
+        atomlist = []
+        for atom in bond:
+            if atom == "H":
+                atomlist.append(atom)
+            else:
+                atomlist.append(mapping[atom])
+        result_table[frozenset(atomlist)] = table[bond]
+    return result_table
 
 def get_bond_distance(mol1,mol2,mapping):
     """
@@ -89,23 +106,29 @@ def get_bond_distance(mol1,mol2,mapping):
     
     This function assumes both Molecule objects have had a connectivity_table generated for them (see generate_connectivity_table above).
     """
+    #TODO: Replace all prints with logging.debug stuff
     difference_counter = 0
-    print mol1.connectivity_table
-    print mol2.connectivity_table
-    print mapping
-    print mapping.keys()
-    atoms_to_map = set(mapping.keys()) #because we can only map non-H atoms
-    for atom in atoms_to_map: #important that we use mapping because we don't want to check the H atoms directly
-        #get the size of the intersection between the set of the bonds at a particular atom in mol1 ("reactants")
-        #and the set of the bonds at the same atom (as determined by the mapping) in mol2
-        #by making the number of the atoms in mol1's connectivity table be the numbers of the atoms as
-        #they were mapped to in mol2. This is a dense line.
-        mol1_bonds = set(mol1.connectivity_table[atom])
-        mol2_bonds = set(mol2.connectivity_table[mapping[atom]])
-        nonH_bonds_mol1 = set([mapping[x] for x in (mol1_bonds & atoms_to_map)]) #only take into account non-H atoms by the intersection
-        nonH_bonds_mol2 = mol2_bonds & atoms_to_map
-        difference_counter += len(nonH_bonds_mol1 - nonH_bonds_mol2) 
-        #that covers non-H atoms. Now let's cover hydrogens.
-        difference_counter += abs(len(mol1_bonds - atoms_to_map) - len(mol2_bonds - atoms_to_map))
+    #get all bonds in mol1 and in mol2 using our closer_to_product table
+    #print "Before remap: {}".format(mol1.connectivity_table.closer_to_product_table)
+    mol1_bonds = remap_bonds(mol1.connectivity_table.closer_to_product_table,mapping)
+    mol2_bonds = mol2.connectivity_table.closer_to_product_table
+    #print "After remap: {}".format(mol1_bonds)
+    #print "Product bonds: {}".format(mol2_bonds)
+    for bond in mol1_bonds:
+        if bond not in mol2_bonds:
+            #if the bond is not present at all, add the bond order of these non-present bonds
+            #print "Bond not present: %s" %bond
+            difference_counter += mol1_bonds[bond]
+        else:
+            diff = abs(mol2_bonds[bond] - mol1_bonds[bond])
+            #if the bond is in fact present, add the absolute bond difference, as it is possible that mol2
+            #print "Bond is present: %s, difference is %s" % (bond,diff)
+            #has less bonds than mol1 at a particular center (e.g. additions).
+            difference_counter += diff
+    #now check the other direction
+    for bond in mol2_bonds:
+        if bond not in mol1_bonds:
+            #if the bond is present in mol2 but not in mol1, it's also a difference.
+            #print "Bond not present: %s" % bond
+            difference_counter += mol2_bonds[bond] 
     return difference_counter
-

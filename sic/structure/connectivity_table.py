@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #coding=utf-8
 from collections import defaultdict #to make life easier
+import openbabel
 """
 Contains the ConnectivityTable class,
 which carries all the information necessary to determine
@@ -54,7 +55,9 @@ class ConnectivityTable(object):
         else: #full remove
             self.connectivity_table[start_atom].remove(end_atom)
             self.connectivity_table[end_atom].remove(start_atom)
+            print "Before removal: {}".format(self.closer_to_product_table)
             del self.closer_to_product_table[set_to_remove]
+            print "After removal: {}".format(self.closer_to_product_table)
 
     def __init__(self,mol):
         """
@@ -82,8 +85,6 @@ class ConnectivityTable(object):
 
         Where the first key implies that there are 3 bonds from atom 1 to H atoms, and the second key implies a single bond from atom 2 to atom 3.
         Since bonds are bidirectional, we store a set.
-
-        Upon initialization, a ConnectivityTable attaches itself to the input molecule, and sets a reference within itself to the molecule.
         """
         self.molecule = mol #pointer for making add_bond and remove_bond easier
         self.connectivity_table = defaultdict(set) #defaultdicts are the best
@@ -91,5 +92,61 @@ class ConnectivityTable(object):
         for bond in openbabel.OBMolBondIter(self.molecule.OBMol):
             start_atom = bond.GetBeginAtomIdx()
             end_atom = bond.GetEndAtomIdx()
-            self.add_bond(start_atom,end_atom,self.molecule)
-        mol.connectivity_table = self
+            self.add_bond(start_atom,end_atom)
+
+    def get_atoms_bonded(self,atom):
+        """
+        Gets all the atoms bonded to a particular atom. Takes as input an atom index, and returns
+        a set of all atoms bonded to a particular atom.
+        """
+        return self.connectivity_table[atom]
+    
+    def bond_exists(self,start_atom,end_atom):
+        """
+        Takes as input a start atom and an end atom and checks whether a bond between them exists.
+        """
+        return end_atom in self.connectivity_table[start_atom] and start_atom in self.connectivity_table[end_atom] #both sides should alwaays be true
+
+    def get_bond_degree(self,start_atom,end_atom):
+        """
+        Takes as input a start atom and an end atom and checks the degree of the bond.
+        If the bond is not present, returns 0.
+        """
+        set_to_check = self.get_bond_set(start_atom,end_atom)
+        if set_to_check not in self.closer_to_product_table:
+            return 0
+        else:
+            return self.closer_to_product_table[set_to_check]
+
+    def get_all_unidirectional_bonds(self):
+        """
+        Returns all the unidirectional bonds, i.e. the bonds as listed in the closer_to_product_table.
+        """
+        return self.closer_to_product_table.keys()
+
+    def get_bond_degree(self,bondset):
+        """
+        Takes a frozenset in the format of the closer_to_product table, and gets the degree of the
+        according bond. If one of the members is H, returns the number of bonds to hydrogen atoms
+        originating at the other atom.
+        """
+        return self.closer_to_product_table[bondset]
+
+
+    def get_bonds_to_atomicnum(self,atom_idx,atomicnum):
+        """
+        Base function that gets the number of bonds from an atom to a particular atomic number.
+        """
+        bond_count = 0
+        for bonded_atom_idx in self.table[atom_idx]:
+            bonded_atom_obj = self.molecule.GetAtom(bonded_atom_idx)
+            if bonded_atom_obj.GetAtomicNum() == atomicnum:
+                bond_count += 1
+        return bond_count
+
+    def get_hydrogens(self,atom_idx):
+        """
+        Returns the number of hydrogens attached to a particular atom.
+        Convenience function.
+        """
+        return get_bonds_to_atomicnum(atom_idx,1)
