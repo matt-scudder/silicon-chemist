@@ -35,6 +35,7 @@ class ConnectivityTable(object):
         Adds a bond to both connectivity tables.
         """
         #first add to the regular connectivity table
+        #since these are defaultdicts of sets, adding twice for double/triple bonds doesn't matter.
         self.connectivity_table[start_atom].add(end_atom)
         self.connectivity_table[end_atom].add(start_atom)
         #now add to the special one for closer to product

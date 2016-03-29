@@ -28,6 +28,17 @@ def copy_molecule(mol):
         new_mol.connectivity_table = ConnectivityTable(new_mol)
     return new_mol
 
+def find_bond_obj(start,end,obmol):
+    """
+    Finds a bond in an OBMol by iterating through the OBMolBondIter (since there's no better access).
+    """
+    found_bond = False
+    for bond in openbabel.OBMolBondIter(obmol):
+        if (bond.GetBeginAtomIdx() == start and bond.GetEndAtomIdx() == end)  or (bond.GetBeginAtomIdx() == end and bond.GetEndAtomIdx() == start):
+            found_bond = bond
+            break
+    return found_bond
+
 #TODO: Figure out whether we always want order=1 bonds!
 def make_bond(start,end,molecule):
     """
@@ -46,13 +57,17 @@ def make_bond(start,end,molecule):
     and end will have its formal charge decreased by 1.
     """
     obmol = molecule.OBMol
-    success = obmol.AddBond(start,end,1)
-    start_atom = obmol.GetAtom(start)
-    end_atom = obmol.GetAtom(end)
-    if not success:
-        raise ValueError("AddBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
-                            %(start,start_atom.GetAtomicNum(),end,end_atom.GetAtomicNum()))
-    #TODO: add routine that checks for double bond stuff
+    #If bond is already present, change bond order
+    if molecule.connectivity_table.bond_exists(start,end):
+        bond = obmol.GetBond(start,end)
+        bond.SetBO(bond.GetBO() + 1)
+    else:
+        success = obmol.AddBond(start,end,1)
+        start_atom = obmol.GetAtom(start)
+        end_atom = obmol.GetAtom(end)
+        if not success:
+            raise ValueError("AddBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
+                                %(start,start_atom.GetAtomicNum(),end,end_atom.GetAtomicNum()))
     start_atom.SetFormalCharge(start_atom.GetFormalCharge() + 1)
     end_atom.SetFormalCharge(end_atom.GetFormalCharge() - 1)
     #update the connectivity table if the molecule has one - it always should, but callers of this library might not think of that.
@@ -73,23 +88,19 @@ def break_bond(start,end,molecule):
     obmol = molecule.OBMol
     start_atom = obmol.GetAtom(start)
     end_atom = obmol.GetAtom(end)
-    #iterate through all the bonds until we find the one we need to remove
-    #this is slow - figure out a better way someday
-    found = False
-    for bond in openbabel.OBMolBondIter(obmol):
-        if (bond.GetBeginAtomIdx() == start and bond.GetEndAtomIdx() == end)  or (bond.GetBeginAtomIdx() == end and bond.GetEndAtomIdx() == start):
+    if molecule.connectivity_table.bond_exists(start,end):
+        bond = obmol.GetBond(start,end)
+        if bond.GetBO() > 1:
+            bond.SetBO(bond.GetBO() - 1)
+        else:
             success = obmol.DeleteBond(bond)
-            found = True
             if not success:
                 raise ValueError("DeleteBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
                                             %(start,start_atom.GetAtomicNum(),end,end_atom.GetAtomicNum()))
-            break
-    #don't try for/else here. Doesn't work. Don't know why.
-    if not found:
+    else:
         raise ValueError("Bond not found between %s (atomno: %s) and %s (atomno: %s)."
-                %(start_atom.GetIdx(),start_atom.GetAtomicNum(),end_atom.GetIdx(),end_atom.GetAtomicNum()))
-    start_atom.SetFormalCharge(obmol.GetAtom(start).GetFormalCharge() +1) #TODO: check for double bonds and stuff...
+                %(start,start_atom.GetAtomicNum(),end,end_atom.GetAtomicNum()))
+    start_atom.SetFormalCharge(obmol.GetAtom(start).GetFormalCharge() +1) 
     end_atom.SetFormalCharge(obmol.GetAtom(end).GetFormalCharge() - 1)
     if hasattr(molecule,"connectivity_table"):
-        molecule.connectivity_table.remove_bond(start,end)
-
+        molecule.connectivity_table.remove_bond(start,end) # 
