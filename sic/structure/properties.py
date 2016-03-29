@@ -78,6 +78,39 @@ def get_carbon_degree(s_obj,carbon_label=False):
             carbon_count += 1
     return carbon_count
 
+def get_H_bonds(atom,mol):
+    """
+    Takes in an atom index and a Molecule object, and gets the number of hydrogen atoms bonded to it.
+    You can use len() of this to get the number of hydrogens attached to an atom, a sort of
+    reverse of get_carbon_degree.
+    Intended to be used as a utility function for eliminations, and get_adjacent_ch.
+    Assumes carbon, but if atom_label is set, can check for all H bonded to any provided generic
+    class label.
+    """
+    H_bonds = []
+    for bonded_atom in mol.connectivity_table.get_atoms_bonded(atom):
+        if mol.OBMol.GetAtom(bonded_atom).IsHydrogen():
+            H_bonds.append(bonded_atom)
+    return H_bonds
+
+def get_adjacent_ch(s_obj,carbon_label=False):
+    """
+    Takes in a source/sink object and returns the atom index of the carbon of an adjacent CH, if any,
+    or returns False.
+    Used to determine whether eliminations are possible.
+    If carbon_label is set, uses that to search for the carbon instead of the string "C".
+    """
+    #NOTE: Possibly upgrade this to handle NH, OH, and so on?
+    #NOTE: This can be made faster by not calling get_H_bonds, but it's fancier and better designed this way.
+    valid_atomicnums = set([6])
+    carb_string = carbon_label if carbon_label else "C"
+    mol = s_obj.molecule
+    obmol = mol.OBMol #typing is hard
+    for bonded_atom in mol.connectivity_table.get_atoms_bonded(s_obj.get_atom(carb_string)):
+        if len(get_H_bonds(bonded_atom,mol)) > 0:
+            return bonded_atom #return first one found
+    return False 
+
 def remap_bonds(table,mapping):
     """
     Takes as input a closer_to_product_table, and returns a set of frozenset bonds
