@@ -9,6 +9,7 @@ Tests all the characteristics of a proton transfer:
 from .. import proton_transfer
 import segmentation.segmentation as segmentation
 import structure.similarity as similarity
+from structure.connectivity_table import ConnectivityTable
 import pka.pka as pka
 import unittest
 from pybel import readstring
@@ -23,9 +24,11 @@ class ProtonTransferTest(unittest.TestCase):
         self.really_bad_reaction_products.addh()
         self.really_bad_sources = segmentation.label_sources(self.really_bad_reaction)
         self.really_bad_sinks = segmentation.label_sinks(self.really_bad_reaction)
+        self.really_bad_reaction.connectivity_table = ConnectivityTable(self.really_bad_reaction)
         #I- trying to remove H from HCl - ΔpKa = -3
         self.uphill_reaction = readstring("smi","[I-].Cl")
         self.uphill_reaction.addh()
+        self.uphill_reaction.connectivity_table = ConnectivityTable(self.uphill_reaction)
         pka.get_all_pka(self.uphill_reaction)
         self.uphill_reaction_products = readstring("smi","I.[Cl-]")
         self.uphill_reaction_products.addh()
@@ -34,6 +37,7 @@ class ProtonTransferTest(unittest.TestCase):
         #Cl- trying to remove H from HI - ΔpKa = +3
         self.downhill_reaction = readstring("smi","[Cl-].I")
         self.downhill_reaction.addh()
+        self.downhill_reaction.connectivity_table = ConnectivityTable(self.downhill_reaction)
         pka.get_all_pka(self.downhill_reaction)
         self.downhill_reaction_products = readstring("smi","Cl.[I-]")
         self.downhill_reaction_products.addh()
@@ -42,6 +46,7 @@ class ProtonTransferTest(unittest.TestCase):
         #water taking H off HI - ΔpKa = 25.7 
         self.very_downhill_reaction = readstring("smi","[OH-].I")
         self.very_downhill_reaction.addh()
+        self.very_downhill_reaction.connectivity_table = ConnectivityTable(self.very_downhill_reaction)
         pka.get_all_pka(self.very_downhill_reaction)
         self.very_downhill_reaction_products = readstring("smi","O.[I-]")
         self.very_downhill_reaction_products.addh()
