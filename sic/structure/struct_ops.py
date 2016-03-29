@@ -28,18 +28,6 @@ def copy_molecule(mol):
         new_mol.connectivity_table = ConnectivityTable(new_mol)
     return new_mol
 
-def find_bond_obj(start,end,obmol):
-    """
-    Finds a bond in an OBMol by iterating through the OBMolBondIter (since there's no better access).
-    """
-    found_bond = False
-    for bond in openbabel.OBMolBondIter(obmol):
-        if (bond.GetBeginAtomIdx() == start and bond.GetEndAtomIdx() == end)  or (bond.GetBeginAtomIdx() == end and bond.GetEndAtomIdx() == start):
-            found_bond = bond
-            break
-    return found_bond
-
-#TODO: Figure out whether we always want order=1 bonds!
 def make_bond(start,end,molecule):
     """
     Makes a bond between two atoms by updating connectivity tables in a modified Pybel Molecule object.
