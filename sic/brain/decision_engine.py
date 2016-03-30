@@ -12,6 +12,7 @@ import reaction_types.reaction_factory as reaction_factory #too many of these
 import reaction_types.interactions as interactions
 import structure.connectivity_table as connectivity_table
 import structure.properties as properties
+import utils
 import pybel
 from reaction_state import ReactionState
 import copy
@@ -82,8 +83,12 @@ def get_mechanism(reactants,products,solvent=False):
     path_to_product = [] #keeps track of the reaction state that we want to print out at the end
     #path_to_product holds onyl the states that get you to the product, and nothing else in the tree.
     #read in reactants and products
-    react_mol = pybel.readstring("smi",reactants)
-    prod_mol = pybel.readstring("smi",products)
+    react_input = pybel.readstring("smi",reactants)
+    prod_input = pybel.readstring("smi",products)
+    #because getting the reactants/products chained together in the wrong order can mess with mapping, take the CANONICAL SMILES and put it back in
+    #this way users can draw molecules in any order they want.
+    react_mol = pybel.readstring("smi",utils.write_mol(react_input))
+    prod_mol = pybel.readstring("smi",utils.write_mol(prod_input))
     react_mol.removeh() #this looks stupid, but sometimes hydrogens are added explicitly, counteracting our assumption that all backbone atoms come before all H atoms
     #since breaking this assumption makes bond distance stop working, this seemingly-stupid function call is VITAL and should NOT BE REMOVED
     react_mol.addh()
