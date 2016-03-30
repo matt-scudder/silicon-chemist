@@ -13,6 +13,7 @@ from sn2 import SN2
 from an import AN
 from dn import DN
 from e2 import E2
+from eb import EB
 from structure.struct_ops import copy_molecule
 from pybel import Molecule
 import utils
@@ -42,3 +43,7 @@ def produce_reaction(r_type,sources,sinks,mol=False):
         return DN(new_sources,new_sinks)
     elif r_type == "E2":
         return E2(new_sources,new_sinks)
+    elif r_type == "EB":
+        return EB(new_sources,new_sinks)
+    else:
+        raise ValueError("Reaction type {} is not supported.".format(r_type))
