@@ -30,6 +30,8 @@ class Source(object):
         for atom in atoms:
             if subtype == "Y":
                 self.atoms["Y"] = atom #only one atom total
+            elif subtype == "C-":
+                self.atoms["C-"] = atom
             #otherwise do some gymnastics
     
     def get_atom(self,key):
