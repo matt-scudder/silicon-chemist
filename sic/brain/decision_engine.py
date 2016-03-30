@@ -64,7 +64,7 @@ def go_up_a_level(state,master):
         master.pop()
         return state.parent_state
     else:
-        raise ValueError("Tried to go up a level but already at root.")
+        raise ValueError("No pathh was found between reactants and products.")
 
 def get_mechanism(reactants,products,solvent=False):
     """
@@ -105,6 +105,6 @@ def get_mechanism(reactants,products,solvent=False):
             current_state = go_up_a_level(current_state,path_to_product)
         counter += 1
         if counter > 20:
-            break
+            raise ValueError("Could not find a reaction after {} steps.".format(counter))
     #when we hit product, return
     return path_to_product

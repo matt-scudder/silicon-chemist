@@ -37,6 +37,7 @@ def find_mechanism(reac,prod,solv=False):
         mech = decision_engine.get_mechanism(reactants,products,solvent=solvent)
     except ValueError as e:
         print(e)
+        return "Error encountered while writing up mechanism."
     return sic_io.write_up_mechanism(mech,solvent=solvent)
 
 #not sure why you'd want to import this package, but it's good practice to wrap all argparse calls in this
