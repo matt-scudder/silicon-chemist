@@ -19,12 +19,12 @@ class ProtonTransferTest(unittest.TestCase):
         #I- trying to remove H from HF - ΔpKa = -13.2
         self.really_bad_reaction = readstring("smi","[I-].F")
         self.really_bad_reaction.addh()
+        self.really_bad_reaction.connectivity_table = ConnectivityTable(self.really_bad_reaction)
         pka.get_all_pka(self.really_bad_reaction)
         self.really_bad_reaction_products = readstring("smi","I.[F-]")
         self.really_bad_reaction_products.addh()
         self.really_bad_sources = segmentation.label_sources(self.really_bad_reaction)
         self.really_bad_sinks = segmentation.label_sinks(self.really_bad_reaction)
-        self.really_bad_reaction.connectivity_table = ConnectivityTable(self.really_bad_reaction)
         #I- trying to remove H from HCl - ΔpKa = -3
         self.uphill_reaction = readstring("smi","[I-].Cl")
         self.uphill_reaction.addh()
