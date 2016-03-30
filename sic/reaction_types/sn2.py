@@ -28,9 +28,12 @@ class SN2(Reaction):
             return self.cross_check_score
         nucleophile = self.sources[0]
         sink = self.sinks[0]
+        print "Nucleophile atom: {}".format(nucleophile.get_atom("Y"))
+        print "Sink carbon: {}".format(sink.get_atom("C"))
         FACTORS = {0: 1.0, 1: 0.95, 2: 0.6, 3: 0.0} #depends on how many non-carbon and non-L atoms are bound to it
         #first verify that we can even do sn2
         carbon_count = properties.get_carbon_degree(sink) 
+        print "Carbon count: {}".format(carbon_count)
         final_multiplier = FACTORS[carbon_count]
         if final_multiplier == 0:
             self.cross_check_score = 0.0
@@ -47,6 +50,12 @@ class SN2(Reaction):
         pka.get_all_pka(new_mol)
         pKa_BHL = pka.get_pka(sink.get_atom("L"),new_mol)
         #hope the garbage collector kills new_mol here and move on
+        if pKa_BHNu is None or pKa_BHL is None:
+            #None generally means either "infinite" or "not in our pKa chart".
+            #If running debug mode, print which are None
+            print "None pKa encountered. pKaBHNu is: {} (atom index {}), pKaBHL is: {} (atom index {})".format(pKa_BHNu,nucleophile.get_atom("Y"),pKa_BHL,sink.get_atom("L"))
+            self.cross_check_score = 0.0
+            return self.cross_check_score
         dpKa = pKa_BHNu - pKa_BHL
         if dpKa < -10: 
             self.cross_check_score = 0.0

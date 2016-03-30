@@ -24,7 +24,7 @@ def generate_choices(state):
     for source in possible_sites["sources"]:
         for sink in possible_sites["sinks"]:
             interaction_tuple = (source.subtype,sink.subtype)
-            possible_interactions = interactions.INTERACTIONS[interaction_tuple]
+            possible_interactions = interactions.INTERACTIONS[interaction_tuple] if interaction_tuple in interactions.INTERACTIONS else []
             #listify so that our interface works - if you have multiple sources or multiple sinks, this automagically takes care of it
             #but don't listify if already a list
             interaction_source = source
@@ -43,10 +43,10 @@ def generate_choices(state):
                     #DO NOT MOVE REACTION.REARRANGE AWAY FROM HERE
                     state.possibilities.add(new_state)
     #TODO: Make this logging.debug...
-#    print "%s possibilities" % len(state.possibilities)
-#    print "cross check of possibilities:"
-#    for possibility in state.possibilities:
-#        print possibility.parent_reaction.cross_check()
+    print "%s possibilities" % len(state.possibilities)
+    print "cross check of possibilities:"
+    for possibility in state.possibilities:
+        print possibility.parent_reaction.cross_check()
     #don't return anything, this just modifies the state and adds in possibilities
 
 def go_up_a_level(state,master):
@@ -85,6 +85,7 @@ def get_mechanism(reactants,products,solvent=False):
     current_state = ReactionState(react_mol,prod=prod_mol) #product becomes part of the tree
     path_to_product.append(current_state) #since the first state HAS to be the first step in the mechanism
     counter = 0
+    print react_mol.write("can")
     while not current_state.matches_product():
         #from current_state, generate choices
         generate_choices(current_state)
