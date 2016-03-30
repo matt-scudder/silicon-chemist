@@ -10,7 +10,7 @@ whether due to physical impossibility (pentavalent carbon)
 or it not being a number we have, we put None for that slot.
 The rest of the program should read these accordingly.
 """
-#TODO: Modify this if it turns out that non-sequential (i.e. as keys in a dict rather than a list) access is better, because the current access method sucks
+#NOTE: The order here is of paramount importance such that species are matched correctly. Start with the least specific forms, and then go to the most specific.
 #NOTE: The huge amount of ([H]) below are because otherwise the hydrogens we so desperately care about won't get matched in the expression, and we run into problems.
 PKA_CHART = [
     #Water
@@ -27,9 +27,14 @@ PKA_CHART = [
     {"[FH1]([H])":{"pKa_HA":3.2,"pKa_BH":None}},
     {"[F!H1]":{"pKa_HA":None,"pKa_BH":3.2}},
     #Alcohols
-    {"[CH0][O]([H])":{"pKa_HA": 19, "pKa_BH": -2.4}}, #tertiary
-    {"[CH1][O]([H])":{"pKa_HA": 18, "pKa_BH": -2.4}}, #secondary
+    {"[CH3][O]([H])":{"pKa_HA": 15.5, "pKa_BH": -2.4}}, #methyl
     {"[CH2][O]([H])":{"pKa_HA": 16, "pKa_BH": -2.4}}, #primary
-    {"[CH3][O]([H])":{"pKa_HA": 15.5, "pKa_BH": -2.4}} #methyl
+    {"[CH1][O]([H])":{"pKa_HA": 18, "pKa_BH": -3.5}}, #secondary
+    {"[CH0][O]([H])":{"pKa_HA": 19, "pKa_BH": -4}}, #tertiary
+    #Protonated alcohols
+    {"[CH3][OH2]([H])([H])":{"pKa_HA": -2.4, "pKa_BH": None}}, #methyl
+    {"[CH2][OH2]([H])([H])":{"pKa_HA": -2.4, "pKa_BH": None}}, #primary
+    {"[CH1][OH2]([H])([H])":{"pKa_HA": -3.5, "pKa_BH": None}}, #secondary
+    {"[CH0][OH2]([H])([H])":{"pKa_HA": -4, "pKa_BH": None}} #tertiary
 
 ]

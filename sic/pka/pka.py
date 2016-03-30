@@ -12,7 +12,6 @@ chart and attempt to map them to the parts of the molecule.
 """
 from pka_chart import PKA_CHART
 import pybel
-from utils import get_real_indices
 
 LONE_PAIR_ATOMS = set([7,8,9,15,16,17,35,53]) #atomic numbers that can have lone pairs commonly. Excludes boron and carbon, those are special.
 
@@ -35,16 +34,20 @@ def get_all_pka(molecule):
         indices = smarts.findall(molecule)
         obmol = molecule.OBMol
         for group in indices:
-            #TODO: Make it so that only the stuff bound to the hydrogen is actually counted here, instead of this
+            h_atom = False
+            for atom_idx in group:
+                atom = obmol.GetAtom(atom_idx)
+                if atom.GetAtomicNum() == 1: # get all hydrogens, they should all be bonded to the same atom.
+                    h_atom = atom_idx
+                    molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_HA"] 
+            if h_atom:
+                #get atom bonded to H if there is one
+                bonded_to_h = molecule.connectivity_table.get_atoms_bonded(h_atom) 
+                molecule.pka_index[next(iter(bonded_to_h))] = pka_obj[pattern]["pKa_BH"] #this should ONLY have one element in the set, so it works out
+            else:
                 for atom_idx in group:
-                    atom = obmol.GetAtom(atom_idx)
-                    if atom.GetAtomicNum() == 1: #hydrogen
-                            molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_HA"] 
-                    elif atom.GetAtomicNum() in LONE_PAIR_ATOMS:
-                            molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_BH"]
-                    else:
-                            #TODO: Update this for C with lone pairs as well as borohydride stuff
-                            continue
+                    if atom.GetAtomicNum() in LONE_PAIR_ATOMS:
+                        molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_BH"]
     #return nothing because this just modifies state
 
 def get_pka(atom,molecule):
