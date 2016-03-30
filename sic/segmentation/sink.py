@@ -50,3 +50,9 @@ class Sink(object):
         "C" as a parameter to this function will return the atom associated with "C" in a sink.
         """
         return self.atoms[key]
+
+    def __repr__(self):
+        """
+        Returns a string representation of this object for easy debugging.
+        """
+        return "Sink<Type:{},Atoms:{}>".format(self.subtype,self.atoms)

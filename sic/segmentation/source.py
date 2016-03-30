@@ -40,3 +40,9 @@ class Source(object):
         "Y" as a parameter to this function will return the atom associated with "Y" in a source.
         """
         return self.atoms[key]
+
+    def __repr__(self):
+        """
+        Returns a string representation of this object for easy debugging.
+        """
+        return "Source<Type:{},Atoms:{}>".format(self.subtype,self.atoms)
