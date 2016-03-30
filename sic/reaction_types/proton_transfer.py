@@ -31,6 +31,12 @@ class ProtonTransfer(Reaction):
             #TODO: Update this code so that it supports more than just Y, maybe use a dict? H-L works always.
             pKa_BH = pka.get_pka(source.get_atom("Y"),source.molecule)
             pKa_HA = pka.get_pka(sink.get_atom("H"),sink.molecule)
+            if pKa_BH is None or pKa_HA is None:
+                #None generally means either "infinite" or "not in our pKa chart".
+                #If running debug mode, print which are None
+                print "None pKa encountered. pKaBHNu is: {} (atom index {}), pKaHA is: {} (atom index {})".format(pKa_BH,source.get_atom("Y"),pKa_HA,sink.get_atom("H"))
+                self.cross_check_score = 0.0
+                return self.cross_check_score
             dpKa = pKa_BH - pKa_HA
             if dpKa < -10: 
                 self.cross_check_score = 0.0
