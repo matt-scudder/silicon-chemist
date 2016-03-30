@@ -12,6 +12,7 @@ from proton_transfer import ProtonTransfer
 from sn2 import SN2 
 from an import AN
 from dn import DN
+from e2 import E2
 from structure.struct_ops import copy_molecule
 from pybel import Molecule
 import utils
@@ -39,3 +40,5 @@ def produce_reaction(r_type,sources,sinks,mol=False):
         return AN(new_sources,new_sinks)
     elif r_type == "DN":
         return DN(new_sources,new_sinks)
+    elif r_type == "E2":
+        return E2(new_sources,new_sinks)

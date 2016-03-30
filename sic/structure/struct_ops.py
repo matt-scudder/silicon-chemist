@@ -45,14 +45,14 @@ def make_bond(start,end,molecule):
     and end will have its formal charge decreased by 1.
     """
     obmol = molecule.OBMol
+    start_atom = obmol.GetAtom(start)
+    end_atom = obmol.GetAtom(end)
     #If bond is already present, change bond order
     if molecule.connectivity_table.bond_exists(start,end):
         bond = obmol.GetBond(start,end)
         bond.SetBO(bond.GetBO() + 1)
     else:
         success = obmol.AddBond(start,end,1)
-        start_atom = obmol.GetAtom(start)
-        end_atom = obmol.GetAtom(end)
         if not success:
             raise ValueError("AddBond failed for bond between %s (atomno: %s) and %s (atomno: %s)."
                                 %(start,start_atom.GetAtomicNum(),end,end_atom.GetAtomicNum()))
