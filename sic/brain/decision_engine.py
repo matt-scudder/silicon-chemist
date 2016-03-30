@@ -11,6 +11,7 @@ import structure.struct_ops as struct_ops
 import reaction_types.reaction_factory as reaction_factory #too many of these
 import reaction_types.interactions as interactions
 import structure.connectivity_table as connectivity_table
+import structure.properties as properties
 import pybel
 from reaction_state import ReactionState
 import copy
@@ -19,14 +20,17 @@ def generate_choices(state):
     #first, assign pka and get sources/sinks
     #NOTE: Figure out how to optimize so we don't recalculate these too much, especially pKa
     pka.get_all_pka(state.molecule)
+    print "Initial bond distance: {}".format(properties.get_bond_distance(state.molecule,state.product,state.mapping)) 
     possible_sites = segmentation.segment_molecule(state.molecule)
     #and now for each source-sink pair, get the interactions
     for source in possible_sites["sources"]:
         for sink in possible_sites["sinks"]:
             interaction_tuple = (source.subtype,sink.subtype)
+#            print "Interaction: {}".format(interaction_tuple)
             possible_interactions = interactions.INTERACTIONS[interaction_tuple] if interaction_tuple in interactions.INTERACTIONS else []
             #listify so that our interface works - if you have multiple sources or multiple sinks, this automagically takes care of it
             #but don't listify if already a list
+#            print "Possible interactions: {}".format(possible_interactions)
             interaction_source = source
             interaction_sink = sink
             if type(source) != type([]):
@@ -36,6 +40,7 @@ def generate_choices(state):
             for interaction in possible_interactions:
                 new_mol = struct_ops.copy_molecule(state.molecule)
                 reaction = reaction_factory.produce_reaction(interaction,interaction_source,interaction_sink,mol=new_mol)
+#                print "Made reaction of type {}, cross check is {}".format(interaction,reaction.cross_check())
                 if reaction.cross_check() > 0: #make sure it is actually a possibility
                     new_state = ReactionState(new_mol,parent_state=state,parent_reaction=reaction)
                     #NOTE: A mysterious bug happens wher eif you don't run this line here, suddenly the molecule attached to your sources is not the same as the one on the ReactionState...
@@ -47,6 +52,8 @@ def generate_choices(state):
     print "cross check of possibilities:"
     for possibility in state.possibilities:
         print possibility.parent_reaction.cross_check()
+        print possibility.molecule.write("can")
+        print "Bond distance: {}, Closer to product: {}".format(properties.get_bond_distance(possibility.molecule,possibility.product,possibility.mapping),possibility.closer_to_product())
     #don't return anything, this just modifies the state and adds in possibilities
 
 def go_up_a_level(state,master):
@@ -77,8 +84,11 @@ def get_mechanism(reactants,products,solvent=False):
     #read in reactants and products
     react_mol = pybel.readstring("smi",reactants)
     prod_mol = pybel.readstring("smi",products)
+    react_mol.removeh() #this looks stupid, but sometimes hydrogens are added explicitly, counteracting our assumption that all backbone atoms come before all H atoms
+    #since breaking this assumption makes bond distance stop working, this seemingly-stupid function call is VITAL and should NOT BE REMOVED
     react_mol.addh()
     react_mol.connectivity_table = connectivity_table.ConnectivityTable(react_mol)
+    prod_mol.removeh()
     prod_mol.addh()
     prod_mol.connectivity_table = connectivity_table.ConnectivityTable(prod_mol)
     #now create a ReactionState out of the reactants - this will be the root
@@ -86,6 +96,7 @@ def get_mechanism(reactants,products,solvent=False):
     path_to_product.append(current_state) #since the first state HAS to be the first step in the mechanism
     counter = 0
     print react_mol.write("can")
+    print prod_mol.write("can")
     while not current_state.matches_product():
         #from current_state, generate choices
         generate_choices(current_state)
