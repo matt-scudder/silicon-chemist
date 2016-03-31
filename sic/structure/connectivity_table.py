@@ -93,6 +93,12 @@ class ConnectivityTable(object):
             end_atom = bond.GetEndAtomIdx()
             self.add_bond(start_atom,end_atom)
 
+    def __repr__(self):
+        """
+        Returns a string representation of this object for easy debugging.
+        """
+        return "ConnectivityTable<Table:{}>".format(self.connectivity_table)
+
     def get_atoms_bonded(self,atom):
         """
         Gets all the atoms bonded to a particular atom. Takes as input an atom index, and returns
