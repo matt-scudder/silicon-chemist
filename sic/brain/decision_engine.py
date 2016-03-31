@@ -21,6 +21,7 @@ def generate_choices(state):
     #first, assign pka and get sources/sinks
     #NOTE: Figure out how to optimize so we don't recalculate these too much, especially pKa
     pka.get_all_pka(state.molecule)
+    print "Current state: {}".format(state.molecule.write("can"))
     print "Initial bond distance: {}".format(properties.get_bond_distance(state.molecule,state.product,state.mapping)) 
     possible_sites = segmentation.segment_molecule(state.molecule)
     #and now for each source-sink pair, get the interactions
@@ -121,7 +122,7 @@ def get_mechanism(reactants,products,solvent=False):
             #if there's no further paths and we're still not at product, go up a level too
             current_state = go_up_a_level(current_state,path_to_product)
         counter += 1
-        if counter > 20:
+        if counter > 10:
             raise ValueError("Could not find a reaction after {} steps.".format(counter))
     #when we hit product, return
     return path_to_product
