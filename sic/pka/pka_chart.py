@@ -51,9 +51,13 @@ PKA_CHART = [
     {"[NX1]#[#6-]":{"pKa_HA": None, "pKa_BH": 9.2}}, #cyanide, deprotonated
     {"[NX1]#[CX2][CH3]([H])([H])([H])":{"pKa_HA":25,"pKa_BH":None}}, #nitrile CH, protonated, primary
     {"[NX1]#[CX2][#6-]([H])([H])":{"pKa_HA":None,"pKa_BH":25}}, #nitrile CH, deprotonated, primary
-    {"[NX1]#[CX2][CH3]([H])([H])":{"pKa_HA":25,"pKa_BH":None}}, #nitrile CH, protonated, secondary 
+    {"[NX1]#[CX2][CH2]([H])([H])":{"pKa_HA":25,"pKa_BH":None}}, #nitrile CH, protonated, secondary 
     {"[NX1]#[CX2][#6-]([H])":{"pKa_HA":None,"pKa_BH":25}}, #nitrile CH, deprotonated, secondary
-    {"[NX1]#[CX2][CH3]([H])":{"pKa_HA":25,"pKa_BH":None}}, #nitrile CH, protonated, tertiary
+    {"[NX1]#[CX2][CH]([H])":{"pKa_HA":25,"pKa_BH":None}}, #nitrile CH, protonated, tertiary
     {"[NX1]#[CX2][#6-]":{"pKa_HA":None,"pKa_BH":25}}, #nitrile CH, deprotonated, tertiary
+    #Aldehydes
+    {"[CX3H1](=O)[#6H3]([H])([H])([H])":{"pKa_HA":16.7,"pKa_BH":None}}, #primary
+    {"[CX3H1](=O)[#6H2]([H])([H])":{"pKa_HA":16.7,"pKa_BH":None}}, #secondary
+    {"[CX3H1](=O)[#6H1]([H])":{"pKa_HA":16.7,"pKa_BH":None}} #tertiary
 
 ]
