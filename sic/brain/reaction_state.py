@@ -24,6 +24,7 @@ import json
 import sortedcontainers
 import structure.similarity as similarity
 import structure.properties as properties
+from pybel import readstring
 
 class ReactionState(object):
     product = None
@@ -36,11 +37,17 @@ class ReactionState(object):
         #since cross_check() is on [0,1], subtract score from 1 and take abs.
         #in this scheme, 1 -> 0 and 0 -> 1, making it go in the right order.
         self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: 1.0 - x.parent_reaction.cross_check())
-        if not type(self).product and prod:
+        if not type(self).product:
             type(self).product = prod
         if not type(self).mapping:
             #initialize mapping, do NOT redo mapping, ever!
-            type(self).mapping = properties.get_mapping(self.molecule,type(self).product)
+            #overwrite product and current_state when given mapping
+            #no separate if clause for self.product since mapping and product should be defined at the same time
+            mapping,really_canonical_reactants,really_canonical_products = properties.get_mapping(self.molecule,type(self).product)
+            type(self).mapping = mapping
+            type(self).product = readstring("smi",really_canonical_products)
+            #overwrite current state as well
+            self.molecule = readstring("smi",really_canonical_reactants)
 
     def __repr__(self):
         """

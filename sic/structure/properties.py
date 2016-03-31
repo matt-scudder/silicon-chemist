@@ -14,6 +14,8 @@ def get_mapping(reactants,products):
     """
     Gets the mapping between reactants and products.
     TODO: Replace this with an algorithm that doesn't rely on ReactionDecoder.
+    Returns also the "ReactionDecoder canonical form" of reactants and products, since OpenBabel's canonical SMILES code
+    fails for charged species.
     """
     mapping = {}
     #write out reactants/products string
@@ -28,6 +30,7 @@ def get_mapping(reactants,products):
         if found_mapping:
             mapping_string = line
             break
+    print AAM_output
     if mapping_string:
         #remove hydrogen-only maps - these are unlikely but they do come up and mess up the rest of our procedure
         #also I'm not digging into their code to figure out why they do this only *sometimes*, I'm mad
@@ -49,7 +52,11 @@ def get_mapping(reactants,products):
             current_group = prod_groups[j]
             number = int(current_group.split(":")[-1].replace("]",""))
             mapping[internal_mapping[number]] = j+1 #j+1 is the atom index in the product. internal_mapping[number] is the atom index in the reactant
-    return mapping 
+    else:
+        raise ValueError("Could not find map between reactants and products.")
+    print mapping
+    return (mapping,react_map,prod_map) #so that we can use the actual strings as our input and avoid issues with OBabel's buggy SMILES code
+
 
 
 def get_bonds(atom,mol):

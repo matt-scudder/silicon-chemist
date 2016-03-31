@@ -83,21 +83,21 @@ def get_mechanism(reactants,products,solvent=False):
     path_to_product = [] #keeps track of the reaction state that we want to print out at the end
     #path_to_product holds onyl the states that get you to the product, and nothing else in the tree.
     #read in reactants and products
-    react_input = pybel.readstring("smi",reactants)
-    prod_input = pybel.readstring("smi",products)
-    #because getting the reactants/products chained together in the wrong order can mess with mapping, take the CANONICAL SMILES and put it back in
-    #this way users can draw molecules in any order they want.
-    react_mol = pybel.readstring("smi",utils.write_mol(react_input))
-    prod_mol = pybel.readstring("smi",utils.write_mol(prod_input))
+    react_mol = pybel.readstring("smi",reactants)
+    prod_mol = pybel.readstring("smi",products)
+    #now create a ReactionState out of the reactants - this will be the root
+    current_state = ReactionState(react_mol,prod=prod_mol) #product becomes part of the tree
+    #doing the ReactionState initializer changes the internal reactant and product, so put them back in
+    #TODO: Make this cleaner
+    react_mol = current_state.molecule
+    prod_mol = current_state.product
     react_mol.removeh() #this looks stupid, but sometimes hydrogens are added explicitly, counteracting our assumption that all backbone atoms come before all H atoms
     #since breaking this assumption makes bond distance stop working, this seemingly-stupid function call is VITAL and should NOT BE REMOVED
     react_mol.addh()
-    react_mol.connectivity_table = connectivity_table.ConnectivityTable(react_mol)
     prod_mol.removeh()
     prod_mol.addh()
+    react_mol.connectivity_table = connectivity_table.ConnectivityTable(react_mol)
     prod_mol.connectivity_table = connectivity_table.ConnectivityTable(prod_mol)
-    #now create a ReactionState out of the reactants - this will be the root
-    current_state = ReactionState(react_mol,prod=prod_mol) #product becomes part of the tree
     path_to_product.append(current_state) #since the first state HAS to be the first step in the mechanism
     counter = 0
     print react_mol.write("can")
