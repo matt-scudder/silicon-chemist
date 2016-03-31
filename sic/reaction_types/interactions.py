@@ -9,6 +9,7 @@ We assume that all sources can map to all sinks, and vice versa.
 INTERACTIONS = {
         ("Y","H-L"):["proton_transfer"],
         ("Y","C-L"):["SN2","E2"], #substitution vs. elimination!
-        ("Y","C+"):["AN"],
-        ("DUM","C-L"):["DN"] #because DN is basically "the sink interacting with itself and falling apart", we want one DUM for every C-L
+        ("Y","C+"):["AN","E1"],
+        ("DUM","C-L"):["DN"], #because DN is basically "the sink interacting with itself and falling apart", we want one DUM for every C-L
+        ("C-","C-L"):["EB"]
         }
