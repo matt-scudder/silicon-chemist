@@ -41,12 +41,13 @@ class E2(Reaction):
         """
         base = self.sources[0]
         CL = self.sinks[0]
+        mol = CL.molecule #because this gets typed a lot
         C_to_change = properties.get_adjacent_ch(CL)
         #get the H, doesn't matter which because we don't care about stereochem yet
-        H_to_change = properties.get_H_bonds(C_to_change,CL.molecule)[0]
-        struct_ops.make_bond(base.get_atom("Y"),H_to_change,CL.molecule)
-        struct_ops.break_bond(H_to_change,C_to_change,CL.molecule)
-        struct_ops.break_bond(CL.get_atom("C"),CL.get_atom("L"),CL.molecule)
+        H_to_change = properties.get_H_bonds(C_to_change,CL.mol)[0]
+        struct_ops.make_bond(base.get_atom("Y"),H_to_change,mol)
+        struct_ops.break_bond(H_to_change,C_to_change,mol)
+        struct_ops.break_bond(CL.get_atom("C"),CL.get_atom("L"),mol)
         #remember to make bond from a SOURCE of electrons (i.e. the C that just had the C-H broken)
         #to a SINK of electrons (i.e. the C-L that just had the L leave)
-        struct_ops.make_bond(C_to_change,CL.get_atom("C"),CL.molecule)
+        struct_ops.make_bond(C_to_change,CL.get_atom("C"),mol)
