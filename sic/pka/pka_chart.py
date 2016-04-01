@@ -42,22 +42,18 @@ PKA_CHART = [
     {"[CH1][O-]":{"pKa_HA": None, "pKa_BH": 18}}, #secondary
     {"[CH0][O-]":{"pKa_HA": None, "pKa_BH": 19}}, #tertiary
     #Protonated alcohols
-    {"[CH3][OH2]([H])([H])":{"pKa_HA": -2.4, "pKa_BH": None}}, #methyl
-    {"[CH2][OH2]([H])([H])":{"pKa_HA": -2.4, "pKa_BH": None}}, #primary
-    {"[CH1][OH2]([H])([H])":{"pKa_HA": -3.5, "pKa_BH": None}}, #secondary
-    {"[CH0][OH2]([H])([H])":{"pKa_HA": -4, "pKa_BH": None}}, #tertiary
+    {"[CH3,CH2][OH2]([H])":{"pKa_HA": -2.4, "pKa_BH": None}}, #methyl + primary
+    {"[CH1][OH2]([H])":{"pKa_HA": -3.5, "pKa_BH": None}}, #secondary
+    {"[CH0][OH2]([H])":{"pKa_HA": -4, "pKa_BH": None}}, #tertiary
     #Nitriles (carbon acid)
     {"[NX1]#[CX2]([H])":{"pKa_HA": 9.2, "pKa_BH": None}}, #cyanide, with proton
     {"[NX1]#[#6-]":{"pKa_HA": None, "pKa_BH": 9.2}}, #cyanide, deprotonated
-    {"[NX1]#[CX2][CH3]([H])([H])([H])":{"pKa_HA":25,"pKa_BH":None}}, #nitrile CH, protonated, primary
-    {"[NX1]#[CX2][#6-]([H])([H])":{"pKa_HA":None,"pKa_BH":25}}, #nitrile CH, deprotonated, primary
-    {"[NX1]#[CX2][CH2]([H])([H])":{"pKa_HA":25,"pKa_BH":None}}, #nitrile CH, protonated, secondary 
-    {"[NX1]#[CX2][#6-]([H])":{"pKa_HA":None,"pKa_BH":25}}, #nitrile CH, deprotonated, secondary
-    {"[NX1]#[CX2][CH]([H])":{"pKa_HA":25,"pKa_BH":None}}, #nitrile CH, protonated, tertiary
-    {"[NX1]#[CX2][#6-]":{"pKa_HA":None,"pKa_BH":25}}, #nitrile CH, deprotonated, tertiary
+    {"[NX1]#[CX2][CH3,CH2,CH]([H])":{"pKa_HA":25,"pKa_BH":None}}, #nitrile CH, protonated, primary, secondary, tertiary
+    {"[NX1]#[CX2][#6-]":{"pKa_HA":None,"pKa_BH":25}}, #nitrile CH, deprotonated, primary, secondary, tertiary
     #Aldehydes
-    {"[CX3H1](=O)[#6H3]([H])([H])([H])":{"pKa_HA":16.7,"pKa_BH":None}}, #primary
-    {"[CX3H1](=O)[#6H2]([H])([H])":{"pKa_HA":16.7,"pKa_BH":None}}, #secondary
-    {"[CX3H1](=O)[#6H1]([H])":{"pKa_HA":16.7,"pKa_BH":None}} #tertiary
+    {"[CX3H1](=O)[#6H3,#6H2,#6H1]([H])":{"pKa_HA":16.7,"pKa_BH":None}}, #primary, secondary, tertiary
+    #Sulfuric acid
+    {"[$([SX4](=O)(=O)(O)O)][O]([H])":{"pKa_HA":-9, "pKa_BH": None}}, #protonated
+    {"[$([SX4+1](O)([O-])(O)O)]":{"pKa_HA":None, "pKa_BH": -9}} #deprotonated
 
 ]
