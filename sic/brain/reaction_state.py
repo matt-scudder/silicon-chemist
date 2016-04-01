@@ -81,4 +81,4 @@ class ReactionState(object):
         """
         if not self.parent_state:
             raise ValueError('Root node cannot be checked for "closer to product" since it is the base.')
-        return properties.get_bond_distance(self.molecule,self.product,self.mapping) < properties.get_bond_distance(self.parent_state.molecule,self.product,self.mapping)
+        return (properties.get_bond_distance(self.molecule,self.product,self.mapping) < properties.get_bond_distance(self.parent_state.molecule,self.product,self.mapping)) or self.matches_product()
