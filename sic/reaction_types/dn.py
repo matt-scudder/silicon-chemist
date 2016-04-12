@@ -47,7 +47,7 @@ class DN(Reaction):
         elif pKa_BHL < -6:
             self.cross_check_score = 1.0
         else:
-            self.cross_check_score = scoring.score_pka(6,0.4,pKa_BHL)
+            self.cross_check_score = scoring.score_pka(6,0.4,(-1)*pKa_BHL) #flip the trend, take -1 * pKa_HL
         return self.cross_check_score * final_multiplier
 
     def rearrange(self):
