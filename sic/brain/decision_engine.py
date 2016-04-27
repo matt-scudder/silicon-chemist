@@ -75,7 +75,7 @@ def go_up_a_level(state,master):
     else:
         raise ValueError("No pathh was found between reactants and products.")
 
-def get_mechanism(reactants,products,solvent=False):
+def get_mechanism(reactants,products,solvent=False,max_counter=15):
     """
     Takes in the reactaants and products as SMILES strings with . separating each molecule in both,
     and returns a list with the ReactionState objects that represent how we got there.
@@ -99,6 +99,7 @@ def get_mechanism(reactants,products,solvent=False):
     prod_mol.addh()
     react_mol.connectivity_table = connectivity_table.ConnectivityTable(react_mol)
     prod_mol.connectivity_table = connectivity_table.ConnectivityTable(prod_mol)
+    print react_mol.connectivity_table.closer_to_product_table
     path_to_product.append(current_state) #since the first state HAS to be the first step in the mechanism
     counter = 0
     print react_mol.write("can")
@@ -122,7 +123,7 @@ def get_mechanism(reactants,products,solvent=False):
             #if there's no further paths and we're still not at product, go up a level too
             current_state = go_up_a_level(current_state,path_to_product)
         counter += 1
-        if counter > 10:
+        if counter >= max_counter:
             raise ValueError("Could not find a reaction after {} steps.".format(counter))
     #when we hit product, return
     return path_to_product

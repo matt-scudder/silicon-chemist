@@ -12,10 +12,6 @@ The rest of the program should read these accordingly.
 """
 #NOTE: This file will get REALLY big really fast, but only needs to be run once per ReactionState
 #NOTE: The order here is of paramount importance such that species are matched correctly. Start with the least specific forms, and then go to the most specific.
-#NOTE: The huge amount of ([H]) below are because otherwise the hydrogens we so desperately care about won't get matched in the expression, and we run into problems.
-#NOTE: There is no expression that catches "any number of hydrogens" as far as my current (3/30/16) research indicates, since SMARTS is all about 
-#       backbone stuff, and not so much about matching hydrogens. Will see if
-#       there's a better way eventually.
 PKA_CHART = [
     #Water
     {"[OHv1]([H])":{"pKa_HA": 52, "pKa_BH": 15.7}}, #v1 because otherwise every alcohol ever would match it. Put in a separate case for alcohols...
