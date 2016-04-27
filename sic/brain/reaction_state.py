@@ -37,9 +37,10 @@ class ReactionState(object):
         #since cross_check() is on [0,1], subtract score from 1 and take abs.
         #in this scheme, 1 -> 0 and 0 -> 1, making it go in the right order.
         self.possibilities = sortedcontainers.SortedListWithKey(key=lambda x: 1.0 - x.parent_reaction.cross_check())
-        if not type(self).product:
+        if prod:
+            #These are sort of static but not really. We want to be able to replace these as we go,
+            #because otherwise when this runs as a webserver we have trouble.
             type(self).product = prod
-        if not type(self).mapping:
             #initialize mapping, do NOT redo mapping, ever!
             #overwrite product and current_state when given mapping
             #no separate if clause for self.product since mapping and product should be defined at the same time
@@ -77,6 +78,8 @@ class ReactionState(object):
         """
         Examines how close the current ReactionState is to product, and returns True if it is
         closer than its parent.
+        If the ReactionState matches product, it will return True, overriding the mapping.
+        This is done to avoid the cases where the mapping is wrong.
         If called on the root node, this method raises a ValueError.
         """
         if not self.parent_state:
