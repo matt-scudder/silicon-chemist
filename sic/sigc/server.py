@@ -27,4 +27,4 @@ def accept_reaction():
         Handles reactant and product input from users and runs SiC³ on them.
         """
         if request.method == "POST":
-            return sic.find_mechanism(request.json["reactants"],request.json["products"],solv=request.json["solvent"])
+            return sic.find_mechanism(request.json["reactants"],request.json["products"],solv=request.json["solvent"]).replace("\n","<br>")
