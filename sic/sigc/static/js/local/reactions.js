@@ -15,11 +15,11 @@ function add_molecule(smiles,mol_type) {
 	switch(mol_type){
 		case "reactant":
 			reactants.push(smiles);
-			$("#add_reactant").before("<p>"+smiles+"</p>");
+			$("#add_reactant").before("<p class='reactant'>"+smiles+"</p>");
 			break;
 		case "product":
 			products.push(smiles)
-			$("#add_product").before("<p>"+smiles+"</p>");
+			$("#add_product").before("<p class='product'>"+smiles+"</p>");
 			break;
 		case "solvent":
 			solvent.push(smiles);
@@ -65,4 +65,20 @@ function send_reaction_to_sic(){
 			});
 }
 
+
+function reset_state(){
+	/*
+	 * Restarts the program by clearing all sections that have SMILES strings with reactants/products,
+	 * the mechanism output section, and clears our internal arrays.
+	 */
+	reactants = [];
+	products = [];
+	solvent = [];
+	$(".reactant").remove();
+	$(".product").remove();
+	$("#output_container").html();
+	$("#output_header").addClass("hidden");
+	$("#output_container").addClass("hidden");
+}
 $("#send_button").click(send_reaction_to_sic);
+$("#reset_button").click(reset_state);
