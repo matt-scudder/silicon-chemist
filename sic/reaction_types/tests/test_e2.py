@@ -26,7 +26,7 @@ class E2Test(unittest.TestCase):
 
     def testCation(self):
         reaction = reaction_factory.produce_reaction("E2",self.t_butyl_sources,self.t_butyl_sinks)
-        self.assertTrue(reaction.cross_check() == 1.0)
+        self.assertTrue(reaction.cross_check() == 0.3)
         reaction.rearrange()
         #print self.t_butyl.write("can")
         self.assertTrue(similarity.is_same_molecule(self.t_butyl,self.t_butyl_products))
