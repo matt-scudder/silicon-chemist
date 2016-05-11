@@ -12,7 +12,6 @@ from sinks import SINKS
 import source
 import sink
 import pybel
-from utils import get_real_indices 
 
 #TODO: Potentially use the fact that only a very small section of the molecule changes
 #at each step in order to optimize segmentation into sources/sinks
