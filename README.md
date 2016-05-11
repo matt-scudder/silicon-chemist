@@ -9,19 +9,20 @@
 
 #Python
 - Flask
+- openbabel (which requires the OpenBabel package - see http://openbabel.org/docs/2.3.1/Installation/install.html#compile-bindings for details)
+- sortedcontainers (to automatically keep choices sorted)
+
+#Java
+- ReactionDecoder (https://github.com/asad/ReactionDecoder), included in install, requires modified version.
 
 #Linux Packages (for full WSGI setup; not needed for basic install)
 - python-dev
 - apache2
+- openbabel
+- python-openbabel (so that the Pybel bindings get compiled.)
 
 
 ##How to run this program
-Because SiC³ is set up as a set of separate modules, relative path imports are used, so as to not assume that
-all of the modules are installed in python's local libs. However, this leads to the problem that, for example,
-neither unit tests nor SiGC will run on their own without throwing an error. To make them work, run them as modules
-with an example syntax like this:
-
-python -m sigc.server
-
-This will tell Python to think in terms of "modules" and take advantage of the \_\_init\_\_.py files present in each directory
-to organize itself.
+To run the server, run "runserver.py" in the root of the project. Do not attempt to run sic/sigc/server.py directly;
+due to the use of relative path imports, this is NOT viable, especially if you want to run the server with debug mode on.
+Always use runserver.py and update the settings for the server application there (see Flask docs for details).
