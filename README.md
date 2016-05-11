@@ -15,12 +15,13 @@
 #Java
 - ReactionDecoder (https://github.com/asad/ReactionDecoder), included in install, requires modified version.
 
-#Linux Packages (for full WSGI setup; not needed for basic install)
+#Linux Packages for basic install
 - python-dev
-- apache2
 - openbabel
 - python-openbabel (so that the Pybel bindings get compiled.)
 
+#Optional Linux Packages required for server
+- apache2
 
 ##How to run this program
 To run the server, run "runserver.py" in the root of the project. Do not attempt to run sic/sigc/server.py directly;
