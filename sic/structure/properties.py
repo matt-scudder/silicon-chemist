@@ -8,7 +8,7 @@ import subprocess
 import utils
 import re
 
-REACTION_DECODER_PATH = "/home/sic/newsic/sic/ReactionDecoder/bin" #TODO: Figure out how to not need this
+REACTION_DECODER_PATH = "." #TODO: Figure out how to not need this
 
 def get_mapping(reactants,products):
     """
@@ -56,15 +56,6 @@ def get_mapping(reactants,products):
         raise ValueError("Could not find map between reactants and products.")
     print mapping
     return (mapping,react_map,prod_map) #so that we can use the actual strings as our input and avoid issues with OBabel's buggy SMILES code
-
-
-
-def get_bonds(atom,mol):
-    """
-    Takes in an atom index and its matching molecule, and gets the indices of the atoms that it's bound to, based on the connectivity table.
-    Utility function for less typing and clearer meanings.
-    """
-    return mol.connectivity_table[atom]
 
 
 def get_carbon_degree(s_obj,carbon_label=False):
