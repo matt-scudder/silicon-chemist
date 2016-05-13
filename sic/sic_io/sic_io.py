@@ -75,7 +75,7 @@ def write_up_mechanism(reaction_state_list,solvent=False):
 
 def create_state_smiles(molecules):
     """
-    Creates a combined SMILES string by concatenating them with dots. Nothing fancy.
+    Creates a combined SMILES string from a set of molecular SMILES strings by concatenating them with dots. Nothing fancy.
     """
     combined_smiles = molecules[0]
     for molecule in molecules[1:]:
