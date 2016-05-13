@@ -16,13 +16,14 @@ import utils
 import pybel
 from reaction_state import ReactionState
 import copy
+import time
     
 def generate_choices(state):
     #first, assign pka and get sources/sinks
     #NOTE: Figure out how to optimize so we don't recalculate these too much, especially pKa
     pka.get_all_pka(state.molecule)
-    print "Current state: {}".format(state.molecule.write("can"))
-    print "Initial bond distance: {}".format(properties.get_bond_distance(state.molecule,state.product,state.mapping)) 
+#    print "Current state: {}".format(state.molecule.write("can"))
+#    print "Initial bond distance: {}".format(properties.get_bond_distance(state.molecule,state.product,state.mapping)) 
     possible_sites = segmentation.segment_molecule(state.molecule)
     #and now for each source-sink pair, get the interactions
     for source in possible_sites["sources"]:
@@ -50,12 +51,14 @@ def generate_choices(state):
                     #DO NOT MOVE REACTION.REARRANGE AWAY FROM HERE
                     state.possibilities.add(new_state)
     #TODO: Make this logging.debug...
-    print "%s possibilities" % len(state.possibilities)
-    print "cross check of possibilities:"
-    for possibility in state.possibilities:
-        print possibility.parent_reaction.cross_check()
-        print possibility.molecule.write("can")
-        print "Bond distance: {}, Closer to product: {}".format(properties.get_bond_distance(possibility.molecule,possibility.product,possibility.mapping),possibility.closer_to_product())
+#    print "%s possibilities" % len(state.possibilities)
+#    print "Current state is: %s" % state.molecule.write("can")
+#    print "cross check of possibilities:"
+#    for possibility in state.possibilities:
+#        print possibility.parent_reaction.reaction_type
+#        print possibility.parent_reaction.cross_check()
+#        print possibility.molecule.write("can")
+#        print "Bond distance: {}, Closer to product: {}".format(properties.get_bond_distance(possibility.molecule,possibility.product,possibility.mapping),possibility.closer_to_product())
     #don't return anything, this just modifies the state and adds in possibilities
 
 def go_up_a_level(state,master):
@@ -80,6 +83,7 @@ def get_mechanism(reactants,products,solvent=False,max_counter=15):
     Takes in the reactaants and products as SMILES strings with . separating each molecule in both,
     and returns a list with the ReactionState objects that represent how we got there.
     """
+    start_time = time.time()
     #TODO: Add check for atom balance, raise ValueError if wrong.
     path_to_product = [] #keeps track of the reaction state that we want to print out at the end
     #path_to_product holds onyl the states that get you to the product, and nothing else in the tree.
@@ -87,7 +91,9 @@ def get_mechanism(reactants,products,solvent=False,max_counter=15):
     react_mol = pybel.readstring("smi",reactants)
     prod_mol = pybel.readstring("smi",products)
     #now create a ReactionState out of the reactants - this will be the root
+    before_java = time.time()
     current_state = ReactionState(react_mol,prod=prod_mol) #product becomes part of the tree
+    after_java = time.time()
     #doing the ReactionState initializer changes the internal reactant and product, so put them back in
     #TODO: Make this cleaner
     react_mol = current_state.molecule
@@ -126,4 +132,7 @@ def get_mechanism(reactants,products,solvent=False,max_counter=15):
         if counter >= max_counter:
             raise ValueError("Could not find a reaction after {} steps.".format(counter))
     #when we hit product, return
+    final_time = time.time()
+    print "Total time (with java): %s" % (final_time - start_time)
+    print "Total time (without java): %s" % (final_time - start_time - (after_java - before_java))
     return path_to_product
