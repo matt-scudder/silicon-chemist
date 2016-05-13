@@ -58,15 +58,15 @@ class ReactionState(object):
     
     def to_json_dict(self):
         """
-	Writes out a dictionary that will be equivalent to a JSON representation of this object,
-	and will be regenerated in the browser by traversing the tree in order to make the children
-	have parent references.
-	"""
-	json_dict = {}
-	json_dict["parent_reaction"] = self.parent_reaction.to_json_dict() 
-	json_dict["state"] = molecule.write("can") #this state need not be preserved up top
-	json_dict["possibilities"] = map(lambda child: child.to_json_dict(), self.possibilities)
-	return json_dict
+        Writes out a dictionary that will be equivalent to a JSON representation of this object,
+        and will be regenerated in the browser by traversing the tree in order to make the children
+        have parent references.
+        """
+        json_dict = {}
+        json_dict["parent_reaction"] = self.parent_reaction.to_json_dict() 
+        json_dict["state"] = molecule.write("can") #this state need not be preserved up top
+        json_dict["possibilities"] = map(lambda child: child.to_json_dict(), self.possibilities)
+        return json_dict
 
     def matches_product(self):
         """
@@ -84,4 +84,11 @@ class ReactionState(object):
         """
         if not self.parent_state:
             raise ValueError('Root node cannot be checked for "closer to product" since it is the base.')
-        return (properties.get_bond_distance(self.molecule,self.product,self.mapping) < properties.get_bond_distance(self.parent_state.molecule,self.product,self.mapping)) or self.matches_product()
+        if self.matches_product():
+            return True #circumvent mapper issues
+        #This used to be one line, but there's strange failure cases, so let's track them
+        current_distance = properties.get_bond_distance(self.molecule,self.product,self.mapping)
+        previous_distance = properties.get_bond_distance(self.parent_state.molecule,self.product,self.mapping)
+        if current_distance == 0 and not self.matches_product(): #mapper or frozenset issue, investigate this later
+            return False
+        return current_distance < previous_distance
