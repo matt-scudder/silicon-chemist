@@ -30,7 +30,7 @@ class DN(Reaction):
         if self.cross_check_score != -2.0:
             return self.cross_check_score
         sink = self.sinks[0]
-        FACTORS = {0: 0.0, 1: 0.0, 2: 0.6, 3: 1.0}
+        FACTORS = {0: 0.0, 1: 0.0, 2: 0.25, 3: 1.0}
         carbon_count = properties.get_carbon_degree(sink)
         final_multiplier = FACTORS[carbon_count]
         if final_multiplier == 0:
@@ -48,7 +48,8 @@ class DN(Reaction):
             self.cross_check_score = 1.0
         else:
             self.cross_check_score = scoring.score_pka(6,0.4,(-1)*pKa_BHL) #flip the trend, take -1 * pKa_HL
-        return self.cross_check_score * final_multiplier
+        self.cross_check_score = self.cross_check_score * final_multiplier
+        return self.cross_check_score
 
     def rearrange(self):
         """
