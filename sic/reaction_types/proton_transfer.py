@@ -34,7 +34,7 @@ class ProtonTransfer(Reaction):
             if pKa_BH is None or pKa_HA is None:
                 #None generally means either "infinite" or "not in our pKa chart".
                 #If running debug mode, print which are None
-                print "None pKa encountered. pKaBHNu is: {} (atom index {}), pKaHA is: {} (atom index {})".format(pKa_BH,source.get_atom("Y"),pKa_HA,sink.get_atom("H"))
+#                print "None pKa encountered. pKaBHNu is: {} (atom index {}), pKaHA is: {} (atom index {})".format(pKa_BH,source.get_atom("Y"),pKa_HA,sink.get_atom("H"))
                 self.cross_check_score = 0.0
                 return self.cross_check_score
             dpKa = pKa_BH - pKa_HA
