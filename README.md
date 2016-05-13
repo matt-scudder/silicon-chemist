@@ -17,6 +17,7 @@
 
 #Linux Packages for basic install
 - python-dev
+- apache2
 - openbabel
 - python-openbabel (so that the Pybel bindings get compiled.)
 
