@@ -49,9 +49,14 @@ def get_mapping(reactants,products):
             internal_mapping[number] = i+1 #this should usually be the same...
         #now map against products
         for j in xrange(len(prod_groups)):
+            
             current_group = prod_groups[j]
             number = int(current_group.split(":")[-1].replace("]",""))
-            mapping[internal_mapping[number]] = j+1 #j+1 is the atom index in the product. internal_mapping[number] is the atom index in the reactant
+            if number <= (i+1) :  # check if the number of atoms in the reactants is the same in the products
+                mapping[internal_mapping[number]] = j+1 #j+1 is the atom index in the product. internal_mapping[number] is the atom index in the reactant
+            else:
+                print("Ops! Wrong input. Please try again -_-")
+                break
     else:
         raise ValueError("Could not find map between reactants and products.")
     print mapping
