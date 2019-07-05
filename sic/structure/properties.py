@@ -30,7 +30,7 @@ def get_mapping(reactants,products):
         if found_mapping:
             mapping_string = line
             break
-    print AAM_output
+    print (AAM_output)
     if mapping_string:
         #remove hydrogen-only maps - these are unlikely but they do come up and mess up the rest of our procedure
         #also I'm not digging into their code to figure out why they do this only *sometimes*, I'm mad
@@ -59,7 +59,7 @@ def get_mapping(reactants,products):
                 break
     else:
         raise ValueError("Could not find map between reactants and products.")
-    print mapping
+    print "Mapping =", (mapping)
     return (mapping,react_map,prod_map) #so that we can use the actual strings as our input and avoid issues with OBabel's buggy SMILES code
 
 
@@ -74,7 +74,7 @@ def get_carbon_degree(s_obj,carbon_label=False):
     mol = s_obj.molecule
     has_L = "L" in s_obj.atoms
     for bond in mol.connectivity_table.get_atoms_bonded(s_obj.get_atom(carb_string)):
-        if not (mol.OBMol.GetAtom(bond).IsHydrogen()) and (has_L and bond != s_obj.get_atom("L")):
+        if not (mol.OBMol.GetAtom(bond).IsHydrogen()):
             #H bonds don't count, neither do L if any
             #Update the above conditional for species other than L that don't count
             #though I'm fairly sure there aren't any.
@@ -127,7 +127,7 @@ def remap_bonds(table,mapping):
                 atomlist.append(atom)
             else:
                 atomlist.append(mapping[atom])
-        result_table[frozenset(atomlist)] = table[bond]
+        result_table[frozenset(atomlist)] = table[bond] #TODO: bug? what if the two atoms don't have a bond in the product?
     return result_table
 
 def get_bond_distance(mol1,mol2,mapping):
@@ -145,10 +145,13 @@ def get_bond_distance(mol1,mol2,mapping):
     #TODO: Replace all prints with logging.debug stuff
     difference_counter = 0
     #get all bonds in mol1 and in mol2 using our closer_to_product table
-    #print "Before remap: {}".format(mol1.connectivity_table.closer_to_product_table)
+    print "Before remap: {}".format(mol1.connectivity_table.closer_to_product_table)
     mol1_bonds = remap_bonds(mol1.connectivity_table.closer_to_product_table,mapping)
     mol2_bonds = mol2.connectivity_table.closer_to_product_table
-    #print "After remap: {}".format(mol1_bonds)
+    print "mapping =", mapping
+    print "After remap: {}".format(mol1_bonds)
+    print "Product =", mol2_bonds
+    print "   "
     #print "Product bonds: {}".format(mol2_bonds)
     for bond in mol1_bonds:
         if bond not in mol2_bonds:
@@ -168,3 +171,4 @@ def get_bond_distance(mol1,mol2,mapping):
             #print "Bond not present: %s" % bond
             difference_counter += mol2_bonds[bond] 
     return difference_counter
+
