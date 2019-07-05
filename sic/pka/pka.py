@@ -13,7 +13,7 @@ chart and attempt to map them to the parts of the molecule.
 from pka_chart import PKA_CHART
 import pybel
 
-LONE_PAIR_ATOMS = set([7,8,9,15,16,17,35,53]) #atomic numbers that can have lone pairs commonly. Excludes boron and carbon, those are special.
+LONE_PAIR_ATOMS = set([6,7,8,9,15,16,17,35,53]) #atomic numbers that can have lone pairs commonly. Excludes boron , this is special.
 
 def get_all_pka(molecule):
     """

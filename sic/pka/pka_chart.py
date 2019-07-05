@@ -41,15 +41,33 @@ PKA_CHART = [
     {"[CH3,CH2][OH2]([H])":{"pKa_HA": -2.4, "pKa_BH": None}}, #methyl + primary
     {"[CH1][OH2]([H])":{"pKa_HA": -3.5, "pKa_BH": None}}, #secondary
     {"[CH0][OH2]([H])":{"pKa_HA": -4, "pKa_BH": None}}, #tertiary
-    #Nitriles (carbon acid)
+    #Nitriles (carbon acid) and Cyanides
     {"[NX1]#[CX2]([H])":{"pKa_HA": 9.2, "pKa_BH": None}}, #cyanide, with proton
     {"[NX1]#[#6-]":{"pKa_HA": None, "pKa_BH": 9.2}}, #cyanide, deprotonated
     {"[NX1]#[CX2][CH3,CH2,CH]([H])":{"pKa_HA":25,"pKa_BH":None}}, #nitrile CH, protonated, primary, secondary, tertiary
     {"[NX1]#[CX2][#6-]":{"pKa_HA":None,"pKa_BH":25}}, #nitrile CH, deprotonated, primary, secondary, tertiary
+    {"[O-][N+X3](=O)[#6H3,#6H2,#6H1]([H])":{"pKa_HA":10.2,"pKa_BH":None}}, #Nitro, protonated
+    {"[O-][N+X3](=O)[#6-]":{"pKa_HA":None,"pKa_BH":10.2}}, #Nitro, deprotonated
     #Aldehydes
-    {"[CX3H1](=O)[#6H3,#6H2,#6H1]([H])":{"pKa_HA":16.7,"pKa_BH":None}}, #primary, secondary, tertiary
+    {"[#6X3H1](=O)[#6H3,#6H2,#6H1]([H])":{"pKa_HA":16.7,"pKa_BH":None}}, #primary, secondary, tertiary
+    {"[#6X3H1](=O)[#6-]":{"pKa_HA":None,"pKa_BH":16.7}},
+    # Oxygen Acids
+    {"[#6][#6X3](C)=[OX2H1+]":{"pKa_HA":-7,"pKa_BH":None}},
+    {"[#6][#6X3](C)=[OX1]":{"pKa_HA":None,"pKa_BH":-7}},
+    {"[#6][#6X3H1]=[OX2H1+]":{"pKa_HA":-10,"pKa_BH":None}},
+    {"[#6!-][#6X3H1]=[OX1]":{"pKa_HA":None,"pKa_BH":-10}},
+    {"[CH3][CH2][O+H2]([H])([H])":{"pKa_HA":-2.4,"pKa_BH":None}},
+    {"[CH3][CH2][O+H1]([H])":{"pKa_HA":None,"pKa_BH":-2.4}},
     #Sulfuric acid
     {"[$([SX4](=O)(=O)(O)O)][O]([H])":{"pKa_HA":-9, "pKa_BH": None}}, #protonated
-    {"[$([SX4+1](O)([O-])(O)O)]":{"pKa_HA":None, "pKa_BH": -9}} #deprotonated
-
+    {"[$([SX4+1](O)([O-])(O)O)]":{"pKa_HA":None, "pKa_BH": -9}}, #deprotonated
+    #Ketones
+    {"[CX3C1](=O)[#6H3,#6H2,#6H1]([H])":{"pKa_HA":19.2,"pKa_BH":None}},#protonated
+    {"[CX3C1](=O)[#6-]":{"pKa_HA":None,"pKa_BH":19.2}},#deprotonated
+    #Esters
+    {"[CX3O1](=O)[#6H3,#6H2,#6H1]([H])":{"pKa_HA":25.6,"pKa_BH":None}},#protonated
+    {"[CX3O1](=O)[#6-]":{"pKa_HA":None,"pKa_BH":25.6}},#deprotonated
+    #Amides
+    {"[CX3N1](=O)[#6H3,#6H2,#6H1]([H])":{"pKa_HA":28,"pKa_BH":None}},#protonated
+    {"[CX3N1](=O)[#6-]":{"pKa_HA":None,"pKa_BH":28}}#deprotonated
 ]
