@@ -15,6 +15,10 @@ from dn import DN
 from e2 import E2
 from eb import EB
 from e1 import E1
+from ae import AE
+from ade3 import ADE3
+from adn import ADN
+from NuL import NuL
 from structure.struct_ops import copy_molecule
 from pybel import Molecule
 import utils
@@ -48,5 +52,14 @@ def produce_reaction(r_type,sources,sinks,mol=False):
         return EB(new_sources,new_sinks)
     elif r_type == "E1":
         return E1(new_sources,new_sinks)
+    elif r_type == "AE":
+        return AE(new_sources,new_sinks)
+    elif r_type == "ADE3":
+        return ADE3(new_sources,new_sinks)
+    elif r_type == "ADN":
+        return ADN(new_sources,new_sinks)
+    elif r_type == "NuL":
+        return NuL(new_sources,new_sinks)
+       
     else:
         raise ValueError("Reaction type {} is not supported.".format(r_type))
