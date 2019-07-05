@@ -51,7 +51,7 @@ def label_sources(molecule):
     for source_type in SOURCES:
         smarts = pybel.Smarts(SOURCES[source_type])
         groups = smarts.findall(molecule)
-        for group in groups:
+        for group in groups:            
             sources.append(source.Source(source_type,group,molecule))
     return sources
 

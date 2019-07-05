@@ -32,6 +32,18 @@ class Source(object):
                 self.atoms["Y"] = atom #only one atom total
             elif subtype == "C-":
                 self.atoms["C-"] = atom
+            elif subtype == "C=C":
+                if molecule.OBMol.GetAtom(atom).GetAtomicNum() == 6:
+                    self.atoms["C1"] = atom
+                    self.atoms["C2"] = atoms[-1]
+                break
+            elif subtype == "Z=C":
+                if molecule.OBMol.GetAtom(atom).GetAtomicNum() == 6:
+                    self.atoms["C"] = atom
+                else:
+                    self.atoms["Z"] = atom
+        
+
             #otherwise do some gymnastics
     
     def get_atom(self,key):

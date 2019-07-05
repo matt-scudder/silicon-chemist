@@ -41,6 +41,28 @@ class Sink(object):
                     self.atoms["C"] = atom
                 else:
                     self.atoms["L"] = atom
+            elif subtype == "ewg(O)-C=C" or subtype == "ewg(N)-C=C": # Each "ewg-C=C" source has 4 atoms:(F, S, C1 , C2). F = first, S= second , C1 and C2 are the C-atoms of the double bond
+                if molecule.OBMol.GetAtom(atoms[1]).GetAtomicNum() == 8:
+                    self.atoms["F"] = atoms[1]
+                    self.atoms["S"] = atom
+                else:
+                    self.atoms["F"] = atom
+                    self.atoms["S"] = atoms[1]
+                
+                self.atoms["C1"] = atoms[2]
+                self.atoms["C2"] = atoms[3]
+                break
+            elif subtype == "Z=C":
+                if molecule.OBMol.GetAtom(atom).GetAtomicNum() == 6:
+                    self.atoms["C"] = atom
+                else:
+                    self.atoms["Z"] = atom
+            elif subtype == "Y-L":
+                self.atoms["Y"] = atom
+                self.atoms["L"] = atoms[1]
+                break
+        
+
 
             #otherwise do some gymnastics
     
