@@ -4,9 +4,10 @@
 Tests all the characteristics of a proton transfer:
     1. Whether the cross-check score is generated accurately for each of the four "tiers" of it (see proton_transfer.py)
     2. Whether rearrangement results in the correct structure
+    3. Whether the proton transfer step works on "Z=C", Z=[O,S,N], as the first step of the "AE" reaction of "Z=C"
 """
-
-from .. import proton_transfer
+# For the "test_ZdoubleBond" test, modify the reaction file to pick the right source for this test to work correctly "source = self.sources[?]""
+from reaction_types import proton_transfer
 import segmentation.segmentation as segmentation
 import structure.similarity as similarity
 from structure.connectivity_table import ConnectivityTable
@@ -52,8 +53,16 @@ class ProtonTransferTest(unittest.TestCase):
         self.very_downhill_reaction_products.addh()
         self.very_downhill_sources = segmentation.label_sources(self.very_downhill_reaction)
         self.very_downhill_sinks = segmentation.label_sinks(self.very_downhill_reaction)
-        
-
+        #CC(C)=O - trying to remove H from 
+        self.z_doubleBond_C = readstring("smi","CC(C)=O.CC[OH2+]")
+        self.z_doubleBond_C.addh()
+        self.z_doubleBond_C.connectivity_table = ConnectivityTable(self.z_doubleBond_C)
+        pka.get_all_pka(self.z_doubleBond_C)
+        self.z_doubleBond_C_products = readstring("smi","C[C+](C)O.CCO")
+        self.z_doubleBond_C_products.addh()
+        self.z_doubleBond_C_sources = segmentation.label_sources(self.z_doubleBond_C)
+        self.z_doubleBond_C_sinks = segmentation.label_sinks(self.z_doubleBond_C)
+    
     def testReallyBad(self):
         reaction = proton_transfer.ProtonTransfer([self.really_bad_sources[0]],[self.really_bad_sinks[0]])
         self.assertTrue(reaction.cross_check() == 0.0)
@@ -77,6 +86,14 @@ class ProtonTransferTest(unittest.TestCase):
         self.assertTrue(reaction.cross_check() == 1.0)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.very_downhill_reaction,self.very_downhill_reaction_products))
+       
+    def test_ZdoubleBond(self):
+        reaction = proton_transfer.ProtonTransfer([self.z_doubleBond_C_sources[1]],[self.z_doubleBond_C_sinks[0]])
+        self.assertTrue(reaction.cross_check() > -10)
+        reaction.rearrange()
+        print "product =",self.z_doubleBond_C
+        print "Actual product =", self.z_doubleBond_C_products
+        self.assertTrue(similarity.is_same_molecule(self.z_doubleBond_C,self.z_doubleBond_C_products))
 
 if __name__ == "__main__":
     unittest.main()
