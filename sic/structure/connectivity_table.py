@@ -20,17 +20,17 @@ class ConnectivityTable(object):
         obmol = self.molecule.OBMol
         start_is_H = obmol.GetAtom(start_atom).GetAtomicNum() == 1 
         end_is_H = obmol.GetAtom(end_atom).GetAtomicNum() == 1
-        set_to_check = frozenset([start_atom,end_atom]) #base case
-        if start_is_H and end_is_H: #special case for NaH
+        set_to_check = frozenset([start_atom,end_atom])        #base case
+        if start_is_H and end_is_H: #special case for NaH      # if the two atoms are H
             set_to_check = frozenset(["H"])
-        elif start_is_H or end_is_H:
+        elif start_is_H or end_is_H:                           # if one is H and the other is not
             if start_is_H:
                 set_to_check = frozenset(["H",end_atom])
             else:
                 set_to_check = frozenset([start_atom,"H"])
-        return set_to_check
+        return set_to_check                                   
 
-    def add_bond(self,start_atom,end_atom):
+    def add_bond(self,start_atom,end_atom,bond_order=1):
         """
         Adds a bond to both connectivity tables.
         """
@@ -38,9 +38,12 @@ class ConnectivityTable(object):
         #since these are defaultdicts of sets, adding twice for double/triple bonds doesn't matter.
         self.connectivity_table[start_atom].add(end_atom)
         self.connectivity_table[end_atom].add(start_atom)
-        #now add to the special one for closer to product
+        #now add to the special one for closer to product        
         set_to_add = self.get_bond_set(start_atom,end_atom)
-        self.closer_to_product_table[set_to_add] += 1
+        #TODO: Is this a bug? Should a double bond add two?
+        #self.closer_to_product_table[set_to_add] += 1    # Doesn't count multible order donds. It just adds 1 if there is a connection between the two  atoms
+        self.closer_to_product_table[set_to_add] += bond_order
+        # Since the frozenset is the key, the bonds including hydrogen will have the same key, so the dictionary value will be updated. Ex: {(1,"H"):3}
 
 
     def remove_bond(self,start_atom,end_atom):
@@ -88,10 +91,11 @@ class ConnectivityTable(object):
         self.molecule = mol #pointer for making add_bond and remove_bond easier
         self.connectivity_table = defaultdict(set) #defaultdicts are the best
         self.closer_to_product_table = defaultdict(int) #defaults to 0
-        for bond in openbabel.OBMolBondIter(self.molecule.OBMol):
-            start_atom = bond.GetBeginAtomIdx()
-            end_atom = bond.GetEndAtomIdx()
-            self.add_bond(start_atom,end_atom)
+        for bond in openbabel.OBMolBondIter(self.molecule.OBMol): #TODO: Does this count a double-bond twice? (See TODO in add_bond()) 
+            start_atom = bond.GetBeginAtomIdx()                   #### "openbabel.OBMolBondIter" counts the "openbabel.OBBond". If its a double bond, it stores this info in the "openbabel.OBBond" object 
+            end_atom = bond.GetEndAtomIdx()                       #### we can get the bond order using the "bond.GetBondOrder()" fnction
+            bond_order = bond.GetBondOrder()
+            self.add_bond(start_atom,end_atom,bond_order)
 
     def __repr__(self):
         """
