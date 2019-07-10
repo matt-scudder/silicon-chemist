@@ -40,16 +40,26 @@ def generate_choices(state):
                 interaction_source = [source]
             if type(sink) != type([]):
                 interaction_sink = [sink]
-            for interaction in possible_interactions:
+            for interaction in possible_interactions:  
                 new_mol = struct_ops.copy_molecule(state.molecule)
                 reaction = reaction_factory.produce_reaction(interaction,interaction_source,interaction_sink,mol=new_mol)
 #                print "Made reaction of type {}, cross check is {}".format(interaction,reaction.cross_check())
                 if reaction.cross_check() > 0: #make sure it is actually a possibility
+                #TODO: Add a method to the Reaction class that tells whether there are two copies of the source or the sink to check
                     new_state = ReactionState(new_mol,parent_state=state,parent_reaction=reaction)
-                    #NOTE: A mysterious bug happens wher eif you don't run this line here, suddenly the molecule attached to your sources is not the same as the one on the ReactionState...
+                    #NOTE: A mysterious bug happens where if you don't run this line here, suddenly the molecule attached to your sources is not the same as the one on the ReactionState...
                     reaction.rearrange()
                     #DO NOT MOVE REACTION.REARRANGE AWAY FROM HERE
                     state.possibilities.add(new_state)
+                    two_products_interactions = ["AE","ADE3","E2"]#Tif the interaction is "AE","ADE3", or "E2", there should be two correct products 
+                    if interaction in two_products_interactions:
+                        new_mol = struct_ops.copy_molecule(state.molecule)
+                        reaction = reaction_factory.produce_reaction(interaction,interaction_source,interaction_sink,mol=new_mol, second_product = True)
+                        print "Made reaction2 of type {}, cross check is {}".format(interaction,reaction.cross_check())
+                        if reaction.cross_check() > 0:
+                            new_state = ReactionState(new_mol,parent_state=state,parent_reaction=reaction)
+                            reaction.rearrange()
+                            state.possibilities.add(new_state)
     #TODO: Make this logging.debug...
 #    print "%s possibilities" % len(state.possibilities)
 #    print "Current state is: %s" % state.molecule.write("can")

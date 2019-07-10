@@ -37,9 +37,11 @@ class Reaction(object):
     which only really stores the cross check and a string denoting the Reaction's type,
     in order to make this class palatable by the browser and usable for teaching
     students.
+
+    # "two_products" = True only for reactions that produce two equally products. This is whenthe Mark rule is equal for both carbons in Elimenations or Additions reactions
     """
     reaction_type = None
-    def __init__(self, sources, sinks):
+    def __init__(self, sources, sinks, second_product = False):  
         """
         Attaches sources and sinks to this object, and sets the initial cross check
         score to a sentinel value, so that cross_check() needs only to be run once.
@@ -47,6 +49,7 @@ class Reaction(object):
         self.sources = sources
         self.sinks = sinks
         self.cross_check_score = -2.0 
+        self.second_product = second_product
 
     def __repr__(self):
         """

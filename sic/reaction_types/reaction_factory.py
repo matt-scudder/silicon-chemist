@@ -24,7 +24,7 @@ from pybel import Molecule
 import utils
 
 
-def produce_reaction(r_type,sources,sinks,mol=False):
+def produce_reaction(r_type,sources,sinks,mol=False,second_product = False):
     """
     Returns the correct reaction type given sources and sinks.
     If a molecule is provided, copies the information in sources and sinks
@@ -52,14 +52,21 @@ def produce_reaction(r_type,sources,sinks,mol=False):
         return EB(new_sources,new_sinks)
     elif r_type == "E1":
         return E1(new_sources,new_sinks)
-    elif r_type == "AE":
+    elif r_type == "AE" and second_product == False:
         return AE(new_sources,new_sinks)
-    elif r_type == "ADE3":
+    elif r_type == "ADE3" and second_product == False:
+        print "ADE3 1 was called "
         return ADE3(new_sources,new_sinks)
     elif r_type == "ADN":
         return ADN(new_sources,new_sinks)
     elif r_type == "NuL":
         return NuL(new_sources,new_sinks)
+    #If we need t oproduce the second_product for Elemination or Addition reactions if Mark rule is equal on both carbons
+    elif r_type == "AE" and second_product == True:
+        return AE(new_sources,new_sinks,second_product=True)
+    elif r_type == "ADE3" and second_product == True:
+        print "ADE3 2 was called "
+        return ADE3(new_sources,new_sinks,second_product=True)
        
     else:
         raise ValueError("Reaction type {} is not supported.".format(r_type))

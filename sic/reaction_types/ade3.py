@@ -10,8 +10,8 @@ import utils
 class ADE3(Reaction):
 
     reaction_type = "ADE3"
-    def __init__(self, sources, sinks):
-        Reaction.__init__(self, sources, sinks)
+    def __init__(self, sources, sinks,second_product = False ):
+        Reaction.__init__(self, sources, sinks,second_product)
         # "mark" should be the carbon with the heighest carbon degree on one side ofthe double bond, and "ant_mark" is the carbon that has less smaller carbon degree
         self.mark  = ""
         self.anti_mark = ""
@@ -21,6 +21,8 @@ class ADE3(Reaction):
         for ADE3, we will assign a threshold to "cross_check_score", so if the "AE" and "ADN" reactions don't pass the cross_check, we prefer "ADE3"
         We still have to check Mark rule for the rearangment function, to decide which of the C1=C2 is mark and anti_mark
         '''
+        print "self.second_product =",self.second_product
+        print " "
         if self.cross_check_score != -2.0:
             return self.cross_check_score
         source = self.sources[0]
@@ -34,13 +36,15 @@ class ADE3(Reaction):
             self.carbon_count2 = properties.get_carbon_degree(source,"C2")
             final_multiplier2 = FACTORS[self.carbon_count2]
             if final_multiplier1 == 0 and final_multiplier2 == 0 :
-                self.cross_check_score = 0.
-            elif final_multiplier1 > final_multiplier2 :
+                self.cross_check_score = 0.                                    
+            elif (final_multiplier1 > final_multiplier2) or ((final_multiplier1 == final_multiplier2) and (self.second_product == True)): 
                 self.cross_check_score = final_multiplier1
+                print"self.cross_check_score2 ADE3 =", self.cross_check_score
                 self.mark = "C1"
                 self.anti_mark = "C2"                     
             else:
                 self.cross_check_score = final_multiplier2
+                print"self.cross_check_score3 ADE3 =", self.cross_check_score
                 self.mark = "C2"
                 self.anti_mark = "C1"                    
         MAGIC_THRESHOLD = 0.3

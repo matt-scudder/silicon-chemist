@@ -11,8 +11,8 @@ from openbabel import OBElementTable
 class AE(Reaction):
 
     reaction_type = "AE"
-    def __init__(self, sources, sinks):
-    	Reaction.__init__(self, sources, sinks)
+    def __init__(self, sources, sinks,second_product = False):
+    	Reaction.__init__(self, sources, sinks, second_product)
     	# For the source "C=C", mark should be the carbon with the heighest carbon degree on one side ofthe double bond, and "ant_mark" is the carbon that has less smaller carbon degree
         self.mark  = ""
         self.anti_mark = ""
@@ -41,12 +41,13 @@ class AE(Reaction):
         if final_multiplier1 == 0 and final_multiplier2 == 0 :
            self.cross_check_score = 0.0
            return self.cross_check_score
-        elif final_multiplier1 > final_multiplier2 :
+        # if final_multiplier1 == final_multiplier2, then we need t oproduce two products
+        elif final_multiplier1 > final_multiplier2  or (final_multiplier1 == final_multiplier2 and self.second_product == True):
             self.cross_check_score = final_multiplier1
             self.mark = "C1"
             self.anti_mark = "C2"
             return self.cross_check_score
-        else:
+        else: # if final_multiplier1 < final_multiplier2 or (final_multiplier1 == final_multiplier2 and self.second_product = False)
             self.cross_check_score = final_multiplier2
             self.mark = "C2"
             self.anti_mark = "C1"           
