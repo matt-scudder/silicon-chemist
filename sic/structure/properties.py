@@ -45,11 +45,10 @@ def get_mapping(reactants,products):
         internal_mapping = {} #to make up for the H groups we excised. Most of the time this will just be a map from a number to itself, but gotta future-proof.
         for i in xrange(len(react_groups)):
             current_group = react_groups[i]
-            number = int(current_group.split(":")[-1].replace("]",""))
+            number = int(current_group.split(":")[-1].replace("]","")) 
             internal_mapping[number] = i+1 #this should usually be the same...
         #now map against products
-        for j in xrange(len(prod_groups)):
-            
+        for j in xrange(len(prod_groups)):  
             current_group = prod_groups[j]
             number = int(current_group.split(":")[-1].replace("]",""))
             if number <= (i+1) :  # check if the number of atoms in the reactants is the same in the products
@@ -59,7 +58,7 @@ def get_mapping(reactants,products):
                 break
     else:
         raise ValueError("Could not find map between reactants and products.")
-    print "Mapping =", (mapping)
+    print "Mapping is made ", (mapping)
     return (mapping,react_map,prod_map) #so that we can use the actual strings as our input and avoid issues with OBabel's buggy SMILES code
 
 
@@ -109,9 +108,12 @@ def get_adjacent_ch(s_obj,carbon_label=False):
     carb_string = carbon_label if carbon_label else "C"
     mol = s_obj.molecule
     obmol = mol.OBMol #typing is hard
+    bonded_atom_dic = {} # a dictionary that stores the adjacent carbon index as a key, and the number of bonded H atoms to this carbon as a value
     for bonded_atom in mol.connectivity_table.get_atoms_bonded(s_obj.get_atom(carb_string)):
-        if len(get_H_bonds(bonded_atom,mol)) > 0:
-            return bonded_atom #return first one found
+        atom = obmol.GetAtom(bonded_atom)
+        if atom.GetAtomicNum() == 6: # checks if the adjacent atom is carbon
+            if len(get_H_bonds(bonded_atom,mol)) > 0:
+                return bonded_atom #return first one found
     return False 
 
 def remap_bonds(table,mapping):
@@ -145,13 +147,12 @@ def get_bond_distance(mol1,mol2,mapping):
     #TODO: Replace all prints with logging.debug stuff
     difference_counter = 0
     #get all bonds in mol1 and in mol2 using our closer_to_product table
-    print "Before remap: {}".format(mol1.connectivity_table.closer_to_product_table)
+    #print "Before remap: {}".format(mol1.connectivity_table.closer_to_product_table)
     mol1_bonds = remap_bonds(mol1.connectivity_table.closer_to_product_table,mapping)
     mol2_bonds = mol2.connectivity_table.closer_to_product_table
-    print "mapping =", mapping
-    print "After remap: {}".format(mol1_bonds)
-    print "Product =", mol2_bonds
-    print "   "
+#    print "mapping =", mapping
+    #print "After remap: {}".format(mol1_bonds)
+    #print "Product =", mol2_bonds
     #print "Product bonds: {}".format(mol2_bonds)
     for bond in mol1_bonds:
         if bond not in mol2_bonds:
