@@ -1,6 +1,7 @@
-# SiCÂ³
+# SiC³
 
 ## Aims
+
 - Build a solid foundation for examining reactivity of a particular set of chemical species
 - Use a more sophisticated algorithm for mechanism decision-making than in the original SiC
 - Create a Web-based graphical user interface that will be friendlier to users than the original SiC
@@ -9,6 +10,7 @@
 
 ### Linux Packages for basic install
 The following dependencies can all be installed via the linux package manager
+
 - `python2-dev`
 - `apache2`
 - `openbabel`
@@ -18,11 +20,13 @@ The following dependencies can all be installed via the linux package manager
 
 ### Python
 The following dependencies are available from [PyPI](https://pypi.org/) and installable via `sudo pip2 install` on linux
+
 - `flask`
 - `sortedcontainers`
 - `openbabel` (requires the `libopenbabel-dev` and `swig` packages to be installed)
 
 ### Java
+
 - [Reaction Decoder Tool](https://github.com/asad/ReactionDecoder) with dependencies, included in this repository.
 
 
