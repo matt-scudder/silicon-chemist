@@ -6,8 +6,8 @@ import structure.struct_ops as struct_ops
 import structure.scoring as scoring
 import structure.properties as properties
 import utils
-from openbabel import OBElementTable
-import pybel
+from openbabel import openbabel
+from openbabel import pybel
 
 class NuL(Reaction):
 
@@ -32,9 +32,8 @@ class NuL(Reaction):
         mol = sink.molecule
         # If the sink type is Y-L, and the two Halogens are different, measure the electronegativity.
         if mol.OBMol.GetAtom(sink.get_atom("Y")).GetAtomicNum() != mol.OBMol.GetAtom(sink.get_atom("L")).GetAtomicNum():
-                periodic_table = OBElementTable()
-                electronegativity_Y = periodic_table.GetElectroNeg(mol.OBMol.GetAtom(sink.get_atom("Y")).GetAtomicNum())
-                electronegativity_L = periodic_table.GetElectroNeg(mol.OBMol.GetAtom(sink.get_atom("L")).GetAtomicNum())
+                electronegativity_Y = OBElements.GetElectroNeg(mol.OBMol.GetAtom(sink.get_atom("Y")).GetAtomicNum())
+                electronegativity_L = OBElements.GetElectroNeg(mol.OBMol.GetAtom(sink.get_atom("L")).GetAtomicNum())
                 #The Halogen with the largest electronegativity value will be the electrophilic_end, and the other halogen will be the nucleophilic_end
                 if electronegativity_Y > electronegativity_L :
                     self.electrophilic_end = "Y" 

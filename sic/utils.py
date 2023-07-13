@@ -4,7 +4,7 @@
 Utilities module for dealing with the idiosyncracies of the various libraries
 involved in the project.
 """
-from pybel import Molecule, Atom
+from openbabel.pybel import Molecule, Atom
 from segmentation.sink import Sink
 from segmentation.source import Source
 from openbabel import OBMolBondIter, OBAtom

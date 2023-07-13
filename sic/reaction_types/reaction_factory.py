@@ -20,7 +20,7 @@ from ade3 import ADE3
 from adn import ADN
 from NuL import NuL
 from structure.struct_ops import copy_molecule
-from pybel import Molecule
+from openbabel.pybel import Molecule
 import utils
 
 

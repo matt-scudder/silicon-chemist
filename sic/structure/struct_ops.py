@@ -5,8 +5,8 @@ Structural operations that are more complex than what can be achieved by single 
 Usually deals with cross-molecule stuff, which OpenBabel is not generally used to do.
 """
 
-import openbabel
-import pybel
+from openbabel import openbabel
+from openbabel import pybel
 import copy
 from structure.connectivity_table import ConnectivityTable
 

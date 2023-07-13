@@ -11,7 +11,7 @@ will go through the species in the pKa
 chart and attempt to map them to the parts of the molecule.
 """
 from pka_chart import PKA_CHART
-import pybel
+from openbabel import pybel
 
 LONE_PAIR_ATOMS = set([6,7,8,9,15,16,17,35,53]) #atomic numbers that can have lone pairs commonly. Excludes boron , this is special.
 

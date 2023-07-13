@@ -13,7 +13,7 @@ import reaction_types.interactions as interactions
 import structure.connectivity_table as connectivity_table
 import structure.properties as properties
 import utils
-import pybel
+from openbabel import pybel
 from reaction_state import ReactionState
 import copy
 import time

@@ -24,7 +24,7 @@ import json
 import sortedcontainers
 import structure.similarity as similarity
 import structure.properties as properties
-from pybel import readstring
+from openbabel.pybel import readstring
 
 class ReactionState(object):
     product = None
