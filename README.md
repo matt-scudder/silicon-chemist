@@ -7,19 +7,20 @@
 
 ##Dependencies
 
-#Python
-- Flask
-- openbabel (which requires the OpenBabel package - see http://openbabel.org/docs/2.3.1/Installation/install.html#compile-bindings for details)
+#Python (installed through pip)
+- flask
+- openbabel (requires the libopenbabel-dev package)
 - sortedcontainers (to automatically keep choices sorted)
 
 #Java
-- ReactionDecoder (https://github.com/asad/ReactionDecoder), included in install, requires modified version.
+- ReactionDecoder (https://github.com/asad/ReactionDecoder), included in install.
 
 #Linux Packages for basic install
-- python-dev
+- python2-dev
 - apache2
-- openbabel
-- python-openbabel (so that the Pybel bindings get compiled.)
+- libopenbabel-dev
+- swig
+- default-jre
 
 #Optional Linux Packages required for server
 - apache2
