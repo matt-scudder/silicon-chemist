@@ -4,7 +4,7 @@
 Methods for getting properties of a structure rather than performing operations on it.
 Examines the degree of a carbon, for example.
 """
-import subprocess
+from subprocess import Popen, PIPE
 import utils
 import re
 
@@ -20,17 +20,28 @@ def get_mapping(reactants,products):
     mapping = {}
     #write out reactants/products string
     input_smiles = "%s>>%s" % (utils.write_mol(reactants),utils.write_mol(products))
-    AAM_output = subprocess.check_output(["java","-jar","%s/usableRDT.jar"%REACTION_DECODER_PATH,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"])
-    found_mapping = False
+    proc = Popen(["java","-jar","%s/rdt-2.5.0-SNAPSHOT-jar-with-dependencies.jar"%REACTION_DECODER_PATH,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"], stdout=PIPE, stderr=PIPE)
+    output, error = proc.communicate()
     mapping_string = None
-    for line in AAM_output.split("\n"):
-        if "SELECTED AAM MAPPING" in line:
-            found_mapping = True
-            continue
-        if found_mapping:
-            mapping_string = line
-            break
-    print (AAM_output)
+    if not error:
+        if output:
+            last_output_line = output.strip('\n').split('\n')[-1]
+            path_prefix = "Output is presented in text format: "
+            if last_output_line.startswith(path_prefix):
+                AAM_text_file_path = last_output_line[len(path_prefix):]
+
+                # get mapping string out of ECBLAST_smiles_AAM.txt file
+                f = open(AAM_text_file_path)
+                file_content = f.readlines()
+                f.close()
+                line_before_aam_mapping = "SELECTED AAM MAPPING"
+                for i, line in enumerate(file_content):
+                    if line.startswith(line_before_aam_mapping):
+                        # return the next line with the result 
+                        mapping_string = file_content[i+1]
+                        print(line_before_aam_mapping)
+                        print(mapping_string)
+                        break
     if mapping_string:
         #remove hydrogen-only maps - these are unlikely but they do come up and mess up the rest of our procedure
         #also I'm not digging into their code to figure out why they do this only *sometimes*, I'm mad
