@@ -18,11 +18,11 @@ class ADN(Reaction):
         self.S_atom = ""
  
     def cross_check(self):
-        '''
+        """
         for ADN, Check the ΔpKa rule: :
         pKaBH of the formed carbanin atom should be less than 10 units more basic than the incoming nucleophile, or:
         pKaBH(Nu) - pKaBH(C-) < -10           
-        '''
+        """
         if self.cross_check_score != -2.0 :
            return self.cross_check_score
         nucleophile = self.sources[0]

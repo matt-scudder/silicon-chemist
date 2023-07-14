@@ -1,6 +1,6 @@
-'''
+"""
 Carries out the Ae, Electrophile Addition to a Multiple Bond, reaction.
-'''
+"""
 from .reaction import Reaction
 from structure import struct_ops, properties
 from openbabel.openbabel import GetElectroNeg
@@ -20,11 +20,11 @@ class AE(Reaction):
         self.nucleophilic_end = ""
 
     def cross_check(self):
-        '''
+        """
         for AE, check:
             The Mark. rule for each carbon on the edges of the double bond to check"The stability of the Carboncation". 
             Then compare the two stabilities and determine which carbon will be the "Carboncation" if the crosscheck is not 0.  
-        '''
+        """
         if self.cross_check_score != -2.0 :
            return self.cross_check_score
         source = self.sources[0]

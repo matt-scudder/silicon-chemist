@@ -1,6 +1,6 @@
-'''
+"""
 Carries out the Ade3 reaction.
-'''
+"""
 from .reaction import Reaction
 from structure import struct_ops, properties
 
@@ -14,10 +14,10 @@ class ADE3(Reaction):
         self.anti_mark = ""
 
     def cross_check(self):
-        '''
+        """
         for ADE3, we will assign a threshold to "cross_check_score", so if the "AE" and "ADN" reactions don't pass the cross_check, we prefer "ADE3"
         We still have to check Mark rule for the rearangment function, to decide which of the C1=C2 is mark and anti_mark
-        '''
+        """
         print("self.second_product =",self.second_product)
         print(" ")
         if self.cross_check_score != -2.0:
