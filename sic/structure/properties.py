@@ -22,28 +22,28 @@ def get_mapping(reactants,products):
     input_smiles = "%s>>%s" % (utils.write_mol(reactants),utils.write_mol(products))
     jar_path = f"{Path(__file__).parent.parent}/{REACTION_DECODER_JAR}"
     if not Path(jar_path).exists():
-        raise RuntimeError(f"Can not find ReactionDecoder JAR", jar_path)
-    proc = run(["java","-jar",jar_path,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"], capture_output=True, text=True)
+        raise RuntimeError("Can not find ReactionDecoder JAR", jar_path)
+    rdt_process = run(["java","-jar",jar_path,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"], capture_output=True, text=True)
     mapping_string = None
-    if not proc.stderr:
-        if proc.stdout:
-            last_output_line = proc.stdout.strip('\n').split('\n')[-1]
-            path_prefix = "Output is presented in text format: "
-            if last_output_line.startswith(path_prefix):
-                AAM_text_file_path = last_output_line[len(path_prefix):]
-
-                # get mapping string out of ECBLAST_smiles_AAM.txt file
-                f = open(AAM_text_file_path)
-                file_content = f.readlines()
-                f.close()
-                line_before_aam_mapping = "SELECTED AAM MAPPING"
-                for i, line in enumerate(file_content):
-                    if line.startswith(line_before_aam_mapping):
-                        # return the next line with the result 
-                        mapping_string = file_content[i+1]
-                        print(line_before_aam_mapping)
-                        print(mapping_string)
-                        break
+    if rdt_process.stderr:
+        raise RuntimeError("Error from Reaction Decoder", rdt_process.stderr)
+    if rdt_process.stdout:
+        path_prefix = "Output is presented in text format: "
+        AAM_text_file_path = None
+        for stdout_line in rdt_process.stdout.split('\n'):
+            if stdout_line.startswith(path_prefix):
+                AAM_text_file_path = stdout_line[len(path_prefix):]
+                break
+        # get mapping string out of ECBLAST_smiles_AAM.txt file
+        if not AAM_text_file_path:
+            message = f"No output text file path found in RDT stdout. Looking for \"{path_prefix}\""
+            raise RuntimeError(message, rdt_process.stdout)
+        with open(AAM_text_file_path) as f:
+            file_content = f.readlines()
+            line_before_aam_mapping = "SELECTED AAM MAPPING\n"
+            mapping_index = file_content.index(line_before_aam_mapping) + 1
+            mapping_string = file_content[mapping_index]
+            print(line_before_aam_mapping + mapping_string)
     if mapping_string:
         #remove hydrogen-only maps - these are unlikely but they do come up and mess up the rest of our procedure
         #also I'm not digging into their code to figure out why they do this only *sometimes*, I'm mad
@@ -67,7 +67,7 @@ def get_mapping(reactants,products):
             if number <= (i+1) :  # check if the number of atoms in the reactants is the same in the products
                 mapping[internal_mapping[number]] = j+1 #j+1 is the atom index in the product. internal_mapping[number] is the atom index in the reactant
             else:
-                print("Ops! Wrong input. Please try again -_-")
+                print("Oops! Wrong input. Please try again -_-")
                 break
     else:
         raise ValueError("Could not find map between reactants and products.")

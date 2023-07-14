@@ -10,9 +10,6 @@ of SiC³, they can import the libraries used here to produce results.
 As of now, this program only calls the old SiC's command-line arguments.
 """
 import argparse
-import os #for making/destroying files for the sake of SiC, whose -I argument works a little oddly.
-import re #for "arbitrary delimiter" support
-import sys #for exit codes
 from sic_io import sic_io#for parsing SiC-format input files
 import logging #for debug logs - worry about this later
 from brain import decision_engine
@@ -25,6 +22,10 @@ def find_mechanism(reac,prod,solv=False):
     other programs (such as SiGC) can access the full functionality without
     having to import a bunch of stuff.
     """
+    if not reac: 
+        return "No reactants added."
+    if not prod: 
+        return "No products added."
     reactants = sic_io.create_state_smiles(reac)
     products = sic_io.create_state_smiles(prod)
     solvent = sic_io.create_state_smiles(solv) if solv else False
@@ -60,9 +61,10 @@ if __name__ == "__main__":
         if args.input_file:
             sic_input = open(args.input_file) #if there's an exception the user should see it, catching it does no good
             react_obj = sic_io.parse_sic_file(sic_input)
+            sic_input.close()
         else:
             print("Reactants and Products need to be provided, whether by input file or by arguments, in order for SiC³ to find a mechanism.")
-            sys.exit(1)
+            exit(1)
     print(find_mechanism(react_obj["reactants"],react_obj["products"],solv=(react_obj["solvent"] if "solvent" in react_obj else False)))
 
 
