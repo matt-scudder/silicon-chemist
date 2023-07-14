@@ -28,6 +28,6 @@ The following dependencies are available from [PyPI](https://pypi.org/) and inst
 
 
 ## How to run this program
-To run the server, run "python2 runserver.py" in the directory which contains it.
+To run the server, run "python3 -m  sic.runserver" in the root of the repository.
 Do not attempt to run sic/sigc/server.py directly; due to the use of relative path imports, this is NOT viable, especially if you want to run the server with debug mode on.
 Always use runserver.py and update the settings for the server application there (see Flask docs for details).
