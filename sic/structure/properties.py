@@ -24,13 +24,16 @@ def get_mapping(reactants,products):
     mapping = {}
     #write out reactants/products string
     input_smiles = "%s>>%s" % (utils.write_mol(reactants),utils.write_mol(products))
-    jar_path = f"{Path(__file__).parent.parent}/{REACTION_DECODER_JAR}"
+    jar_dir = Path(__file__).parent.parent
+    jar_path = jar_dir.joinpath(REACTION_DECODER_JAR)
     if not Path(jar_path).exists():
         raise RuntimeError("Can not find ReactionDecoder JAR", jar_path)
-    rdt_process = run(["java","-jar",jar_path,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"], capture_output=True, text=True)
+    rdt_process = run(["java","-jar",jar_path,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"], capture_output=True, text=True, cwd=jar_dir)
     mapping_string = None
     if rdt_process.stderr:
-        raise RuntimeError("Error from Reaction Decoder", rdt_process.stderr)
+        # TODO: so far seen output here with uneven numbers of atoms,
+        # this could probably be checked prior to calling RDT, and there may be other possible checks.
+        raise ValueError("Error from Reaction Decoder:\n" + rdt_process.stderr)
     if rdt_process.stdout:
         path_prefix = "Output is presented in text format: "
         AAM_text_file_path = None

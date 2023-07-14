@@ -12,6 +12,7 @@ As of now, this program only calls the old SiC's command-line arguments.
 
 import argparse
 import logging #for debug logs - worry about this later
+import traceback
 
 from sic.brain import decision_engine
 from sic.sic_io import sic_io#for parsing SiC-format input files
@@ -35,8 +36,9 @@ def find_mechanism(reac,prod,solv=False):
     try:
         mech = decision_engine.get_mechanism(reactants,products,solvent=solvent)
     except ValueError as e:
-        print(e)
-        return "Error encountered while writing up mechanism."
+        traceback.print_exception(e)
+        # TODO: add more debugging levels so this doesn't have to print exceptions to the interface.
+        return "ValueError Exception Caught:\n" + str(e).replace('\\n', '\n')
     return sic_io.write_up_mechanism(mech,solvent=solvent)
 
 #not sure why you'd want to import this package, but it's good practice to wrap all argparse calls in this
