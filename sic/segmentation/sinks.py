@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 SMARTS expressions for identifying sinks.
 Less complex data structure than for pKa since we have to check all source and sink types

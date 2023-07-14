@@ -1,12 +1,9 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Carries out the proton transfer reaction.
 """
-from reaction import Reaction
-import structure.struct_ops as struct_ops
-import pka.pka as pka
-import structure.scoring as scoring
+from .reaction import Reaction
+from structure import struct_ops, scoring
+from pka import pka
 
 class ProtonTransfer(Reaction):
     """
@@ -35,12 +32,12 @@ class ProtonTransfer(Reaction):
             #TODO: Update this code so that it supports more than just Y, maybe use a dict? H-L works always.            
             pKa_HA = pka.get_pka(sink.get_atom("H"),sink.molecule)            
             pKa_BH= pka.get_pka(source.get_atom(source_atom),source.molecule)
-            print "pKa_BH =",pKa_BH
-            print "pKa_HA =", pKa_HA
+            print("pKa_BH =",pKa_BH)
+            print("pKa_HA =", pKa_HA)
             if pKa_BH is None or pKa_HA is None:
                 #None generally means either "infinite" or "not in our pKa chart".
-                #If running debug mode, print which are None
-#                print "None pKa encountered. pKaBHNu is: {} (atom index {}), pKaHA is: {} (atom index {})".format(pKa_BH,source.get_atom("Y"),pKa_HA,sink.get_atom("H"))
+                #If running debug mode, print(which are None)
+#                print("None pKa encountered. pKaBHNu is: {} (atom index {}), pKaHA is: {} (atom index {})".format(pKa_BH,source.get_atom("Y"),pKa_HA,sink.get_atom("H")))
                 self.cross_check_score = 0.0
                 return self.cross_check_score
             dpKa = pKa_BH - pKa_HA
@@ -62,11 +59,11 @@ class ProtonTransfer(Reaction):
         sink = self.sinks[0]
         source_sbtype = source.subtype
         source_atom = "Y" if source_sbtype == "Y" else "Z"
-        #print "source ",source.molecule
+        #print("source ",source.molecule)
         #TODO: Make this work so it supports more than just Y, see cross_check above.
         #make Y-H bond
         struct_ops.make_bond(source.get_atom(source_atom),sink.get_atom("H"),source.molecule)
-        #print "make Y-H bond = ",source.molecule
+        #print("make Y-H bond = ",source.molecule)
         #break H-L bond
         struct_ops.break_bond(sink.get_atom("H"),sink.get_atom("L"),source.molecule)
         if source_sbtype == "Z=C":

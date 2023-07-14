@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 import unittest
 import pka.pka as pka
 import reaction_types.reaction_factory as reaction_factory

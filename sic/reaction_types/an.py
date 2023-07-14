@@ -1,12 +1,10 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Carries out an AN (association to positively-charged carbon center)
 reaction. Currently is just a 1.0 score, since
 rearrangements are not implemented.
 """
-from reaction import Reaction
-import structure.struct_ops as struct_ops
+from .reaction import Reaction
+from structure import struct_ops
 
 class AN(Reaction):
     """

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 While the sources and sinks "modules" contain the actual expressions used
 for matching, this module contains the logic used to actually perform the
@@ -7,10 +5,10 @@ matching on a molecule and generate the data structures other parts of SiC³
 will use to make sure things are rearranged properly when a reaction occurs.
 """
 
-from sources import SOURCES
-from sinks import SINKS
-import source
-import sink
+from .sources import SOURCES
+from .sinks import SINKS
+from . import source
+from . import sink
 from openbabel import pybel
 
 #TODO: Potentially use the fact that only a very small section of the molecule changes

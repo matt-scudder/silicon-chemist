@@ -1,14 +1,9 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Carries out the "ADN" reaction.
 """
-from reaction import Reaction
-import structure.struct_ops as struct_ops
-import pka.pka as pka
-import structure.scoring as scoring
-import structure.properties as properties
-import utils
+from .reaction import Reaction
+from pka import pka
+from structure import scoring, struct_ops
 
 class ADN(Reaction):
 

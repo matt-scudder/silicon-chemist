@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Factory pattern function that just gives out the right Reaction given an input string.
 This is done because extending the system to take into account all the reaction types as we add them
@@ -8,17 +6,17 @@ could get extremely annoying.
 NOTE: The reaction types given MUST be the same as the ones in interactions.py!
 """
 
-from proton_transfer import ProtonTransfer
-from sn2 import SN2 
-from an import AN
-from dn import DN
-from e2 import E2
-from eb import EB
-from e1 import E1
-from ae import AE
-from ade3 import ADE3
-from adn import ADN
-from NuL import NuL
+from .proton_transfer import ProtonTransfer
+from .sn2 import SN2 
+from .an import AN
+from .dn import DN
+from .e2 import E2
+from .eb import EB
+from .e1 import E1
+from .ae import AE
+from .ade3 import ADE3
+from .adn import ADN
+from .NuL import NuL
 from structure.struct_ops import copy_molecule
 from openbabel.pybel import Molecule
 import utils
@@ -55,7 +53,7 @@ def produce_reaction(r_type,sources,sinks,mol=False,second_product = False):
     elif r_type == "AE" and second_product == False:
         return AE(new_sources,new_sinks)
     elif r_type == "ADE3" and second_product == False:
-        print "ADE3 1 was called "
+        print("ADE3 1 was called ")
         return ADE3(new_sources,new_sinks)
     elif r_type == "ADN":
         return ADN(new_sources,new_sinks)
@@ -65,7 +63,7 @@ def produce_reaction(r_type,sources,sinks,mol=False,second_product = False):
     elif r_type == "AE" and second_product == True:
         return AE(new_sources,new_sinks,second_product=True)
     elif r_type == "ADE3" and second_product == True:
-        print "ADE3 2 was called "
+        print("ADE3 2 was called ")
         return ADE3(new_sources,new_sinks,second_product=True)
        
     else:

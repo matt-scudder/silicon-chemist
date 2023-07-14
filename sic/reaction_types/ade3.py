@@ -1,11 +1,8 @@
 '''
 Carries out the Ade3 reaction.
 '''
-from reaction import Reaction
-import structure.struct_ops as struct_ops
-import structure.scoring as scoring
-import structure.properties as properties
-import utils
+from .reaction import Reaction
+from structure import struct_ops, properties
 
 class ADE3(Reaction):
 
@@ -21,8 +18,8 @@ class ADE3(Reaction):
         for ADE3, we will assign a threshold to "cross_check_score", so if the "AE" and "ADN" reactions don't pass the cross_check, we prefer "ADE3"
         We still have to check Mark rule for the rearangment function, to decide which of the C1=C2 is mark and anti_mark
         '''
-        print "self.second_product =",self.second_product
-        print " "
+        print("self.second_product =",self.second_product)
+        print(" ")
         if self.cross_check_score != -2.0:
             return self.cross_check_score
         source = self.sources[0]
@@ -39,12 +36,12 @@ class ADE3(Reaction):
                 self.cross_check_score = 0.                                    
             elif (final_multiplier1 > final_multiplier2) or ((final_multiplier1 == final_multiplier2) and (self.second_product == True)): 
                 self.cross_check_score = final_multiplier1
-                print"self.cross_check_score2 ADE3 =", self.cross_check_score
+                print("self.cross_check_score2 ADE3 =", self.cross_check_score)
                 self.mark = "C1"
                 self.anti_mark = "C2"                     
             else:
                 self.cross_check_score = final_multiplier2
-                print"self.cross_check_score3 ADE3 =", self.cross_check_score
+                print("self.cross_check_score3 ADE3 =", self.cross_check_score)
                 self.mark = "C2"
                 self.anti_mark = "C1"                    
         MAGIC_THRESHOLD = 0.3

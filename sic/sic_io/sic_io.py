@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Handles all File I/O and related functions.
 Primarily used for convenience in sic.py.

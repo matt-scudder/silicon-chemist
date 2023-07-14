@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Tests whether the make_bond and break_bond methods work for reactions that move a single atom,
 e.g. proton transfers.

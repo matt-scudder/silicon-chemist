@@ -1,19 +1,16 @@
 '''
 Carries out the Ae, Electrophile Addition to a Multiple Bond, reaction.
 '''
-from reaction import Reaction
-import structure.struct_ops as struct_ops
-import structure.scoring as scoring
-import structure.properties as properties
-import utils
-from openbabel import openbabel
+from .reaction import Reaction
+from structure import struct_ops, properties
+from openbabel.openbabel import GetElectroNeg
 
 class AE(Reaction):
 
     reaction_type = "AE"
     def __init__(self, sources, sinks,second_product = False):
-    	Reaction.__init__(self, sources, sinks, second_product)
-    	# For the source "C=C", mark should be the carbon with the heighest carbon degree on one side ofthe double bond, and "ant_mark" is the carbon that has less smaller carbon degree
+        Reaction.__init__(self, sources, sinks, second_product)
+        # For the source "C=C", mark should be the carbon with the heighest carbon degree on one side ofthe double bond, and "ant_mark" is the carbon that has less smaller carbon degree
         self.mark  = ""
         self.anti_mark = ""
         #Since there are two types of sinks, H-L and Y-L, we will define the electrophilic_end of the sink to be eaither H or Y depending on the sink type
@@ -26,7 +23,7 @@ class AE(Reaction):
         '''
         for AE, check:
             The Mark. rule for each carbon on the edges of the double bond to check"The stability of the Carboncation". 
-        	Then compare the two stabilities and determine which carbon will be the "Carboncation" if the crosscheck is not 0.  
+            Then compare the two stabilities and determine which carbon will be the "Carboncation" if the crosscheck is not 0.  
         '''
         if self.cross_check_score != -2.0 :
            return self.cross_check_score
@@ -59,8 +56,8 @@ class AE(Reaction):
         mol = sink.molecule
         # If the sink type is Y-L, and the two Halogens are different, measure the electronegativity.
         if sink_subtype == "Y-L" and mol.OBMol.GetAtom(sink.get_atom("Y")).GetAtomicNum() != mol.OBMol.GetAtom(sink.get_atom("L")).GetAtomicNum():
-                electronegativity_Y = OBElements.GetElectroNeg(mol.OBMol.GetAtom(sink.get_atom("Y")).GetAtomicNum())
-                electronegativity_L = OBElements.GetElectroNeg(mol.OBMol.GetAtom(sink.get_atom("L")).GetAtomicNum())
+                electronegativity_Y = GetElectroNeg(mol.OBMol.GetAtom(sink.get_atom("Y")).GetAtomicNum())
+                electronegativity_L = GetElectroNeg(mol.OBMol.GetAtom(sink.get_atom("L")).GetAtomicNum())
                 #The Halogen with the largest electronegativity value will be the electrophilic_end, and the other halogen will be the nucleophilic_end
                 if electronegativity_Y > electronegativity_L :
                     self.electrophilic_end = "Y" 
@@ -71,11 +68,11 @@ class AE(Reaction):
         return self.cross_check_score
 
     def rearrange(self):
-    	# make C-H or C-Y bond ,and adjacent C-L bond
-    	# break C=C double bond and the H-L bond or the Y-L
-    	double_bond = self.sources[0] # C=C
-    	sink = self.sinks[0] # H-L for now, update it for more sinks in the future
-    	mol = double_bond.molecule
-    	struct_ops.break_bond(double_bond.get_atom(self.mark),double_bond.get_atom(self.anti_mark),mol) # break C=C double bond	
-    	struct_ops.break_bond(sink.get_atom(self.nucleophilic_end),sink.get_atom(self.electrophilic_end),mol) # 
-    	struct_ops.make_bond(double_bond.get_atom(self.anti_mark) ,sink.get_atom(self.nucleophilic_end),mol) 
+        # make C-H or C-Y bond ,and adjacent C-L bond
+        # break C=C double bond and the H-L bond or the Y-L
+        double_bond = self.sources[0] # C=C
+        sink = self.sinks[0] # H-L for now, update it for more sinks in the future
+        mol = double_bond.molecule
+        struct_ops.break_bond(double_bond.get_atom(self.mark),double_bond.get_atom(self.anti_mark),mol) # break C=C double bond
+        struct_ops.break_bond(sink.get_atom(self.nucleophilic_end),sink.get_atom(self.electrophilic_end),mol) #
+        struct_ops.make_bond(double_bond.get_atom(self.anti_mark) ,sink.get_atom(self.nucleophilic_end),mol)

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 This class tests whether we get the right maps for particular molecules.
 When you encounter a particularly problematic map, or bugs with AAMTool,

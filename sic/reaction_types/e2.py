@@ -1,11 +1,8 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Carries out an E2 reaction.
 """
-from reaction import Reaction 
-import structure.struct_ops as struct_ops
-import structure.properties as properties
+from .reaction import Reaction 
+from structure import struct_ops, properties
 
 class E2(Reaction):
     """

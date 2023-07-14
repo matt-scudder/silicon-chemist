@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Base class that all reaction types extend.
 Defines basic methods that all reaction types
@@ -74,11 +72,11 @@ class Reaction(object):
         raise NotImplementedError("This is an abstract class and should not be used.")
 
     def to_json_dict(self):
-	"""
-	Creates a dictionary that will be equivalent to a JSON representation of this object,
-	for regeneration in the browser.
-	"""
-	json_dict = {}
-	json_dict["reaction_type"] = self.reaction_type
-	json_dict["cross_check_score"] = self.cross_check_score
-	return json_dict
+        """
+        Creates a dictionary that will be equivalent to a JSON representation of this object,
+        for regeneration in the browser.
+        """
+        json_dict = {}
+        json_dict["reaction_type"] = self.reaction_type
+        json_dict["cross_check_score"] = self.cross_check_score
+        return json_dict

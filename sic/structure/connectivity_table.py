@@ -1,7 +1,5 @@
-#!/usr/bin/python
-#coding=utf-8
 from collections import defaultdict #to make life easier
-import openbabel
+from openbabel import openbabel
 """
 Contains the ConnectivityTable class,
 which carries all the information necessary to determine
@@ -131,7 +129,7 @@ class ConnectivityTable(object):
         """
         Returns all the unidirectional bonds, i.e. the bonds as listed in the closer_to_product_table.
         """
-        return self.closer_to_product_table.keys()
+        return list(self.closer_to_product_table.keys())
 
     def get_bond_degree(self,bondset):
         """
@@ -140,7 +138,6 @@ class ConnectivityTable(object):
         originating at the other atom.
         """
         return self.closer_to_product_table[bondset]
-
 
     def get_bonds_to_atomicnum(self,atom_idx,atomicnum):
         """
@@ -158,4 +155,4 @@ class ConnectivityTable(object):
         Returns the number of hydrogens attached to a particular atom.
         Convenience function.
         """
-        return get_bonds_to_atomicnum(atom_idx,1)
+        return self.get_bonds_to_atomicnum(atom_idx,1)

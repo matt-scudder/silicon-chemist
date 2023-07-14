@@ -1,10 +1,8 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Methods for getting properties of a structure rather than performing operations on it.
 Examines the degree of a carbon, for example.
 """
-from subprocess import Popen, PIPE
+from subprocess import run
 import utils
 import re
 
@@ -20,12 +18,11 @@ def get_mapping(reactants,products):
     mapping = {}
     #write out reactants/products string
     input_smiles = "%s>>%s" % (utils.write_mol(reactants),utils.write_mol(products))
-    proc = Popen(["java","-jar","%s/rdt-2.5.0-SNAPSHOT-jar-with-dependencies.jar"%REACTION_DECODER_PATH,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"], stdout=PIPE, stderr=PIPE)
-    output, error = proc.communicate()
+    proc = run(["java","-jar","%s/rdt-2.5.0-SNAPSHOT-jar-with-dependencies.jar"%REACTION_DECODER_PATH,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"], capture_output=True, text=True)
     mapping_string = None
-    if not error:
-        if output:
-            last_output_line = output.strip('\n').split('\n')[-1]
+    if not proc.stderr:
+        if proc.stdout:
+            last_output_line = proc.stdout.strip('\n').split('\n')[-1]
             path_prefix = "Output is presented in text format: "
             if last_output_line.startswith(path_prefix):
                 AAM_text_file_path = last_output_line[len(path_prefix):]
@@ -54,12 +51,12 @@ def get_mapping(reactants,products):
         react_groups = re.findall("\[[^\]]+\]",react_map)
         prod_groups = re.findall("\[[^\]]+\]",prod_map)
         internal_mapping = {} #to make up for the H groups we excised. Most of the time this will just be a map from a number to itself, but gotta future-proof.
-        for i in xrange(len(react_groups)):
+        for i in range(len(react_groups)):
             current_group = react_groups[i]
             number = int(current_group.split(":")[-1].replace("]","")) 
             internal_mapping[number] = i+1 #this should usually be the same...
         #now map against products
-        for j in xrange(len(prod_groups)):  
+        for j in range(len(prod_groups)):  
             current_group = prod_groups[j]
             number = int(current_group.split(":")[-1].replace("]",""))
             if number <= (i+1) :  # check if the number of atoms in the reactants is the same in the products
@@ -69,7 +66,7 @@ def get_mapping(reactants,products):
                 break
     else:
         raise ValueError("Could not find map between reactants and products.")
-    print "Mapping is made ", (mapping)
+    print("Mapping is made ", (mapping))
     return (mapping,react_map,prod_map) #so that we can use the actual strings as our input and avoid issues with OBabel's buggy SMILES code
 
 
@@ -161,7 +158,7 @@ def get_bond_distance(mol1,mol2,mapping):
     #print "Before remap: {}".format(mol1.connectivity_table.closer_to_product_table)
     mol1_bonds = remap_bonds(mol1.connectivity_table.closer_to_product_table,mapping)
     mol2_bonds = mol2.connectivity_table.closer_to_product_table
-#    print "mapping =", mapping
+    #print "mapping =", mapping
     #print "After remap: {}".format(mol1_bonds)
     #print "Product =", mol2_bonds
     #print "Product bonds: {}".format(mol2_bonds)

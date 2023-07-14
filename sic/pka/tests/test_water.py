@@ -1,11 +1,9 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Tests whether the different protonation states of water have their pKa correctly identified.
 """
 
 import unittest
-from pybel import readstring
+from openbabel.pybel import readstring
 from .. import pka_chart,pka
 
 class WaterPkaTest(unittest.TestCase):

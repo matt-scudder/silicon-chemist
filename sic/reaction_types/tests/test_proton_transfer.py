@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Tests all the characteristics of a proton transfer:
     1. Whether the cross-check score is generated accurately for each of the four "tiers" of it (see proton_transfer.py)
@@ -8,12 +6,12 @@ Tests all the characteristics of a proton transfer:
 """
 # For the "test_ZdoubleBond" test, modify the reaction file to pick the right source for this test to work correctly "source = self.sources[?]""
 from reaction_types import proton_transfer
-import segmentation.segmentation as segmentation
-import structure.similarity as similarity
+from segmentation import segmentation
+from structure import similarity
 from structure.connectivity_table import ConnectivityTable
-import pka.pka as pka
+from pka import pka
 import unittest
-from pybel import readstring
+from openbabel.pybel import readstring
 
 class ProtonTransferTest(unittest.TestCase):
     def setUp(self):
@@ -91,8 +89,8 @@ class ProtonTransferTest(unittest.TestCase):
         reaction = proton_transfer.ProtonTransfer([self.z_doubleBond_C_sources[1]],[self.z_doubleBond_C_sinks[0]])
         self.assertTrue(reaction.cross_check() > -10)
         reaction.rearrange()
-        print "product =",self.z_doubleBond_C
-        print "Actual product =", self.z_doubleBond_C_products
+        print("product =",self.z_doubleBond_C)
+        print("Actual product =", self.z_doubleBond_C_products)
         self.assertTrue(similarity.is_same_molecule(self.z_doubleBond_C,self.z_doubleBond_C_products))
 
 if __name__ == "__main__":

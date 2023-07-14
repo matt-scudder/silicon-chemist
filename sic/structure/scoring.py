@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 import math
 def score_pka(limit,k,dpka):
     """

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 ReactionState forms the tree-like structure that holds all of the states involved in the reaction.
 The entire tree needs to be kept in order to later on tell students whether their choice was the same as they did,
@@ -20,10 +18,8 @@ on that SMILES string. This new Molecule should then be rearranged before creati
 This class also contains utility functions to check whether a reaction state is closer to product than its parent,
 and whether it matches the product exactly.
 """
-import json
 import sortedcontainers
-import structure.similarity as similarity
-import structure.properties as properties
+from structure import similarity, properties
 from openbabel.pybel import readstring
 
 class ReactionState(object):
@@ -64,8 +60,8 @@ class ReactionState(object):
         """
         json_dict = {}
         json_dict["parent_reaction"] = self.parent_reaction.to_json_dict() 
-        json_dict["state"] = molecule.write("can") #this state need not be preserved up top
-        json_dict["possibilities"] = map(lambda child: child.to_json_dict(), self.possibilities)
+        json_dict["state"] = self.molecule.write("can") #this state need not be preserved up top
+        json_dict["possibilities"] = [child.to_json_dict() for child in self.possibilities]
         return json_dict
 
     def matches_product(self):

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 This unit test tests whether the halogen acids and their conjugate bases
 are identified properly as sources and sinks.

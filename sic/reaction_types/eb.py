@@ -1,13 +1,8 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Carries out a beta elimination (second step of E1cb).
 """
-from reaction import Reaction 
-import structure.struct_ops as struct_ops
-import structure.properties as properties
-import pka.pka as pka
-import structure.scoring as scoring
+from .reaction import Reaction 
+from structure import struct_ops
 
 class EB(Reaction):
     """

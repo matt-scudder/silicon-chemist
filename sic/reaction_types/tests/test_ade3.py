@@ -1,13 +1,8 @@
 import unittest
-import pybel
-from pybel import readstring,Smarts
-import structure.similarity as similarity
-import structure.properties as properties
-import structure.connectivity_table as connectivity_table
-import segmentation.segmentation as segmentation
-import segmentation.sources as sources
-import segmentation.source as source
-import reaction_types.reaction_factory as reaction_factory
+from openbabel.pybel import readstring
+from structure import similarity, connectivity_table
+from segmentation import segmentation
+from reaction_types import reaction_factory
 
 # Checks weather "ADE3" reaction works on "C=C" by checking if we can convert "CC=C.I" to "CC(I)C" assuming that the "reaction.cross_check() = 0.3"
 # Checks weather "ADE3" reaction works on "Z=C" by checking if we can convert "CC(C)=[O].Cl" to "CC(C)(Cl)O" assuming that the "reaction.cross_check() = 0.3"
@@ -41,8 +36,8 @@ class ADE3test(unittest.TestCase):
         reaction = reaction_factory.produce_reaction("ADE3",self.Z_double_sources,self.Z_double_sinks)
         self.assertTrue(reaction.cross_check() == 0.3)
         reaction.rearrange()
-        print "product =", self.Z_double
-        print "Actual product =", self.Z_double_products
+        print("product =", self.Z_double)
+        print("Actual product =", self.Z_double_products)
         self.assertTrue(similarity.is_same_molecule(self.Z_double,self.Z_double_products))
     
 if __name__ == "__main__":

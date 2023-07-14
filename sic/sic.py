@@ -1,5 +1,4 @@
-#!/usr/bin/python
-#coding=utf-8
+#!/usr/bin/env python3
 """
 This is the command-line interface for SiC³. It takes as input the same options as the
 old SiC, and produces similar output on request.
@@ -18,8 +17,6 @@ from sic_io import sic_io#for parsing SiC-format input files
 import logging #for debug logs - worry about this later
 from brain import decision_engine
 
-SIC_PATH = "/home/sic/sic/sic" #that's just sic.
-
 def find_mechanism(reac,prod,solv=False):
     """
     Where the magic happens. Finds the mechanism by copying the current reaction state into a
@@ -28,11 +25,9 @@ def find_mechanism(reac,prod,solv=False):
     other programs (such as SiGC) can access the full functionality without
     having to import a bunch of stuff.
     """
-    #first convert them to our "state SMILES". SMILES is ASCII so make sure to change into that,
-    #specifically because OBabel will choke on Unicode since it doesn't match std::string.
-    reactants = sic_io.create_state_smiles(reac).encode("ascii","ignore")
-    products = sic_io.create_state_smiles(prod).encode("ascii","ignore")
-    solvent = sic_io.create_state_smiles(solv).encode("ascii","ignore") if solv else False
+    reactants = sic_io.create_state_smiles(reac)
+    products = sic_io.create_state_smiles(prod)
+    solvent = sic_io.create_state_smiles(solv) if solv else False
     try:
         mech = decision_engine.get_mechanism(reactants,products,solvent=solvent)
     except ValueError as e:
@@ -68,7 +63,7 @@ if __name__ == "__main__":
         else:
             print("Reactants and Products need to be provided, whether by input file or by arguments, in order for SiC³ to find a mechanism.")
             sys.exit(1)
-    print find_mechanism(react_obj["reactants"],react_obj["products"],solv=(react_obj["solvent"] if react_obj.has_key("solvent") else False))
+    print(find_mechanism(react_obj["reactants"],react_obj["products"],solv=(react_obj["solvent"] if "solvent" in react_obj else False)))
 
 
 

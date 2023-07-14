@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Class that identifies a sink.
 Supersedes the previous ad-hoc data definition, but still in line with specs.

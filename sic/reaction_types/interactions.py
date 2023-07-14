@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Lists the table of source-sink interactions, i.e. which mechanisms a particular pair can perform.
 By convention, we map sources to sinks, though it can be done either way.

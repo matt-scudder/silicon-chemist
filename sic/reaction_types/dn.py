@@ -1,17 +1,13 @@
 #!usr/bin/python
-#coding=utf-8
 """
 Carries out a DN (disassociation of carbon and leaving group)
 reaction. Scores based on bonds oon the carbon.
 Depends on DUM type for sources because this is essentially
 a sink interacting with itself.
 """
-from reaction import Reaction
-import structure.struct_ops as struct_ops
-import structure.properties as properties
-import utils
-import pka.pka as pka
-import structure.scoring as scoring
+from .reaction import Reaction
+from structure import struct_ops, properties, scoring
+from pka import pka
 
 class DN(Reaction):
     """

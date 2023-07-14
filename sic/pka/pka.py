@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 This part of the program handles pKa determination.
 It stores the pKa chart as a list of SMARTS strings, 
@@ -10,7 +8,7 @@ and O,S,N, and halogens for pKa_BH), this module
 will go through the species in the pKa
 chart and attempt to map them to the parts of the molecule.
 """
-from pka_chart import PKA_CHART
+from .pka_chart import PKA_CHART
 from openbabel import pybel
 
 LONE_PAIR_ATOMS = set([6,7,8,9,15,16,17,35,53]) #atomic numbers that can have lone pairs commonly. Excludes boron , this is special.
@@ -29,7 +27,7 @@ def get_all_pka(molecule):
     #I know the access method isn't super great, but it's what we lose for the sake of sequential access
     molecule.pka_index = {} #This is cleared and recalculated at each time in order to keep it consistent with changes in bonds
     for pka_obj in PKA_CHART:
-        pattern = pka_obj.keys()[0] #there's only one key, so this is fine
+        pattern = list(pka_obj.keys())[0] #there's only one key, so this is fine
         smarts = pybel.Smarts(pattern)
         indices = smarts.findall(molecule)
         obmol = molecule.OBMol
@@ -64,7 +62,7 @@ def get_pka(atom,molecule):
     raise an AttributeError.
     """
     index = atom
-    if molecule.pka_index.has_key(index):
+    if index in molecule.pka_index:
         return molecule.pka_index[index]
     else:
         return None

@@ -1,4 +1,4 @@
-# SiC³
+# SiC<sup>3</sup>
 
 ## Aims
 
@@ -8,22 +8,19 @@
 
 ## Dependencies
 
-### Linux Packages for basic install
+### Linux Packages
 The following dependencies can all be installed via the linux package manager
 
-- `python2-dev`
 - `apache2`
-- `openbabel`
-- `libopenbabel-dev`
-- `swig`
 - `default-jre`
+- `python3-openbabel`
+- `python3-pip`
 
 ### Python
-The following dependencies are available from [PyPI](https://pypi.org/) and installable via `sudo pip2 install` on linux
+The following dependencies are available from [PyPI](https://pypi.org/) and installable via `python3 -m pip install` on linux
 
 - `flask`
 - `sortedcontainers`
-- `openbabel` (requires the `libopenbabel-dev` and `swig` packages to be installed)
 
 ### Java
 

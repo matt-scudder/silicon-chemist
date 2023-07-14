@@ -1,11 +1,9 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Tests whether alcohols are correctly identified, and that the degrees are not confused with each other.
 """
 
 import unittest
-from pybel import readstring
+from openbabel.pybel import readstring
 from .. import pka_chart,pka
 
 class AlcoholPkaTest(unittest.TestCase):

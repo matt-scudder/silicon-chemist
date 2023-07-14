@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Decision-making engine for SiC³. Invoked by sic.py (and by extension sigc.py) to perform mechanistic examinations.
 Uses all the segmentation and pka tools in the other modules.
@@ -11,11 +9,8 @@ import structure.struct_ops as struct_ops
 import reaction_types.reaction_factory as reaction_factory #too many of these
 import reaction_types.interactions as interactions
 import structure.connectivity_table as connectivity_table
-import structure.properties as properties
-import utils
 from openbabel import pybel
-from reaction_state import ReactionState
-import copy
+from .reaction_state import ReactionState
 import time
     
 def generate_choices(state):
@@ -55,7 +50,7 @@ def generate_choices(state):
                     if interaction in two_products_interactions:
                         new_mol = struct_ops.copy_molecule(state.molecule)
                         reaction = reaction_factory.produce_reaction(interaction,interaction_source,interaction_sink,mol=new_mol, second_product = True)
-                        print "Made reaction2 of type {}, cross check is {}".format(interaction,reaction.cross_check())
+                        print("Made reaction2 of type {}, cross check is {}".format(interaction,reaction.cross_check()))
                         if reaction.cross_check() > 0:
                             new_state = ReactionState(new_mol,parent_state=state,parent_reaction=reaction)
                             reaction.rearrange()
@@ -115,11 +110,11 @@ def get_mechanism(reactants,products,solvent=False,max_counter=15):
     prod_mol.addh()
     react_mol.connectivity_table = connectivity_table.ConnectivityTable(react_mol)
     prod_mol.connectivity_table = connectivity_table.ConnectivityTable(prod_mol)
-    print react_mol.connectivity_table.closer_to_product_table
+    print(react_mol.connectivity_table.closer_to_product_table)
     path_to_product.append(current_state) #since the first state HAS to be the first step in the mechanism
     counter = 0
-    print react_mol.write("can")
-    print prod_mol.write("can")
+    print(react_mol.write("can"))
+    print(prod_mol.write("can"))
     while not current_state.matches_product():
         #from current_state, generate choices
         generate_choices(current_state)
@@ -143,6 +138,6 @@ def get_mechanism(reactants,products,solvent=False,max_counter=15):
             raise ValueError("Could not find a reaction after {} steps.".format(counter))
     #when we hit product, return
     final_time = time.time()
-    print "Total time (with java): %s" % (final_time - start_time)
-    print "Total time (without java): %s" % (final_time - start_time - (after_java - before_java))
+    print("Total time (with java): %s" % (final_time - start_time))
+    print("Total time (without java): %s" % (final_time - start_time - (after_java - before_java)))
     return path_to_product

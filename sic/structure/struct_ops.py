@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Structural operations that are more complex than what can be achieved by single OpenBabel function calls.
 Usually deals with cross-molecule stuff, which OpenBabel is not generally used to do.

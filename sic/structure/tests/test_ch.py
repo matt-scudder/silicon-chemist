@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Tests whether the adjacent CH checks for eliminations actually work, as well as the get_H_bonds function.
 """

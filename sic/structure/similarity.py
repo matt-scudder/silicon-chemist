@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Handles all operations that have to do with structure similarity.
 """

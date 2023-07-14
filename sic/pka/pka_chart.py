@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Format for the pKa chart:
 

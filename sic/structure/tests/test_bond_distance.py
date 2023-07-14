@@ -1,16 +1,11 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Tests whether bond distance is 0 for molecules that are equal,
 and that it goes down when you get closer to a product.
 """
-import structure.struct_ops as struct_ops
-import structure.similarity as similarity
-import structure.properties as properties
-import segmentation.segmentation as segmentation
-import structure.connectivity_table as connectivity_table
+from structure import struct_ops, properties, connectivity_table
+from segmentation import segmentation
 import unittest
-from pybel import readstring
+from openbabel.pybel import readstring
 
 class GroupAttachmentTest(unittest.TestCase):
     def setUp(self):
@@ -20,7 +15,7 @@ class GroupAttachmentTest(unittest.TestCase):
         t_butyl_products.addh()
         t_butyl_reactants.connectivity_table = connectivity_table.ConnectivityTable(t_butyl_reactants)
         t_butyl_products.connectivity_table = connectivity_table.ConnectivityTable(t_butyl_products)
-        print t_butyl_reactants.connectivity_table.connectivity_table
+        print(t_butyl_reactants.connectivity_table.connectivity_table)
         #generate t_butyl_mapping here because we're testing the function... 
         self.t_butyl_mapping = properties.get_mapping(t_butyl_reactants,t_butyl_products)
         self.t_butyl_reactants = t_butyl_reactants
@@ -50,17 +45,17 @@ class GroupAttachmentTest(unittest.TestCase):
         Y = 5
         H = 17 
         L = 6
-        print "Y is idx %s, L is idx %s" % (Y,L)
+        print("Y is idx %s, L is idx %s" % (Y,L))
         first_distance = properties.get_bond_distance(self.t_butyl_reactants,self.t_butyl_products,self.t_butyl_mapping)
-        print "Initial distance: %s" % first_distance
-        print self.t_butyl_reactants.write("can")
-        print "connectivity table crap: {}".format(self.t_butyl_reactants.connectivity_table.get_bond_set(Y,H))
+        print("Initial distance: %s" % first_distance)
+        print(self.t_butyl_reactants.write("can"))
+        print("connectivity table crap: {}".format(self.t_butyl_reactants.connectivity_table.get_bond_set(Y,H)))
         struct_ops.make_bond(Y,H,self.t_butyl_reactants) #self.t_butyl_reactants is a Molecule object
-        print self.t_butyl_reactants.write("can")
+        print(self.t_butyl_reactants.write("can"))
         struct_ops.break_bond(H,L,self.t_butyl_reactants) #self.t_butyl_reactants is a Molecule object
-        print self.t_butyl_reactants.write("can")
+        print(self.t_butyl_reactants.write("can"))
         second_distance = properties.get_bond_distance(self.t_butyl_reactants,self.t_butyl_products,self.t_butyl_mapping)
-        print "After bond-making and bond-breaking: %s" % second_distance
+        print("After bond-making and bond-breaking: %s" % second_distance)
         self.assertTrue(second_distance < first_distance)
 
     def testNitriles(self):
@@ -70,23 +65,23 @@ class GroupAttachmentTest(unittest.TestCase):
         Y = 5 
         H = 6
         L = 1
-        print "Atoms in reactant:"
+        print("Atoms in reactant:")
         for atom in self.nitrile_reactants.atoms:
-            print "Atom: idx: {}, atomicnum: {}".format(atom.idx,atom.atomicnum)
-        print "Atoms in reactant:"
+            print("Atom: idx: {}, atomicnum: {}".format(atom.idx,atom.atomicnum))
+        print("Atoms in reactant:")
         for atom in self.nitrile_products.atoms:
-            print "Atom: idx: {}, atomicnum: {}".format(atom.idx,atom.atomicnum)
+            print("Atom: idx: {}, atomicnum: {}".format(atom.idx,atom.atomicnum))
 
         first_distance = properties.get_bond_distance(self.nitrile_reactants,self.nitrile_products,self.nitrile_mapping)
-        print "Initial distance: %s" % first_distance
-        print self.nitrile_reactants.write("can")
-        print "connectivity table crap: {}".format(self.nitrile_reactants.connectivity_table.get_bond_set(Y,H))
+        print("Initial distance: %s" % first_distance)
+        print(self.nitrile_reactants.write("can"))
+        print("connectivity table crap: {}".format(self.nitrile_reactants.connectivity_table.get_bond_set(Y,H)))
         struct_ops.make_bond(Y,H,self.nitrile_reactants) #self.nitrile_reactants is a Molecule object
-        print self.nitrile_reactants.write("can")
+        print(self.nitrile_reactants.write("can"))
         struct_ops.break_bond(H,L,self.nitrile_reactants) #self.nitrile_reactants is a Molecule object
-        print self.nitrile_reactants.write("can")
+        print(self.nitrile_reactants.write("can"))
         second_distance = properties.get_bond_distance(self.nitrile_reactants,self.nitrile_products,self.nitrile_mapping)
-        print "After bond-making and bond-breaking: %s" % second_distance
+        print("After bond-making and bond-breaking: %s" % second_distance)
         self.assertTrue(second_distance < 1)
 
 

@@ -1,13 +1,11 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Utilities module for dealing with the idiosyncracies of the various libraries
 involved in the project.
 """
-from openbabel.pybel import Molecule, Atom
 from segmentation.sink import Sink
 from segmentation.source import Source
-from openbabel import OBMolBondIter, OBAtom
+from openbabel import OBMolBondIter
+from openbabel.pybel import Molecule, Atom
 
 def get_real_indices(indices):
     """
@@ -28,7 +26,7 @@ def get_real_indices(indices):
     to do this "right" and keeping type.
     """
     #first return lists that have index-1, then copy them to a new list using list-processing
-    return [map(lambda x: x-1,x) for x in indices]
+    return [[x-1 for x in x] for x in indices]
 
 def write_mol(state):
     """
@@ -47,7 +45,7 @@ def deepcopy_ignoring_mol(item,new_mol):
     """
     new_mol_atoms = new_mol.atoms #for copying Atom objects
     if isinstance(item,dict):
-        return dict(map(lambda kv: (kv[0], deepcopy_ignoring_mol(kv[1],new_mol)), item.items()))
+        return dict([(kv[0], deepcopy_ignoring_mol(kv[1],new_mol)) for kv in list(item.items())])
     elif isinstance(item,Molecule):
         return new_mol
     elif isinstance(item,Atom):

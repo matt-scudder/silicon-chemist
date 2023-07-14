@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Tests whether we can make a copy of a molecule and do the following things:
     1. Make bond changes in the copy without affecting the original.

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#coding=utf-8
 """
 Tests whether the Tanimoto coefficient is an effective way of figuring out whether we have the product.
 Tests for both the individual case, and for the "reaction state" case.
@@ -8,9 +6,9 @@ Since the properties of a ReactionState object that aren't the list of reactants
 to this test, we will only use a list of reactants.
 """
 
-from .. import similarity
+from structure import similarity
 import unittest
-from pybel import readstring
+from openbabel.pybel import readstring
 
 class TanimotoSimilarityTest(unittest.TestCase):
     def setUp(self):
@@ -52,7 +50,7 @@ class TanimotoSimilarityTest(unittest.TestCase):
     def testComplicatedMolecule(self):
         self.assertTrue(similarity.tanimoto(self.complicated_molecule,self.slightly_different_complicated_molecule) != 1.0)
         self.assertTrue(similarity.tanimoto(self.complicated_molecule,self.identical_complicated_molecule) == 1.0)
-        print similarity.tanimoto(self.mol3,self.mol3)
+        print(similarity.tanimoto(self.mol3,self.mol3))
 
     def testTanimotoMapping(self):
         self.assertTrue(similarity.is_same_state(self.base_react_state,self.same_react_state))
