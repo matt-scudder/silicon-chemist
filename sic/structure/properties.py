@@ -3,10 +3,12 @@ Methods for getting properties of a structure rather than performing operations 
 Examines the degree of a carbon, for example.
 """
 from subprocess import run
+from pathlib import Path
 import utils
 import re
 
-REACTION_DECODER_PATH = "." #TODO: Figure out how to not need this
+# FileName of the Reaction Decoder JAR, located next to runserver.py, up one directory from here.
+REACTION_DECODER_JAR = "rdt-2.5.0-SNAPSHOT-jar-with-dependencies.jar"
 
 def get_mapping(reactants,products):
     """
@@ -18,7 +20,10 @@ def get_mapping(reactants,products):
     mapping = {}
     #write out reactants/products string
     input_smiles = "%s>>%s" % (utils.write_mol(reactants),utils.write_mol(products))
-    proc = run(["java","-jar","%s/rdt-2.5.0-SNAPSHOT-jar-with-dependencies.jar"%REACTION_DECODER_PATH,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"], capture_output=True, text=True)
+    jar_path = f"{Path(__file__).parent.parent}/{REACTION_DECODER_JAR}"
+    if not Path(jar_path).exists():
+        raise RuntimeError(f"Can not find ReactionDecoder JAR", jar_path)
+    proc = run(["java","-jar",jar_path,"-Q","SMI","-q",input_smiles,"-g","-j","AAM","-f","TEXT"], capture_output=True, text=True)
     mapping_string = None
     if not proc.stderr:
         if proc.stdout:
