@@ -1,13 +1,18 @@
 import unittest
-from openbabel.pybel import readstring
-from structure import similarity, connectivity_table
-from segmentation import segmentation
-from reaction_types import reaction_factory
 
-# Checks weather "ADE3" reaction works on "C=C" by checking if we can convert "CC=C.I" to "CC(I)C" assuming that the "reaction.cross_check() = 0.3"
-# Checks weather "ADE3" reaction works on "Z=C" by checking if we can convert "CC(C)=[O].Cl" to "CC(C)(Cl)O" assuming that the "reaction.cross_check() = 0.3"
-# modify the reaction file to pick the right source for this test to work correctly "source = self.sources[?]""
+from openbabel.pybel import readstring
+
+from sic.reaction_types import reaction_factory
+from sic.segmentation import segmentation
+from sic.structure import similarity, connectivity_table
+
 class ADE3test(unittest.TestCase):
+    """
+    Checks weather "ADE3" reaction works on "C=C" by checking if we can convert "CC=C.I" to "CC(I)C" assuming that the "reaction.cross_check() = 0.3"
+    Checks weather "ADE3" reaction works on "Z=C" by checking if we can convert "CC(C)=[O].Cl" to "CC(C)(Cl)O" assuming that the "reaction.cross_check() = 0.3"
+    modify the reaction file to pick the right source for this test to work correctly "source = self.sources[?]""
+    """
+
     def setUp(self):
         # C=C Addition
         self.double = readstring("smi","CC=C.I")

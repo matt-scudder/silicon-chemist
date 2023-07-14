@@ -3,15 +3,15 @@ Decision-making engine for SiC³. Invoked by sic.py (and by extension sigc.py) t
 Uses all the segmentation and pka tools in the other modules.
 """
 
-import segmentation.segmentation as segmentation
-import pka.pka as pka
-import structure.struct_ops as struct_ops
-import reaction_types.reaction_factory as reaction_factory #too many of these
-import reaction_types.interactions as interactions
-import structure.connectivity_table as connectivity_table
-from openbabel import pybel
-from .reaction_state import ReactionState
 import time
+
+from openbabel import pybel
+
+from .reaction_state import ReactionState
+from sic.pka import pka
+from sic.reaction_types import interactions,  reaction_factory
+from sic.segmentation import segmentation
+from sic.structure import connectivity_table, struct_ops
     
 def generate_choices(state):
     #first, assign pka and get sources/sinks

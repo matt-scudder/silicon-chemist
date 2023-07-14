@@ -1,9 +1,11 @@
 """
 Carries out the Ae, Electrophile Addition to a Multiple Bond, reaction.
 """
-from .reaction import Reaction
-from structure import struct_ops, properties
+
 from openbabel.openbabel import GetElectroNeg
+
+from .reaction import Reaction
+from sic.structure import struct_ops, properties
 
 class AE(Reaction):
 

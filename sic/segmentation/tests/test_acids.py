@@ -4,9 +4,12 @@ are identified properly as sources and sinks.
 Because we're testing the PATTERNS here rather than the segmentation functions themselves,
 we don't call the functions in segmentation.py.
 """
-from .. import sources, sinks
-from pybel import readstring,Smarts
+
 import unittest
+
+from openbabel.pybel import readstring,Smarts
+
+from sic.segmentation import sources, sinks
 
 class HalogenIdentificationTest(unittest.TestCase):
     def setUp(self):
@@ -21,6 +24,7 @@ class HalogenIdentificationTest(unittest.TestCase):
         Tests whether the haloges are correctly identified as sources when they are,
         and correctly NOT identified as sources when they aren't.
         """
+
         smarts = Smarts(self.SOURCES["Y"])
         for c_base in self.halogen_c_bases:
             mol = readstring("smi",c_base)
@@ -43,6 +47,7 @@ class HalogenIdentificationTest(unittest.TestCase):
         """
         Same as for testHalogenSources, but this time for H-L sinks.
         """
+
         smarts = Smarts(self.SINKS["H-L"])
         for c_base in self.halogen_c_bases:
             mol = readstring("smi",c_base)

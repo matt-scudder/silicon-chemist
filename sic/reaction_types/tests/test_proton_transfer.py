@@ -4,14 +4,18 @@ Tests all the characteristics of a proton transfer:
     2. Whether rearrangement results in the correct structure
     3. Whether the proton transfer step works on "Z=C", Z=[O,S,N], as the first step of the "AE" reaction of "Z=C"
 """
+
 # For the "test_ZdoubleBond" test, modify the reaction file to pick the right source for this test to work correctly "source = self.sources[?]""
-from reaction_types import proton_transfer
-from segmentation import segmentation
-from structure import similarity
-from structure.connectivity_table import ConnectivityTable
-from pka import pka
+
 import unittest
+
 from openbabel.pybel import readstring
+
+from sic.pka import pka
+from sic.reaction_types import proton_transfer
+from sic.segmentation import segmentation
+from sic.structure import similarity
+from sic.structure.connectivity_table import ConnectivityTable
 
 class ProtonTransferTest(unittest.TestCase):
     def setUp(self):

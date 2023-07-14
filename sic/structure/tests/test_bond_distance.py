@@ -2,10 +2,13 @@
 Tests whether bond distance is 0 for molecules that are equal,
 and that it goes down when you get closer to a product.
 """
-from structure import struct_ops, properties, connectivity_table
-from segmentation import segmentation
+
 import unittest
+
 from openbabel.pybel import readstring
+
+from sic.segmentation import segmentation
+from sic.structure import struct_ops, properties, connectivity_table
 
 class GroupAttachmentTest(unittest.TestCase):
     def setUp(self):
@@ -62,6 +65,7 @@ class GroupAttachmentTest(unittest.TestCase):
         """
         Tests nitriles, which somehow break the bond distance system.
         """
+
         Y = 5 
         H = 6
         L = 1

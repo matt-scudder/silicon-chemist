@@ -3,8 +3,10 @@ Tests whether alcohols are correctly identified, and that the degrees are not co
 """
 
 import unittest
+
 from openbabel.pybel import readstring
-from .. import pka_chart,pka
+
+from sic.pka import pka_chart,pka
 
 class AlcoholPkaTest(unittest.TestCase):
     def setUp(self):

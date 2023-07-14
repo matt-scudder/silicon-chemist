@@ -1,18 +1,19 @@
 import unittest
-import pybel
-from pybel import readstring,Smarts
-import structure.similarity as similarity
-import structure.properties as properties
-import structure.connectivity_table as connectivity_table
-import segmentation.segmentation as segmentation
-import segmentation.sources as sources
-import segmentation.source as source
-import reaction_types.reaction_factory as reaction_factory
-# Checks weather "ADE3" reaction works by checking these cases:
-#1] if we can convert "CC=C.I" to "C[C+]C.[I-]" to test the ("C=C", "H-L") interaction
-#2]  if we can convert "C=C(C)C.BrBr" to "C([C+](C)C)Br.[Br-]" to test the ("C=C", "Y-L") interaction
+
+from openbabel.pybel import readstring
+
+from sic.reaction_types import reaction_factory
+from sic.segmentation import segmentation
+from sic.structure import similarity, connectivity_table
+
 
 class AEtest(unittest.TestCase):
+    """
+    Checks weather "ADE3" reaction works by checking these cases:
+    1] if we can convert "CC=C.I" to "C[C+]C.[I-]" to test the ("C=C", "H-L") interaction
+    2]  if we can convert "C=C(C)C.BrBr" to "C([C+](C)C)Br.[Br-]" to test the ("C=C", "Y-L") interaction
+    """
+
     def setUp(self):
         #(C=C, H-L) 
         self.double = readstring("smi","CC=C.I")

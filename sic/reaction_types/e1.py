@@ -1,13 +1,15 @@
 """
 Carries out the second step of an E1 elimination (i.e. the elimination part).
 """
+
 from .reaction import Reaction 
-from structure import struct_ops, properties
+from sic.structure import struct_ops, properties
 
 class E1(Reaction):
     """
     Reaction object that carries out the second step of an E1 elimination.
     """
+    
     reaction_type = "E1"
 
     def cross_check(self):
@@ -16,6 +18,7 @@ class E1(Reaction):
         Given that the [C+] can only be produced by a DN, which itself has a heavy cross-check, we
         only need to check whether there's a C-H to remove here.
         """
+
         if self.cross_check_score != -2.0:
             return self.cross_check_score
         C = self.sinks[0] #C+
@@ -29,6 +32,7 @@ class E1(Reaction):
         """
         Breaks C-H next to C+, makes Y-H and C+ - C-H bond.
         """
+
         base = self.sources[0] #Y
         cation = self.sinks[0] #C+
         mol = cation.molecule

@@ -1,13 +1,13 @@
-#!usr/bin/python
 """
 Carries out a DN (disassociation of carbon and leaving group)
 reaction. Scores based on bonds oon the carbon.
 Depends on DUM type for sources because this is essentially
 a sink interacting with itself.
 """
+
 from .reaction import Reaction
-from structure import struct_ops, properties, scoring
-from pka import pka
+from sic.pka import pka
+from sic.structure import struct_ops, properties, scoring
 
 class DN(Reaction):
     """
@@ -23,6 +23,7 @@ class DN(Reaction):
         The second check is easily handled by the ΔpKa code from SN2,
         since we need to split off the L to see things and stuff.
         """
+
         if self.cross_check_score != -2.0:
             return self.cross_check_score
         sink = self.sinks[0]
@@ -51,6 +52,7 @@ class DN(Reaction):
         """
         Breaks the C-L bond.
         """
+        
         sink = self.sinks[0]
         struct_ops.break_bond(sink.get_atom("C"),sink.get_atom("L"),sink.molecule)
 

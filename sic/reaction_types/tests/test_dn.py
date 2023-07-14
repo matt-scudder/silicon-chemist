@@ -1,11 +1,11 @@
 import unittest
-import pka.pka as pka
-import reaction_types.reaction_factory as reaction_factory
-import structure.similarity as similarity
-import structure.struct_ops as struct_ops
-import segmentation.segmentation as segmentation
-import structure.connectivity_table as connectivity_table
-from pybel import readstring
+
+from openbabel.pybel import readstring
+
+from sic.pka import pka
+from sic.reaction_types import reaction_factory
+from sic.segmentation import segmentation
+from sic.structure import similarity, connectivity_table
 
 class DNTest(unittest.TestCase):
     """

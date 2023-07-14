@@ -3,8 +3,10 @@ Tests whether halogen acids and their conjugate bases have their pKa correctly i
 """
 
 import unittest
-from .. import pka_chart,pka
-from pybel import readstring
+
+from openbabel.pybel import readstring
+
+from sic.pka import pka_chart,pka
 
 class HalogenPkaTest(unittest.TestCase):
     def setUp(self):

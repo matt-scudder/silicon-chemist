@@ -5,10 +5,9 @@ matching on a molecule and generate the data structures other parts of SiC³
 will use to make sure things are rearranged properly when a reaction occurs.
 """
 
-from .sources import SOURCES
+from . import source, sink
 from .sinks import SINKS
-from . import source
-from . import sink
+from .sources import SOURCES
 from openbabel import pybel
 
 #TODO: Potentially use the fact that only a very small section of the molecule changes
@@ -25,6 +24,7 @@ def segment_molecule(molecule):
     - sources: List of all sources in the molecule, as Source objects
     - sinks: List of all sinks in the molecule, as Sink objects
     """
+
     result = {"sources" : label_sources(molecule), "sinks" : label_sinks(molecule)}
     #do any additional processing here
     for sink in result["sinks"]:
@@ -44,6 +44,7 @@ def label_sources(molecule):
     While superficially similar to label_sinks in the basic sense, merging them could get problematic and
     hard to read later.
     """
+
     sources = []
     mol_atoms = molecule.atoms #so that we don't do a list processing every time, given that molecule.atoms would regenerate itself
     for source_type in SOURCES:
@@ -62,6 +63,7 @@ def label_sinks(molecule):
     While superficially similar to label_sources in the basic sense, merging them could get problematic and
     hard to read later.
     """
+
     sinks = []
     mol_atoms = molecule.atoms
     for sink_type in SINKS:

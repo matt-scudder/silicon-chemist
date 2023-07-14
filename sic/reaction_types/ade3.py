@@ -1,8 +1,9 @@
 """
 Carries out the Ade3 reaction.
 """
-from .reaction import Reaction
-from structure import struct_ops, properties
+
+from sic.reaction_types.reaction import Reaction
+from sic.structure import struct_ops, properties
 
 class ADE3(Reaction):
 

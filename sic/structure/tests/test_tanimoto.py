@@ -6,9 +6,11 @@ Since the properties of a ReactionState object that aren't the list of reactants
 to this test, we will only use a list of reactants.
 """
 
-from structure import similarity
 import unittest
+
 from openbabel.pybel import readstring
+
+from sic.structure import similarity
 
 class TanimotoSimilarityTest(unittest.TestCase):
     def setUp(self):

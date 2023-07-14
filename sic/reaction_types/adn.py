@@ -1,9 +1,10 @@
 """
 Carries out the "ADN" reaction.
 """
+
 from .reaction import Reaction
-from pka import pka
-from structure import scoring, struct_ops
+from sic.pka import pka
+from sic.structure import scoring, struct_ops
 
 class ADN(Reaction):
 

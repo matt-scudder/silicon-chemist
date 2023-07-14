@@ -3,19 +3,22 @@ Carries out an AN (association to positively-charged carbon center)
 reaction. Currently is just a 1.0 score, since
 rearrangements are not implemented.
 """
+
 from .reaction import Reaction
-from structure import struct_ops
+from sic.structure import struct_ops
 
 class AN(Reaction):
     """
     Reaction object that carries out an AN reaction.
     """
+
     reaction_type = "AN"
 
     def cross_check(self):
         """
         Returns 1.0 until rearrangements are implemented.
         """
+
         if self.cross_check_score != -2.0:
             return self.cross_check_score
         self.cross_check_score = 1.0
@@ -25,6 +28,7 @@ class AN(Reaction):
         """
         Attaches the nucleophile to the C+.
         """
+        
         source = self.sources[0]
         sink = self.sinks[0]
         #TODO: Update for nucleophiles beyond Y

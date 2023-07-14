@@ -2,13 +2,16 @@
 Methods for getting properties of a structure rather than performing operations on it.
 Examines the degree of a carbon, for example.
 """
+import re
 from subprocess import run
 from pathlib import Path
-import utils
-import re
+
+from sic import utils
+
 
 # FileName of the Reaction Decoder JAR, located next to runserver.py, up one directory from here.
 REACTION_DECODER_JAR = "rdt-2.5.0-SNAPSHOT-jar-with-dependencies.jar"
+HYDROGEN = 1
 
 def get_mapping(reactants,products):
     """
@@ -17,6 +20,7 @@ def get_mapping(reactants,products):
     Returns also the "ReactionDecoder canonical form" of reactants and products, since OpenBabel's canonical SMILES code
     fails for charged species.
     """
+
     mapping = {}
     #write out reactants/products string
     input_smiles = "%s>>%s" % (utils.write_mol(reactants),utils.write_mol(products))
@@ -81,12 +85,13 @@ def get_carbon_degree(s_obj,carbon_label=False):
     Used to determine whether a carbon is primary, secondary, tertiary or methyl.
     If carbon_label is set, uses that to search for the carbon instead of the string "C".
     """
+
     carb_string = carbon_label if carbon_label else "C"
     carbon_count = 0
     mol = s_obj.molecule
     has_L = "L" in s_obj.atoms
     for bond in mol.connectivity_table.get_atoms_bonded(s_obj.get_atom(carb_string)):
-        if not (mol.OBMol.GetAtom(bond).IsHydrogen()):
+        if not (mol.OBMol.GetAtom(bond).GetAtomicNum() == HYDROGEN):
             #H bonds don't count, neither do L if any
             #Update the above conditional for species other than L that don't count
             #though I'm fairly sure there aren't any.
@@ -102,9 +107,10 @@ def get_H_bonds(atom,mol):
     Assumes carbon, but if atom_label is set, can check for all H bonded to any provided generic
     class label.
     """
+
     H_bonds = []
     for bonded_atom in mol.connectivity_table.get_atoms_bonded(atom):
-        if mol.OBMol.GetAtom(bonded_atom).IsHydrogen():
+        if mol.OBMol.GetAtom(bonded_atom).GetAtomicNum() == HYDROGEN:
             H_bonds.append(bonded_atom)
     return H_bonds
 
@@ -115,6 +121,7 @@ def get_adjacent_ch(s_obj,carbon_label=False):
     Used to determine whether eliminations are possible.
     If carbon_label is set, uses that to search for the carbon instead of the string "C".
     """
+
     #NOTE: Possibly upgrade this to handle NH, OH, and so on?
     #NOTE: This can be made faster by not calling get_H_bonds, but it's fancier and better designed this way.
     valid_atomicnums = set([6])
@@ -134,6 +141,7 @@ def remap_bonds(table,mapping):
     Takes as input a closer_to_product_table, and returns a set of frozenset bonds
     that have been mapped.
     """
+
     result_table = {}
     for bond in table:
         atomlist = []
@@ -157,6 +165,7 @@ def get_bond_distance(mol1,mol2,mapping):
     
     This function assumes both Molecule objects have had a connectivity_table generated for them (see generate_connectivity_table above).
     """
+
     #TODO: Replace all prints with logging.debug stuff
     difference_counter = 0
     #get all bonds in mol1 and in mol2 using our closer_to_product table

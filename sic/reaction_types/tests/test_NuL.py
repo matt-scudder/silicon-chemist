@@ -1,12 +1,18 @@
 import unittest
+
 from openbabel.pybel import readstring
-from structure import similarity, connectivity_table
-from segmentation import segmentation
-from reaction_types import reaction_factory
-# Checks weather "ADE3" reaction works:
-#  if we can convert "CC=C.IBr" to "C1C[I+]1.[Br-]" to test the ("C=C", "Y-L") interaction
-# Modify the reaction file to pick the right source and sink for this test to work correctly "source = self.sources[?] "
+
+from sic.reaction_types import reaction_factory
+from sic.segmentation import segmentation
+from sic.structure import similarity, connectivity_table
+
 class NuLTest(unittest.TestCase):
+    """
+    Checks weather "ADE3" reaction works:
+      if we can convert "CC=C.IBr" to "C1C[I+]1.[Br-]" to test the ("C=C", "Y-L") interaction
+    Modify the reaction file to pick the right source and sink for this test to work correctly "source = self.sources[?] "
+    """
+
     def setUp(self):
         self.double_Y_L= readstring("smi","C=C.IBr")
         self.double_Y_L.addh()

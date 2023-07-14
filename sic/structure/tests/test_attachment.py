@@ -3,10 +3,13 @@ Tests whether attaching two groups together works.
 Uses a carbocation bonding to an O lone pair to test whether the two groups bond to each other.
 O- is used so that there's only one source and one sink here.
 """
-from structure import struct_ops, similarity, connectivity_table
-from segmentation import segmentation
+
 import unittest
+
 from openbabel.pybel import readstring
+
+from sic.structure import struct_ops, similarity, connectivity_table
+from sic.segmentation import segmentation
 
 class GroupAttachmentTest(unittest.TestCase):
     def setUp(self):

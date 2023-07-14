@@ -3,10 +3,9 @@ Structural operations that are more complex than what can be achieved by single 
 Usually deals with cross-molecule stuff, which OpenBabel is not generally used to do.
 """
 
-from openbabel import openbabel
-from openbabel import pybel
-import copy
-from structure.connectivity_table import ConnectivityTable
+from openbabel import openbabel, pybel
+
+from sic.structure.connectivity_table import ConnectivityTable
 
 def copy_molecule(mol):
     """
@@ -15,6 +14,7 @@ def copy_molecule(mol):
     Used such that atom indexing for "closer to product" mappings can be kept
     consistent throughout a mechanism.
     """
+
     intermediate = openbabel.OBMol(mol.OBMol) #Molecule's constructor only takes OBMol objects, so first copy the one from the original
     #using the OBMol constructor, which copies all atoms
     new_mol = pybel.Molecule(intermediate) #add it to a new Molecule object
@@ -42,13 +42,14 @@ def make_bond(start,end,molecule):
     otherwise the formal charges won't work out. "start" will have its formal charge increased by 1,
     and end will have its formal charge decreased by 1.
     """
+
     obmol = molecule.OBMol
     start_atom = obmol.GetAtom(start)
     end_atom = obmol.GetAtom(end)
     #If bond is already present, change bond order
     if molecule.connectivity_table.bond_exists(start,end):
         bond = obmol.GetBond(start,end)
-        bond.SetBO(bond.GetBO() + 1)
+        bond.SetBondOrder(bond.GetBondOrder() + 1)
     else:
         success = obmol.AddBond(start,end,1)
         if not success:
@@ -71,13 +72,14 @@ def break_bond(start,end,molecule):
     The "end" atom is considered to be things like hydrogens or leaving groups, which after breaking the bond
     have its formal charge lowered, and the "start" atom would have its formal charge increased.
     """
+
     obmol = molecule.OBMol
     start_atom = obmol.GetAtom(start)
     end_atom = obmol.GetAtom(end)
     if molecule.connectivity_table.bond_exists(start,end):
         bond = obmol.GetBond(start,end)
-        if bond.GetBO() > 1:
-            bond.SetBO(bond.GetBO() - 1)
+        if bond.GetBondOrder() > 1:
+            bond.SetBondOrder(bond.GetBondOrder() - 1)
         else:
             success = obmol.DeleteBond(bond)
             if not success:

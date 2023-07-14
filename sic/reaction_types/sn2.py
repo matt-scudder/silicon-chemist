@@ -1,14 +1,16 @@
 """
 Carries out an SN2 reaction.
 """
+
 from .reaction import Reaction 
-from structure import struct_ops, properties, scoring
-from pka import pka
+from sic.pka import pka
+from sic.structure import struct_ops, properties, scoring
 
 class SN2(Reaction):
     """
     Reaction object that carries out an SN2 reaction.
     """
+
     reaction_type = "SN2"
 
     def cross_check(self):
@@ -19,6 +21,7 @@ class SN2(Reaction):
         pKaBH(Nu) - pKaBH(L) < -10
         The second part is ranking by softness of the Nu, which is not yet implemented.
         """
+
         if self.cross_check_score != -2.0:
             return self.cross_check_score
         nucleophile = self.sources[0]
@@ -66,6 +69,7 @@ class SN2(Reaction):
         Breaks the C-L bond and makes the C-Nu bond.
         Stereochem is not taken into account here.
         """
+
         source = self.sources[0]
         sink = self.sinks[0]
         struct_ops.make_bond(source.get_atom("Y"),sink.get_atom("C"),sink.molecule)

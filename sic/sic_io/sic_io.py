@@ -2,8 +2,11 @@
 Handles all File I/O and related functions.
 Primarily used for convenience in sic.py.
 """
+
 import re
-from utils import write_mol
+
+from sic.utils import write_mol
+
 SMILES_CHARS = re.escape("+[]()=#@/\-") #special characters involved in SMILES, see spec as described in parse_sic_file
 
 def parse_sic_file(sic_input):
@@ -27,6 +30,7 @@ def parse_sic_file(sic_input):
     solvent by taking in any characters found after the first two > in the string,
     and products by taking in all the characters after the last >.
     """
+
     reaction = sic_input.readlines()
     if len(reaction) > 1:
             raise ValueError("SiC only supports a single reaction at a time.")
@@ -58,6 +62,7 @@ def write_up_mechanism(reaction_state_list,solvent=False):
     reactants.
     Uses the fact that all ReactionState objects contain a reference to the product.
     """
+
     reactants_state = reaction_state_list[0]
     reactants = write_mol(reactants_state.molecule)
     product = write_mol(reactants_state.product)
@@ -75,6 +80,7 @@ def create_state_smiles(molecules):
     """
     Creates a combined SMILES string from a set of molecular SMILES strings by concatenating them with dots. Nothing fancy.
     """
+
     combined_smiles = molecules[0]
     for molecule in molecules[1:]:
         combined_smiles += "." + molecule

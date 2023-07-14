@@ -1,9 +1,10 @@
 
 import unittest
-import structure.struct_ops as struct_ops
-import structure.connectivity_table as connectivity_table
-import pybel
-import segmentation.segmentation as segmentation
+
+from openbabel import pybel
+
+from sic.segmentation import segmentation
+from sic.structure import struct_ops, connectivity_table
 
 class ConnectivityTableTest(unittest.TestCase):
     """
@@ -23,6 +24,7 @@ class ConnectivityTableTest(unittest.TestCase):
         """
         Tests whether the table is generated correctly at all.
         """
+
         ctable = self.mol.connectivity_table #typing is hard
         #F bond
         self.assertTrue(2 in ctable and 5 in ctable[2])
@@ -36,6 +38,7 @@ class ConnectivityTableTest(unittest.TestCase):
         Tests whether adding a bond updates the table. Note that readstring is deterministic, so it
         doesn't matter whether we add or remove first, the indices are the same.
         """
+
         ctable = self.mol.connectivity_table #typing is hard
         #sinks[2] is the F, not the O.
         O = self.sources[0].get_atom("Y")
@@ -48,6 +51,7 @@ class ConnectivityTableTest(unittest.TestCase):
         """
         Tests whether removing a bond updates the table.
         """
+
         ctable = self.mol.connectivity_table #typing is hard
         F = self.sinks[2].get_atom("L")
         H = self.sinks[2].get_atom("H")

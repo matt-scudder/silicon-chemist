@@ -1,14 +1,16 @@
 """
 Carries out the proton transfer reaction.
 """
+
 from .reaction import Reaction
-from structure import struct_ops, scoring
-from pka import pka
+from sic.pka import pka
+from sic.structure import struct_ops, scoring
 
 class ProtonTransfer(Reaction):
     """
     Reaction object that carries out a proton transfer.
     """
+
     reaction_type = "proton_transfer"
 
     def cross_check(self):
@@ -18,6 +20,7 @@ class ProtonTransfer(Reaction):
         10 or higher being declared extremely likely (1.0), with the 0 point
         tilted toward favorable (0.6) and a linear scaling between the points.
         """
+
         if self.cross_check_score != -2.0: 
             return self.cross_check_score
         else:
@@ -55,6 +58,7 @@ class ProtonTransfer(Reaction):
         Bonds the lone pairs on the basic atom to the H in question,
         and separates the H from the acid.
         """
+
         source = self.sources[0]
         sink = self.sinks[0]
         source_sbtype = source.subtype

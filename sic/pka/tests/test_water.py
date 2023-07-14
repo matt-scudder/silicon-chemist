@@ -3,8 +3,10 @@ Tests whether the different protonation states of water have their pKa correctly
 """
 
 import unittest
+
 from openbabel.pybel import readstring
-from .. import pka_chart,pka
+
+from sic.pka import pka_chart,pka
 
 class WaterPkaTest(unittest.TestCase):
     def setUp(self):

@@ -1,9 +1,11 @@
 """
 Carries out the NuL reaction.
 """
-from .reaction import Reaction
-from structure import struct_ops
+
 from openbabel.openbabel import GetElectroNeg
+
+from .reaction import Reaction
+from sic.structure import struct_ops
 
 class NuL(Reaction):
 

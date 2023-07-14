@@ -1,13 +1,15 @@
 """
 Carries out an E2 reaction.
 """
+
 from .reaction import Reaction 
-from structure import struct_ops, properties
+from sic.structure import struct_ops, properties
 
 class E2(Reaction):
     """
     Reaction object that carries out an E2 reaction.
     """
+
     reaction_type = "E2"
 
     def cross_check(self):
@@ -21,6 +23,7 @@ class E2(Reaction):
         carbon, and associating a score multiplier.
         Note that this does not check sterics on the base.
         """
+
         if self.cross_check_score != -2.0:
             return self.cross_check_score
         MAGIC_THRESHOLD = 0.3 #TODO: Make this a better chemical representation
@@ -37,6 +40,7 @@ class E2(Reaction):
         """
         Breaks C-L and adjacent C-H bonds, makes C-C double bond.
         """
+        
         base = self.sources[0]
         CL = self.sinks[0]
         mol = CL.molecule #because this gets typed a lot

@@ -8,13 +8,14 @@ This module also tests the label_sources and label_sinks methods in segmentation
 as they are necessary to get everything into the right format, and the tanimoto coefficient.
 """
 
-import structure.struct_ops as struct_ops
-import structure.similarity as similarity
-import segmentation.segmentation as segmentation
 import unittest
-from pybel import readstring,Smarts
 import logging
 import sys
+
+from openbabel.pybel import readstring
+
+from sic.structure import struct_ops, similarity
+from sic.segmentation import segmentation
 
 #NOTE: impossibility of ΔpKa < -10 reactions is left to the logic that calls this code...
 class SingleAtomMovementTest(unittest.TestCase):

@@ -3,9 +3,12 @@ This class tests whether we get the right maps for particular molecules.
 When you encounter a particularly problematic map, or bugs with AAMTool,
 add that case to this file.
 """
+
 import unittest
-import structure.properties as properties
-from pybel import readstring
+
+from openbabel.pybel import readstring
+
+from sic.structure import properties
 
 class MappingTest(unittest.TestCase):
     def setUp(self):

@@ -1,11 +1,13 @@
 """
 Tests whether the adjacent CH checks for eliminations actually work, as well as the get_H_bonds function.
 """
-import structure.properties as properties
-from pybel import readstring
-import structure.connectivity_table as connectivity_table
-import segmentation.segmentation as segmentation
+
 import unittest
+
+from openbabel.pybel import readstring
+
+from sic.segmentation import segmentation
+from sic.structure import properties, connectivity_table
 
 class CHTest(unittest.TestCase):
     def setUp(self):

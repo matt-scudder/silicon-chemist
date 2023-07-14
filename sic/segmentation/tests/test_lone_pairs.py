@@ -3,9 +3,12 @@ This unit tests whether non-halogen lone pairs are identified correctly by our s
 Because we're testing the PATTERNS here rather than the segmentation functions themselves,
 we don't call the functions in segmentation.py.
 """
-from segmentation import sources
-from openbabel.pybel import readstring,Smarts
+
 import unittest
+
+from openbabel.pybel import readstring,Smarts
+
+from sic.segmentation import sources
 
 class LonePairIdentificationTest(unittest.TestCase):
     def setUp(self):
@@ -21,6 +24,7 @@ class LonePairIdentificationTest(unittest.TestCase):
         """
         Tests whether we can identify oxygen sources without also identifying oxygens with no lone pairs.
         """
+
         smarts = Smarts(self.SOURCES["Y"])
         for oxygen_pair in self.oxygen_pairs:
             mol = readstring("smi",oxygen_pair)
@@ -38,6 +42,7 @@ class LonePairIdentificationTest(unittest.TestCase):
         """
         Tests whether we can identify nitrogen sources without also identifying nitrogens with no lone pairs.
         """
+
         smarts = Smarts(self.SOURCES["Y"])
         for nitrogen_pair in self.nitrogen_pairs:
             mol = readstring("smi",nitrogen_pair)
@@ -55,6 +60,7 @@ class LonePairIdentificationTest(unittest.TestCase):
         """
         Tests whether we can identify sulfur sources without also identifying sulfurs with no lone pairs.
         """
+
         smarts = Smarts(self.SOURCES["Y"])
         for sulfur_pair in self.sulfur_pairs:
             mol = readstring("smi",sulfur_pair)

@@ -6,21 +6,18 @@ could get extremely annoying.
 NOTE: The reaction types given MUST be the same as the ones in interactions.py!
 """
 
-from .proton_transfer import ProtonTransfer
-from .sn2 import SN2 
-from .an import AN
-from .dn import DN
-from .e2 import E2
-from .eb import EB
-from .e1 import E1
-from .ae import AE
 from .ade3 import ADE3
 from .adn import ADN
+from .ae import AE
+from .an import AN
+from .dn import DN
+from .e1 import E1
+from .e2 import E2
+from .eb import EB
 from .NuL import NuL
-from structure.struct_ops import copy_molecule
-from openbabel.pybel import Molecule
-import utils
-
+from .proton_transfer import ProtonTransfer
+from .sn2 import SN2
+from sic import utils
 
 def produce_reaction(r_type,sources,sinks,mol=False,second_product = False):
     """
@@ -28,6 +25,7 @@ def produce_reaction(r_type,sources,sinks,mol=False,second_product = False):
     If a molecule is provided, copies the information in sources and sinks
     to be attached to the new molecule.
     """
+
     #NOTE: sinks need to be used because there are dummy sources, but never dummy sinks.
     orig_mol =  sinks[0].molecule 
     if mol:

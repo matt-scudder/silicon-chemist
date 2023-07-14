@@ -2,9 +2,11 @@
 Tests whether carbocations can be identified.
 """
 
-from .. import sinks
-from pybel import readstring,Smarts
 import unittest
+
+from openbabel.pybel import readstring,Smarts
+
+from sic.segmentation import sinks
 
 class CarbocationIdentificationTest(unittest.TestCase):
     def setUp(self):
@@ -17,6 +19,7 @@ class CarbocationIdentificationTest(unittest.TestCase):
         Tests whether carbocations are identified correctly as sinks when they are,
         and NOT when there's no carbocation.
         """
+
         smarts = Smarts(self.SINKS["C+"])
         for carbocation in self.carbocations:
             mol = readstring("smi",carbocation)

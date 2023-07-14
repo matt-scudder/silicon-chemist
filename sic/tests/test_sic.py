@@ -1,8 +1,10 @@
 """
 This unit test tests whether we can parse SiC-format files correctly.
 """
-from .. import sic
+
 import unittest
+
+from sic.sic_io import sic_io
 
 PARSE_FILE_PATHS = ["reaction_files/in.1", "reaction_files/in.9"]
 SOLVENT_FILE = "reaction_files/in.8"
@@ -17,7 +19,8 @@ class SiCParserTest(unittest.TestCase):
                 """
                 Tests whether we parse comma-delimited files correctly.
                 """
-                first_reaction = sic.parse_sic_file(self.commafile)
+
+                first_reaction = sic_io.parse_sic_file(self.commafile)
                 self.assertEqual(first_reaction["reactants"],["[OH3+]","[OH3+]","[O-]C(=O)CC([O-])CCC(=O)[O-]"])
                 self.assertEqual(first_reaction["products"],["O","O",'OC(=O)CC(OH)CCC(=O)[O-]'])
                 self.assertFalse(first_reaction["solvent"]) #there shouldn't be solvent here
@@ -26,7 +29,8 @@ class SiCParserTest(unittest.TestCase):
                 """
                 Tests whether we parse period-delimited files correctly.
                 """
-                first_reaction = sic.parse_sic_file(self.periodfile)
+
+                first_reaction = sic_io.parse_sic_file(self.periodfile)
                 self.assertEqual(first_reaction["reactants"],["C=CC(C)(O)CCC=C(C)C","I"])
                 self.assertEqual(first_reaction["products"],["CC1=CCC(C(C)=C)CC1","[OH3+]","[I-]"])
                 self.assertFalse(first_reaction["solvent"]) #there shouldn't be solvent here
@@ -35,7 +39,8 @@ class SiCParserTest(unittest.TestCase):
                 """
                 Tests whether we read in solvent. Also tests mixed use of delimiters.
                 """
-                first_reaction = sic.parse_sic_file(self.solvfile)
+
+                first_reaction = sic_io.parse_sic_file(self.solvfile)
                 self.assertEqual(first_reaction["reactants"],["C1CCC(O)C(C1)(C2)CCC2"])
                 self.assertEqual(first_reaction["products"],["C1CCCC(=C12)CCCC2","O","[O-]S(=O)(=O)[O-]"])
                 self.assertEqual(first_reaction["solvent"],["OS(=O)(=O)O","O"]) 

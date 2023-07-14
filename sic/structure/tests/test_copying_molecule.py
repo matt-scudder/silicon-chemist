@@ -8,11 +8,13 @@ It is crucially important that both of these work in order for our ReactionState
 """
 
 import unittest
-import structure.struct_ops as struct_ops
-import pybel
-import segmentation.segmentation as segmentation
-import pka.pka as pka
-import utils
+
+from openbabel import pybel
+
+from sic import utils
+from sic.pka import pka
+from sic.segmentation import segmentation
+from sic.structure import struct_ops
 
 class MoleculeCopyAndModifyTest(unittest.TestCase):
     def setUp(self):
@@ -33,6 +35,7 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         """
         Tests whether utils.shift_molecule_references actually works.
         """
+
         copy_mol = struct_ops.copy_molecule(self.orig_mol)
         new_sources = utils.shift_molecule_references(self.sources,copy_mol)
         for source in new_sources:
@@ -46,6 +49,7 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         state changes in orig_mol, since we don't know the order in which tests
         will be run.
         """
+
         orig_mol = pybel.readstring("smi","F.O")
         orig_mol.addh()
         pka.get_all_pka(orig_mol)
@@ -65,6 +69,7 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         Tests the far more usual case of making the copy and then modifying it.
         This requires that indices are preserved when making the copy.
         """
+
         #first make the copy
         copy_mol = struct_ops.copy_molecule(self.orig_mol)
         #shift references using utility function

@@ -2,9 +2,11 @@
 Tests whether C-L can be identified.
 """
 
-import segmentation.sinks as sinks
-from pybel import readstring,Smarts
 import unittest
+
+from openbabel.pybel import readstring,Smarts
+
+from sic.segmentation import sinks
 
 class CLIdentificationTest(unittest.TestCase):
     def setUp(self):
@@ -17,6 +19,7 @@ class CLIdentificationTest(unittest.TestCase):
         Tests whether C-L are identified correctly as sinks when they are,
         and NOT when there's no C-L.
         """
+
         smarts = Smarts(self.SINKS["C-L"])
         for match in self.cl[0:3]:
             mol = readstring("smi",match)

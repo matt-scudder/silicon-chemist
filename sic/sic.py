@@ -9,10 +9,12 @@ of SiC³, they can import the libraries used here to produce results.
 
 As of now, this program only calls the old SiC's command-line arguments.
 """
+
 import argparse
-from sic_io import sic_io#for parsing SiC-format input files
 import logging #for debug logs - worry about this later
+
 from brain import decision_engine
+from sic_io import sic_io#for parsing SiC-format input files
 
 def find_mechanism(reac,prod,solv=False):
     """
@@ -22,6 +24,7 @@ def find_mechanism(reac,prod,solv=False):
     other programs (such as SiGC) can access the full functionality without
     having to import a bunch of stuff.
     """
+
     if not reac: 
         return "No reactants added."
     if not prod: 

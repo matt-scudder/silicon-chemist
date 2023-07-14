@@ -1,21 +1,20 @@
 import unittest
-import pybel
-from pybel import readstring,Smarts
-import structure.similarity as similarity
-import structure.properties as properties
-import structure.connectivity_table as connectivity_table
-import segmentation.segmentation as segmentation
-import segmentation.sources as sources
-import segmentation.source as source
-import reaction_types.reaction_factory as reaction_factory
-import pka.pka as pka
-import structure.scoring as scoring
-import utils
-# Checks weather "ADN" reaction works by checking if we can convert "N#C=C.CC[O-]" to "N#C[CH-]COCC"
-# Differnt input format : "C=CC#N.CC[O-]"
-# test "Z=C": CC=O.[CH2-]C=O  to CC([O-])CC=O
-# Modify the reaction file to pick the right source and sink for this test to work correctly "source = self.sources[?] "
+
+from openbabel.pybel import readstring
+
+from sic.pka import pka
+from sic.reaction_types import reaction_factory
+from sic.segmentation import segmentation
+from sic.structure import similarity, connectivity_table
+
 class ADN(unittest.TestCase):
+    """
+    Checks weather "ADN" reaction works by checking if we can convert "N#C=C.CC[O-]" to "N#C[CH-]COCC"
+    Differnt input format : "C=CC#N.CC[O-]"
+    test "Z=C": CC=O.[CH2-]C=O  to CC([O-])CC=O
+    Modify the reaction file to pick the right source and sink for this test to work correctly "source = self.sources[?] "
+    """
+
     def setUp(self):
         # C=C Addition
         self.double = readstring("smi","C=OC#N.[O-]CC")

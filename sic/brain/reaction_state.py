@@ -18,9 +18,11 @@ on that SMILES string. This new Molecule should then be rearranged before creati
 This class also contains utility functions to check whether a reaction state is closer to product than its parent,
 and whether it matches the product exactly.
 """
-import sortedcontainers
-from structure import similarity, properties
+
 from openbabel.pybel import readstring
+import sortedcontainers
+
+from sic.structure import similarity, properties
 
 class ReactionState(object):
     product = None
