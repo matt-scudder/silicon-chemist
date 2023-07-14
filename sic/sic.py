@@ -13,8 +13,8 @@ As of now, this program only calls the old SiC's command-line arguments.
 import argparse
 import logging #for debug logs - worry about this later
 
-from brain import decision_engine
-from sic_io import sic_io#for parsing SiC-format input files
+from sic.brain import decision_engine
+from sic.sic_io import sic_io#for parsing SiC-format input files
 
 def find_mechanism(reac,prod,solv=False):
     """

@@ -6,8 +6,8 @@ involved in the project.
 from openbabel import OBMolBondIter
 from openbabel.pybel import Molecule, Atom
 
-from .segmentation.sink import Sink
-from .segmentation.source import Source
+from sic.segmentation.sink import Sink
+from sic.segmentation.source import Source
 
 def get_real_indices(indices):
     """
