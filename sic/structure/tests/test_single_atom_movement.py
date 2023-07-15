@@ -14,7 +14,7 @@ import sys
 
 from openbabel.pybel import readstring
 
-from sic.structure import struct_ops, similarity
+from sic.structure import connectivity_table, struct_ops, similarity
 from sic.segmentation import segmentation
 
 #NOTE: impossibility of ΔpKa < -10 reactions is left to the logic that calls this code...
@@ -22,6 +22,7 @@ class SingleAtomMovementTest(unittest.TestCase):
     def setUp(self):
         reactants = readstring("smi","F.O")
         reactants.addh()
+        reactants.connectivity_table = connectivity_table.ConnectivityTable(reactants)
         self.reactants = reactants
         products = readstring("smi","[F-].[OH3+]")
         products.addh()

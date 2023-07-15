@@ -7,6 +7,7 @@ import unittest
 from openbabel.pybel import readstring
 
 from sic.pka import pka_chart,pka
+from sic.structure import connectivity_table
 
 class AlcoholPkaTest(unittest.TestCase):
     def setUp(self):
@@ -18,6 +19,7 @@ class AlcoholPkaTest(unittest.TestCase):
         for w_string in self.alcohols:
             mol = readstring("smi",w_string)
             mol.addh()
+            mol.connectivity_table = connectivity_table.ConnectivityTable(mol)
             pka.get_all_pka(mol)
             alcohol_mols.append(mol)
         #get_all_pka modifies state so now let's iterate through atoms

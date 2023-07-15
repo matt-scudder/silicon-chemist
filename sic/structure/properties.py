@@ -49,7 +49,7 @@ def get_mapping(reactants,products):
             file_content = f.readlines()
             line_before_aam_mapping = "SELECTED AAM MAPPING\n"
             mapping_index = file_content.index(line_before_aam_mapping) + 1
-            mapping_string = file_content[mapping_index]
+            mapping_string = file_content[mapping_index].strip('\n')
             print(line_before_aam_mapping + mapping_string)
     if mapping_string:
         #remove hydrogen-only maps - these are unlikely but they do come up and mess up the rest of our procedure

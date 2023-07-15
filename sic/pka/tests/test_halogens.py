@@ -7,6 +7,7 @@ import unittest
 from openbabel.pybel import readstring
 
 from sic.pka import pka_chart,pka
+from sic.structure import connectivity_table
 
 class HalogenPkaTest(unittest.TestCase):
     def setUp(self):
@@ -21,6 +22,7 @@ class HalogenPkaTest(unittest.TestCase):
         for s_string in self.fluorines:
             mol = readstring("smi",s_string)
             mol.addh()
+            mol.connectivity_table = connectivity_table.ConnectivityTable(mol)
             pka.get_all_pka(mol)
             fluorine_mols.append(mol)
         for atom in fluorine_mols[0]:
@@ -39,6 +41,7 @@ class HalogenPkaTest(unittest.TestCase):
         for s_string in self.chlorines:
             mol = readstring("smi",s_string)
             mol.addh()
+            mol.connectivity_table = connectivity_table.ConnectivityTable(mol)
             pka.get_all_pka(mol)
             chlorine_mols.append(mol)
         for atom in chlorine_mols[0]:
@@ -57,6 +60,7 @@ class HalogenPkaTest(unittest.TestCase):
         for s_string in self.bromines:
             mol = readstring("smi",s_string)
             mol.addh()
+            mol.connectivity_table = connectivity_table.ConnectivityTable(mol)
             pka.get_all_pka(mol)
             bromine_mols.append(mol)
         for atom in bromine_mols[0]:
@@ -75,6 +79,7 @@ class HalogenPkaTest(unittest.TestCase):
         for s_string in self.iodines:
             mol = readstring("smi",s_string)
             mol.addh()
+            mol.connectivity_table = connectivity_table.ConnectivityTable(mol)
             pka.get_all_pka(mol)
             iodine_mols.append(mol)
         for atom in iodine_mols[0]:

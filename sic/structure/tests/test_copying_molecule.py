@@ -14,7 +14,7 @@ from openbabel import pybel
 from sic import utils
 from sic.pka import pka
 from sic.segmentation import segmentation
-from sic.structure import struct_ops
+from sic.structure import connectivity_table, struct_ops
 
 class MoleculeCopyAndModifyTest(unittest.TestCase):
     def setUp(self):
@@ -23,6 +23,7 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         self.prod_mol = prod_mol
         orig_mol = pybel.readstring("smi","F.O")
         orig_mol.addh()
+        orig_mol.connectivity_table = connectivity_table.ConnectivityTable(orig_mol)
         pka.get_all_pka(orig_mol)
         segment = segmentation.segment_molecule(orig_mol)
         self.orig_mol = orig_mol
@@ -52,6 +53,7 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
 
         orig_mol = pybel.readstring("smi","F.O")
         orig_mol.addh()
+        orig_mol.connectivity_table = connectivity_table.ConnectivityTable(orig_mol)
         pka.get_all_pka(orig_mol)
         #now get sources and sinks
         segment = segmentation.segment_molecule(orig_mol)

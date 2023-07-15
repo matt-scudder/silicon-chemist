@@ -19,8 +19,8 @@ class SN2Test(unittest.TestCase):
         #primary, ΔpKa >> 10
         self.primary = readstring("smi","CCCl.[OH-]")
         self.primary.addh()
-        pka.get_all_pka(self.primary)
         self.primary.connectivity_table = connectivity_table.ConnectivityTable(self.primary)
+        pka.get_all_pka(self.primary)
         self.primary_sources = segmentation.label_sources(self.primary)
         self.primary_sinks = segmentation.label_sinks(self.primary)
         self.primary_products = readstring("smi","CCO.[Cl-]")
@@ -28,8 +28,8 @@ class SN2Test(unittest.TestCase):
         #secondary
         self.secondary = readstring("smi","CC(C)Cl.[OH-]")
         self.secondary.addh()
-        pka.get_all_pka(self.secondary)
         self.secondary.connectivity_table = connectivity_table.ConnectivityTable(self.secondary)
+        pka.get_all_pka(self.secondary)
         self.secondary_sources = segmentation.label_sources(self.secondary)
         self.secondary_sinks = segmentation.label_sinks(self.secondary)
         self.secondary_products = readstring("smi","CC(C)O.[Cl-]")
@@ -37,8 +37,8 @@ class SN2Test(unittest.TestCase):
         #tertiary
         self.tertiary = readstring("smi","CC(C)(C)Cl.[OH-]")
         self.tertiary.addh()
-        pka.get_all_pka(self.tertiary)
         self.tertiary.connectivity_table = connectivity_table.ConnectivityTable(self.tertiary)
+        pka.get_all_pka(self.tertiary)
         self.tertiary_sources = segmentation.label_sources(self.tertiary)
         self.tertiary_sinks = segmentation.label_sinks(self.tertiary)
         #no products because this one shouldn't happen.

@@ -15,8 +15,8 @@ class EBTest(unittest.TestCase):
     def setUp(self):
         self.nitrile = readstring("smi","N#C[CH-]CCl")
         self.nitrile.addh()
-        pka.get_all_pka(self.nitrile)
         self.nitrile.connectivity_table = connectivity_table.ConnectivityTable(self.nitrile)
+        pka.get_all_pka(self.nitrile)
         self.nitrile_sources = segmentation.label_sources(self.nitrile)
         self.nitrile_sinks = segmentation.label_sinks(self.nitrile)
         self.nitrile_products = readstring("smi","C=CC#N.[Cl-]")

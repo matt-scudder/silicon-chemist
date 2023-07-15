@@ -27,11 +27,11 @@ class ConnectivityTableTest(unittest.TestCase):
 
         ctable = self.mol.connectivity_table #typing is hard
         #F bond
-        self.assertTrue(2 in ctable and 5 in ctable[2])
-        self.assertTrue(5 in ctable and 2 in ctable[5])
+        self.assertTrue(5 in ctable.get_atoms_bonded(2))
+        self.assertTrue(2 in ctable.get_atoms_bonded(5))
         #O bond
-        self.assertTrue(1 in ctable and 3 in ctable[1])
-        self.assertTrue(3 in ctable and 1 in ctable[3])
+        self.assertTrue(3 in ctable.get_atoms_bonded(1))
+        self.assertTrue(1 in ctable.get_atoms_bonded(3))
 
     def testAddBond(self):
         """
@@ -44,8 +44,8 @@ class ConnectivityTableTest(unittest.TestCase):
         O = self.sources[0].get_atom("Y")
         H = self.sinks[2].get_atom("H")
         struct_ops.make_bond(O,H,self.mol)
-        self.assertTrue(1 in ctable and 5 in ctable[1])
-        self.assertTrue(5 in ctable and 1 in ctable[5])
+        self.assertTrue(5 in ctable.get_atoms_bonded(1))
+        self.assertTrue(1 in ctable.get_atoms_bonded(5))
 
     def testRemoveBond(self):
         """
@@ -56,8 +56,8 @@ class ConnectivityTableTest(unittest.TestCase):
         F = self.sinks[2].get_atom("L")
         H = self.sinks[2].get_atom("H")
         struct_ops.break_bond(H,F,self.mol)
-        self.assertFalse(2 in ctable and 5 in ctable[2])
-        self.assertFalse(5 in ctable and 2 in ctable[5])
+        self.assertFalse(5 in ctable.get_atoms_bonded(2))
+        self.assertFalse(2 in ctable.get_atoms_bonded(5))
 
 if __name__ == "__main__":
     unittest.main()
