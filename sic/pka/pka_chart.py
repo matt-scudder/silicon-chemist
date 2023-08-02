@@ -67,5 +67,10 @@ PKA_CHART = [
     {"[CX3O1](=O)[#6-]":{"pKa_HA":None,"pKa_BH":25.6}},#deprotonated
     #Amides
     {"[CX3N1](=O)[#6H3,#6H2,#6H1]([H])":{"pKa_HA":28,"pKa_BH":None}},#protonated
-    {"[CX3N1](=O)[#6-]":{"pKa_HA":None,"pKa_BH":28}}#deprotonated
+    {"[CX3N1](=O)[#6-]":{"pKa_HA":None,"pKa_BH":28}},#deprotonated
+    #Thiols
+    {"[SHv1]([H])":{"pKa_HA": 12.90, "pKa_BH": 6.97}}, #v1 means only one bond to sulfur 
+    {"[SH2v2]([H])([H])":{"pKa_HA":6.97,"pKa_BH":-6}}, #v2 means only two bonds to sulfur 
+    {"[CH3][S-]":{"pKa_HA": None, "pKa_BH": 10.6}}, #methyl
+    {"[CH3][S]([H])":{"pKa_HA": 10.6, "pKa_BH": -7}}
 ]
