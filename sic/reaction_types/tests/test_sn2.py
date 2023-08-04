@@ -48,13 +48,13 @@ class SN2Test(unittest.TestCase):
         reaction = reaction_factory.produce_reaction("SN2",self.primary_sources,self.primary_sinks)
         self.assertEquals(reaction.cross_check(), 0.95)
         reaction.rearrange()
-        self.assertTrue(similarity.is_same_molecule(self.primary,self.primary_products))
+        self.assertEquals(*similarity.normalize_mols([self.primary,self.primary_products]))
 
     def testSecondary(self):
         reaction = reaction_factory.produce_reaction("SN2",self.secondary_sources,self.secondary_sinks)
         self.assertEquals(reaction.cross_check(), 0.6)
         reaction.rearrange()
-        self.assertTrue(similarity.is_same_molecule(self.secondary,self.secondary_products))
+        self.assertEquals(*similarity.normalize_mols([self.secondary,self.secondary_products]))
 
     def testTertiary(self):
         reaction = reaction_factory.produce_reaction("SN2",self.tertiary_sources,self.tertiary_sinks)

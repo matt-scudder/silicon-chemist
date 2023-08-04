@@ -35,14 +35,14 @@ class ADE3test(unittest.TestCase):
         reaction = reaction_factory.produce_reaction("ADE3",self.double_sources,self.double_sinks)
         self.assertEquals(reaction.cross_check(), 0.3)
         reaction.rearrange()
-        self.assertTrue(similarity.is_same_molecule(self.double,self.double_products))
+        self.assertEquals(*similarity.normalize_mols([self.double,self.double_products]))
     
     def test_Z_double(self):
         reaction = reaction_factory.produce_reaction("ADE3",self.Z_double_sources,self.Z_double_sinks)
         self.assertEquals(reaction.cross_check(), 0.3)
         reaction.rearrange()
         error = "Inital Product = {}, Actual Product = {}".format(self.z_doubleBond_C, self.z_doubleBond_C_products)
-        self.assertTrue(similarity.is_same_molecule(self.Z_double,self.Z_double_products), error)
+        self.assertEquals(*similarity.normalize_mols([self.Z_double,self.Z_double_products]), error)
     
 if __name__ == "__main__":
     unittest.main()

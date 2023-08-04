@@ -29,7 +29,7 @@ class NuLTest(unittest.TestCase):
         print("reaction.cross_check() =", reaction.cross_check())
         self.assertEquals(reaction.cross_check(), 0.3)
         reaction.rearrange()
-        self.assertTrue(similarity.is_same_molecule(self.double_Y_L,self.double_Y_L_products))
+        self.assertEquals(*similarity.normalize_mols([self.double_Y_L,self.double_Y_L_products]))
 
 if __name__ == "__main__":
     unittest.main()

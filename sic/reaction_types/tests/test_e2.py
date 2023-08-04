@@ -27,7 +27,7 @@ class E2Test(unittest.TestCase):
         self.assertEquals(reaction.cross_check(), 0.3)
         reaction.rearrange()
         #print self.t_butyl.write("can")
-        self.assertTrue(similarity.is_same_molecule(self.t_butyl,self.t_butyl_products))
+        self.assertEquals(*similarity.normalize_mols([self.t_butyl,self.t_butyl_products]))
 
 if __name__ == "__main__":
     unittest.main()

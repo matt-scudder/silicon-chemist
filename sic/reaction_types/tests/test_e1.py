@@ -36,7 +36,7 @@ class E1Test(unittest.TestCase):
         reaction = reaction_factory.produce_reaction("E1",source_to_use,sink_to_use)
         self.assertEquals(reaction.cross_check(), 1.0)
         reaction.rearrange()
-        self.assertTrue(similarity.is_same_molecule(self.t_butyl,self.t_butyl_products))
+        self.assertEquals(*similarity.normalize_mols([self.t_butyl,self.t_butyl_products]))
 
 if __name__ == "__main__":
     unittest.main()
