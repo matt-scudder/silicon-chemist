@@ -28,8 +28,7 @@ def get_all_pka(molecule):
     #the below looks like O(scary), but the lists are small enough that we don't have to care.
     #I know the access method isn't super great, but it's what we lose for the sake of sequential access
     molecule.pka_index = {} #This is cleared and recalculated at each time in order to keep it consistent with changes in bonds
-    for pka_obj in PKA_CHART:
-        pattern = list(pka_obj.keys())[0] #there's only one key, so this is fine
+    for pattern in PKA_CHART:
         smarts = pybel.Smarts(pattern)
         indices = smarts.findall(molecule)
         obmol = molecule.OBMol
@@ -39,15 +38,15 @@ def get_all_pka(molecule):
                 atom = obmol.GetAtom(atom_idx)
                 if atom.GetAtomicNum() == 1: # get all hydrogens, they should all be bonded to the same atom.
                     h_atom = atom_idx
-                    molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_HA"] 
+                    molecule.pka_index[atom_idx] = PKA_CHART[pattern]["pKa_HA"] 
             if h_atom:
                 #get atom bonded to H if there is one
                 bonded_to_h = molecule.connectivity_table.get_atoms_bonded(h_atom) 
-                molecule.pka_index[next(iter(bonded_to_h))] = pka_obj[pattern]["pKa_BH"] #this should ONLY have one element in the set, so it works out
+                molecule.pka_index[next(iter(bonded_to_h))] = PKA_CHART[pattern]["pKa_BH"] #this should ONLY have one element in the set, so it works out
             else:
                 for atom_idx in group:
                     if atom.GetAtomicNum() in LONE_PAIR_ATOMS:
-                        molecule.pka_index[atom_idx] = pka_obj[pattern]["pKa_BH"]
+                        molecule.pka_index[atom_idx] = PKA_CHART[pattern]["pKa_BH"]
     #return nothing because this just modifies state
 
 def get_pka(atom,molecule):

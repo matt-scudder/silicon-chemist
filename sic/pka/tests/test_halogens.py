@@ -6,12 +6,11 @@ import unittest
 
 from openbabel.pybel import readstring
 
-from sic.pka import pka_chart,pka
+from sic.pka import pka
 from sic.structure import connectivity_table
 
 class HalogenPkaTest(unittest.TestCase):
     def setUp(self):
-        self.PKA_CHART = pka_chart.PKA_CHART
         self.fluorines = ["F","[F-]"]
         self.chlorines = ["Cl","[Cl-]"]
         self.bromines = ["Br","[Br-]"]
