@@ -39,14 +39,14 @@ class ADN(unittest.TestCase):
     # tests "C=C" 
     def testdouble(self):
         reaction = reaction_factory.produce_reaction("ADN",self.double_sources,self.double_sinks)
-        self.assertTrue(reaction.cross_check() == 1)
+        self.assertEquals(reaction.cross_check(), 1)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.double,self.double_products))
     
     #tests "Z=C"
-    def testdouble(self):
+    def test_Z_double(self):
         reaction = reaction_factory.produce_reaction("ADN",self.Z_double_sources,self.Z_double_sinks)
-        self.assertTrue(reaction.cross_check() < 1)
+        self.assertLess(reaction.cross_check(), 1)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.Z_double,self.Z_double_products))
 

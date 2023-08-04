@@ -25,7 +25,7 @@ class DNTest(unittest.TestCase):
 
     def testCation(self):
         reaction = reaction_factory.produce_reaction("DN",self.cation_sources,self.cation_sinks)
-        self.assertTrue(reaction.cross_check() == 1.0)
+        self.assertEquals(reaction.cross_check(), 1.0)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.cation,self.cation_products))
 

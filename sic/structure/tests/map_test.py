@@ -24,7 +24,7 @@ class MappingTest(unittest.TestCase):
         #1:6, 2:2, 3:3, 4:4, 5:5, 6:1
         correct_mapping = {1:6,2:2,3:3,4:4,5:5,6:1}
         mapping = properties.get_mapping(self.reactants,self.products)
-        self.assertTrue(mapping == correct_mapping) #amazingly, this works. Bless Python.
+        self.assertDictEqual(mapping[0], correct_mapping)
 
 if __name__ == "__main__":
     unittest.main()

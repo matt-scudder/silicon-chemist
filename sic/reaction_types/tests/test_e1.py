@@ -34,7 +34,7 @@ class E1Test(unittest.TestCase):
                 sink_to_use.append(sink)
                 break
         reaction = reaction_factory.produce_reaction("E1",source_to_use,sink_to_use)
-        self.assertTrue(reaction.cross_check() == 1.0)
+        self.assertEquals(reaction.cross_check(), 1.0)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.t_butyl,self.t_butyl_products))
 

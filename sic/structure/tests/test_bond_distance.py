@@ -59,7 +59,7 @@ class GroupAttachmentTest(unittest.TestCase):
         print(self.t_butyl_reactants.write("can"))
         second_distance = properties.get_bond_distance(self.t_butyl_reactants,self.t_butyl_products,self.t_butyl_mapping)
         print("After bond-making and bond-breaking: %s" % second_distance)
-        self.assertTrue(second_distance < first_distance)
+        self.assertLess(second_distance, first_distance)
 
     def testNitriles(self):
         """
@@ -86,7 +86,7 @@ class GroupAttachmentTest(unittest.TestCase):
         print(self.nitrile_reactants.write("can"))
         second_distance = properties.get_bond_distance(self.nitrile_reactants,self.nitrile_products,self.nitrile_mapping)
         print("After bond-making and bond-breaking: %s" % second_distance)
-        self.assertTrue(second_distance < 1)
+        self.assertLess(second_distance, 1)
 
 
 if __name__ == "__main__":

@@ -67,7 +67,7 @@ class ProtonTransferTest(unittest.TestCase):
     
     def testReallyBad(self):
         reaction = proton_transfer.ProtonTransfer([self.really_bad_sources[0]],[self.really_bad_sinks[0]])
-        self.assertTrue(reaction.cross_check() == 0.0)
+        self.assertEquals(reaction.cross_check(), 0.0)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.really_bad_reaction,self.really_bad_reaction_products))
 
@@ -85,13 +85,13 @@ class ProtonTransferTest(unittest.TestCase):
 
     def testVeryDownhill(self):
         reaction = proton_transfer.ProtonTransfer([self.very_downhill_sources[0]],[self.very_downhill_sinks[0]])
-        self.assertTrue(reaction.cross_check() == 1.0)
+        self.assertEquals(reaction.cross_check(), 1.0)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.very_downhill_reaction,self.very_downhill_reaction_products))
        
     def test_ZdoubleBond(self):
         reaction = proton_transfer.ProtonTransfer([self.z_doubleBond_C_sources[1]],[self.z_doubleBond_C_sinks[0]])
-        self.assertTrue(reaction.cross_check() > -10)
+        self.assertGreater(reaction.cross_check(), -10)
         reaction.rearrange()
         print("product =",self.z_doubleBond_C)
         print("Actual product =", self.z_doubleBond_C_products)

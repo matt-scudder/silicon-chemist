@@ -34,7 +34,7 @@ class EBTest(unittest.TestCase):
                 sink_to_use.append(sink)
                 break
         reaction = reaction_factory.produce_reaction("EB",source_to_use,sink_to_use)
-        self.assertTrue(reaction.cross_check() == 1.0)
+        self.assertEquals(reaction.cross_check(), 1.0)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.nitrile,self.nitrile_products))
 

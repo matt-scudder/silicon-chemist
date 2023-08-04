@@ -34,13 +34,13 @@ class AEtest(unittest.TestCase):
     #(C=C, H-L)
     def testdouble(self):
         reaction = reaction_factory.produce_reaction("AE",self.double_sources,self.double_sinks)
-        self.assertTrue(reaction.cross_check() == 0.25)
+        self.assertEquals(reaction.cross_check(), 0.25)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.double,self.double_products)) 
     # (C=C,Y-L)
     def testdouble(self):
         reaction = reaction_factory.produce_reaction("AE",self.double_Y_L_sources,self.double_Y_L_sinks)
-        self.assertTrue(reaction.cross_check() == 1)
+        self.assertEquals(reaction.cross_check(), 1)
         reaction.rearrange()
         self.assertTrue(similarity.is_same_molecule(self.double_Y_L,self.double_Y_L_products))
 

@@ -26,14 +26,14 @@ class HalogenPkaTest(unittest.TestCase):
             fluorine_mols.append(mol)
         for atom in fluorine_mols[0]:
             if atom.atomicnum == 1:
-                self.assertTrue(pka.get_pka(atom.idx,fluorine_mols[0]) == 3.2)
+                self.assertEquals(pka.get_pka(atom.idx,fluorine_mols[0]), 3.2)
             else:
-                self.assertTrue(pka.get_pka(atom.idx,fluorine_mols[0]) == None)
+                self.assertEquals(pka.get_pka(atom.idx,fluorine_mols[0]), None)
         for atom in fluorine_mols[1]:
             if atom.atomicnum == 1:
-                self.assertTrue(pka.get_pka(atom.idx,fluorine_mols[1]) == None)
+                self.assertEquals(pka.get_pka(atom.idx,fluorine_mols[1]), None)
             else:
-                self.assertTrue(pka.get_pka(atom.idx,fluorine_mols[1]) == 3.2)
+                self.assertEquals(pka.get_pka(atom.idx,fluorine_mols[1]), 3.2)
 
     def testChlorinePka(self):
         chlorine_mols = []
@@ -45,14 +45,14 @@ class HalogenPkaTest(unittest.TestCase):
             chlorine_mols.append(mol)
         for atom in chlorine_mols[0]:
             if atom.atomicnum == 1:
-                self.assertTrue(pka.get_pka(atom.idx,chlorine_mols[0]) == -7)
+                self.assertEquals(pka.get_pka(atom.idx,chlorine_mols[0]), -7)
             else:
-                self.assertTrue(pka.get_pka(atom.idx,chlorine_mols[0]) == None)
+                self.assertEquals(pka.get_pka(atom.idx,chlorine_mols[0]), None)
         for atom in chlorine_mols[1]:
             if atom.atomicnum == 1:
-                self.assertTrue(pka.get_pka(atom.idx,chlorine_mols[1]) == None)
+                self.assertEquals(pka.get_pka(atom.idx,chlorine_mols[1]), None)
             else:
-                self.assertTrue(pka.get_pka(atom.idx,chlorine_mols[1]) == -7)
+                self.assertEquals(pka.get_pka(atom.idx,chlorine_mols[1]), -7)
 
     def testBrominePka(self):
         bromine_mols = []
@@ -64,14 +64,14 @@ class HalogenPkaTest(unittest.TestCase):
             bromine_mols.append(mol)
         for atom in bromine_mols[0]:
             if atom.atomicnum == 1:
-                self.assertTrue(pka.get_pka(atom.idx,bromine_mols[0]) == -9)
+                self.assertEquals(pka.get_pka(atom.idx,bromine_mols[0]), -9)
             else:
-                self.assertTrue(pka.get_pka(atom.idx,bromine_mols[0]) == None)
+                self.assertEquals(pka.get_pka(atom.idx,bromine_mols[0]), None)
         for atom in bromine_mols[1]:
             if atom.atomicnum == 1:
-                self.assertTrue(pka.get_pka(atom.idx,bromine_mols[1]) == None)
+                self.assertEquals(pka.get_pka(atom.idx,bromine_mols[1]), None)
             else:
-                self.assertTrue(pka.get_pka(atom.idx,bromine_mols[1]) == -9)
+                self.assertEquals(pka.get_pka(atom.idx,bromine_mols[1]), -9)
 
     def testIodinePka(self):
         iodine_mols = []
@@ -83,14 +83,14 @@ class HalogenPkaTest(unittest.TestCase):
             iodine_mols.append(mol)
         for atom in iodine_mols[0]:
             if atom.atomicnum == 1:
-                self.assertTrue(pka.get_pka(atom.idx,iodine_mols[0]) == -10)
+                self.assertEquals(pka.get_pka(atom.idx,iodine_mols[0]), -10)
             else:
-                self.assertTrue(pka.get_pka(atom.idx,iodine_mols[0]) == None)
+                self.assertEquals(pka.get_pka(atom.idx,iodine_mols[0]), None)
         for atom in iodine_mols[1]:
             if atom.atomicnum == 1:
-                self.assertTrue(pka.get_pka(atom.idx,iodine_mols[1]) == None)
+                self.assertEquals(pka.get_pka(atom.idx,iodine_mols[1]), None)
             else:
-                self.assertTrue(pka.get_pka(atom.idx,iodine_mols[1]) == -10)
+                self.assertEquals(pka.get_pka(atom.idx,iodine_mols[1]), -10)
 
 
 

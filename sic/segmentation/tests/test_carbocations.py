@@ -25,13 +25,13 @@ class CarbocationIdentificationTest(unittest.TestCase):
             mol = readstring("smi",carbocation)
             mol.addh()
             results = smarts.findall(mol)
-            self.assertTrue(len(results) == 1) #only one molecule
-            self.assertTrue(len(results[0]) == 1) # only one carbon atom
+            self.assertEquals(len(results), 1) #only one molecule
+            self.assertEquals(len(results[0]), 1) # only one carbon atom
         
         for not_match in self.not_carbocations:
             mol = readstring("smi",not_match)
             mol.addh()
-            self.assertTrue(len(smarts.findall(mol)) == 0)
+            self.assertEquals(len(smarts.findall(mol)), 0)
 
 if __name__ == "__main__":
     unittest.main()

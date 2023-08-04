@@ -19,8 +19,8 @@ class CHTest(unittest.TestCase):
         self.sinks = segmentation.label_sinks(ch_check_mol)
 
     def testGetHBonded(self):
-        self.assertTrue(len(properties.get_H_bonds(1,self.ch_check_mol)) == 3)
-        self.assertTrue(len(properties.get_H_bonds(5,self.ch_check_mol)) < 1)
+        self.assertEquals(len(properties.get_H_bonds(1,self.ch_check_mol)), 3)
+        self.assertLess(len(properties.get_H_bonds(5,self.ch_check_mol)), 1)
 
     def testCH(self):
         #first get the CL and Y
@@ -33,7 +33,7 @@ class CHTest(unittest.TestCase):
         CH = properties.get_adjacent_ch(actual_sink)
         #make sure it is actually a CH
         self.assertTrue(CH) #since atom indices start at 1, CH should always be truthy.
-        self.assertTrue(len(properties.get_H_bonds(CH,self.ch_check_mol)) == 3)
+        self.assertEquals(len(properties.get_H_bonds(CH,self.ch_check_mol)), 3)
         #check against Br now
         possible_L_H = properties.get_adjacent_ch(actual_sink,carbon_label="L") #tests the flexibility of our function, too
         self.assertFalse(possible_L_H)
