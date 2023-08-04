@@ -1,0 +1,53 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "SiC Backend Debug",
+            "type": "python",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "${workspaceFolder}/sic/sigc/server.py"
+            },
+            "args": [
+                "run",
+                "--no-debugger"
+            ],
+            "justMyCode": true
+        },
+        {
+            "name": "SiC with Flask Debug Toolbar",
+            "type": "python",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "${workspaceFolder}/sic/sigc/server.py",
+                "FLASK_DEBUG": "1",
+                "FLASK_SECRET_KEY": "DebugToolbarCookieSecret"
+            },
+            "args": [
+                "run",
+                "--no-debugger"
+            ],
+            "jinja": true,
+            "justMyCode": true
+        },
+        {
+            "name": "SiC CMD",
+            "type": "python",
+            "module": "sic.sic",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "args": "${input:enterArgs}",
+            "justMyCode": true
+        }
+    ],
+    "inputs": [
+        {
+          "id": "enterArgs",
+          "type": "promptString",
+          "description": "Enter Command-Line Arguments",
+          "default": "--help"
+        }
+    ]
+}

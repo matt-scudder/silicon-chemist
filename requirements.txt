@@ -1,3 +1,5 @@
+pip>=23.2.1
 Flask==2.3.2
+flask-debugtoolbar==0.13.1
 openbabel==3.1.1.1 --global-option="build_ext" --global-option="-I/usr/include/openbabel3"
 sortedcontainers==2.4.0
