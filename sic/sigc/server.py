@@ -7,14 +7,12 @@ processing as possible to the other modules.
 import os
 
 from flask import Flask, render_template, request
-from flask_debugtoolbar import DebugToolbarExtension
 
 from sic import sic
 
 app = Flask(__name__)
-app.config.from_prefixed_env()
-if (app.config["SECRET_KEY"]):
-        toolbar = DebugToolbarExtension(app)
+
+
 @app.route("/")
 def jsme_display():
         """

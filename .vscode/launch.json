@@ -7,29 +7,13 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "${workspaceFolder}/sic/sigc/server.py"
-            },
-            "args": [
-                "run",
-                "--no-debugger"
-            ],
-            "justMyCode": true
-        },
-        {
-            "name": "SiC with Flask Debug Toolbar",
-            "type": "python",
-            "request": "launch",
-            "module": "flask",
-            "env": {
                 "FLASK_APP": "${workspaceFolder}/sic/sigc/server.py",
                 "FLASK_DEBUG": "1",
-                "FLASK_SECRET_KEY": "DebugToolbarCookieSecret"
             },
             "args": [
                 "run",
                 "--no-debugger"
             ],
-            "jinja": true,
             "justMyCode": true
         },
         {
@@ -40,7 +24,7 @@
             "cwd": "${workspaceFolder}",
             "args": "${input:enterArgs}",
             "justMyCode": true
-        }
+        },
     ],
     "inputs": [
         {

@@ -15,19 +15,25 @@ The following dependencies can all be installed via the linux package manager
 - `default-jre`
 - `libopenbabel-dev`
 - `python3-pip`
+- `swig`
 
 ### Python
-The following dependencies are available from [PyPI](https://pypi.org/) and on linux can be installed by running the following from the repository root:  
-```bash
-python3 -m pip install -r requirements.txt
-```
+The following dependencies are available from [PyPI](https://pypi.org/):
 
 - `flask`
 - `sortedcontainers`
-- `openbabel` 
+- `openbabel`
+
+On many linux distros, libopenbabel-dev does not place its files where the openbabel pip installer espects them, but we can tell it where those files are with:
+```bash
+python3 -m pip install openbabel --global-option="build_ext" --global-option="-I/usr/include/openbabel3"
+```
   - This requires the `libopenbabel-dev` package to be installed first.
-  - If you are installing this manually, you may need to provide the path to openbabel's header files to the pip installer.
-    - Check `requirements.txt` for the syntax, as it adds the path `libopenbabel-dev` unpacks them to on Ubuntu/Debian
+
+The rest of the dependencies should install with:
+```bash
+python3 -m pip install -r requirements.txt
+```
 
 ### Java
 
