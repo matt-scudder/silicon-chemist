@@ -29,6 +29,13 @@ class AE(Reaction):
         """
         if self.cross_check_score != -2.0 :
            return self.cross_check_score
+
+        # Assign the electrophilic_end and the nucleophilic_end parts of the sink to their crosponding atoms 
+        sink = self.sinks[0]
+        sink_subtype = sink.subtype
+        self.electrophilic_end = "Y" if sink_subtype == "Y-L" else "H"
+        self.nucleophilic_end  = "L"
+
         source = self.sources[0]
         FACTORS = {0: 0.0, 1: 0.0, 2: 0.25, 3: 1.0}
         # Getting the carbond degree of the first carbon in the double bond "C1=C2"
@@ -37,26 +44,24 @@ class AE(Reaction):
         # Getting the carbond degree of the first carbon in the double bond
         self.carbon_count2 = properties.get_carbon_degree(source,"C2")
         final_multiplier2 = FACTORS[self.carbon_count2]
-        if final_multiplier1 == 0 and final_multiplier2 == 0 :
+        if final_multiplier1 == 0 and final_multiplier2 == 0:
            self.cross_check_score = 0.0
            return self.cross_check_score
-        # if final_multiplier1 == final_multiplier2, then we need t oproduce two products
+
+        # if final_multiplier1 == final_multiplier2, then we need to produce two products
         elif final_multiplier1 > final_multiplier2  or (final_multiplier1 == final_multiplier2 and self.second_product == True):
             self.cross_check_score = final_multiplier1
             self.mark = "C1"
             self.anti_mark = "C2"
             return self.cross_check_score
+
         else: # if final_multiplier1 < final_multiplier2 or (final_multiplier1 == final_multiplier2 and self.second_product = False)
             self.cross_check_score = final_multiplier2
             self.mark = "C2"
-            self.anti_mark = "C1"           
-        # Assign the electrophilic_end and the nucleophilic_end parts of the sink to their crosponding atoms 
-        sink = self.sinks[0]
-        sink_subtype = sink.subtype
-        self.electrophilic_end = "Y" if sink_subtype == "Y-L" else "H"
-        self.nucleophilic_end  = "L"
-        mol = sink.molecule
+            self.anti_mark = "C1"
+
         # If the sink type is Y-L, and the two Halogens are different, measure the electronegativity.
+        mol = sink.molecule
         if sink_subtype == "Y-L" and mol.OBMol.GetAtom(sink.get_atom("Y")).GetAtomicNum() != mol.OBMol.GetAtom(sink.get_atom("L")).GetAtomicNum():
                 electronegativity_Y = GetElectroNeg(mol.OBMol.GetAtom(sink.get_atom("Y")).GetAtomicNum())
                 electronegativity_L = GetElectroNeg(mol.OBMol.GetAtom(sink.get_atom("L")).GetAtomicNum())
