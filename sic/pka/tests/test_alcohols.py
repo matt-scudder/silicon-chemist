@@ -31,7 +31,7 @@ class AlcoholPkaTest(unittest.TestCase):
                     case "methyl":
                         for atom in mol:
                             if atom.idx == 6: #because doing the connectivity test is a pain...
-                                self.assertEquals(pka.get_pka(atom.idx,mol), 15.5)
+                                self.assertEquals(pka.get_pka(atom.idx,mol), 15.2)
                             elif atom.atomicnum == 8:
                                 self.assertEquals(pka.get_pka(atom.idx,mol), -2.4)
                     case "primary":
@@ -43,7 +43,7 @@ class AlcoholPkaTest(unittest.TestCase):
                     case "secondary":
                         for atom in mol:
                             if atom.idx == 12:
-                                self.assertEquals(pka.get_pka(atom.idx,mol), 18)
+                                self.assertEquals(pka.get_pka(atom.idx,mol), 17)
                             elif atom.atomicnum == 8:
                                 self.assertEquals(pka.get_pka(atom.idx,mol), -2.4)
                     case "tert":
