@@ -114,7 +114,7 @@ PKA_CHART = {
     "[H]-c1=cc=cc=c1": {"pKa_HA": 43, "pKa_BH": None}, #Benzene with proton
     "c1=[c-]c=cc=c1": {"pKa_HA": None, "pKa_BH": 43}, #Benzene, deprotonated
     "C=C[C][H]": {"pKa_HA": 43, "pKa_BH": None}, #Allyl with proton
-    "[C=C[C-]": {"pKa_HA": None, "pKa_BH": 44}, #Allyl, deprotonated
+    "C=C[C-]": {"pKa_HA": None, "pKa_BH": 44}, #Allyl, deprotonated
     "[CH2]=[C,CH,CH2]": {"pKa_HA": 44, "pKa_BH": None}, #Ethylene with proton
     "[C-]=[C,CH,CH2]": {"pKa_HA": None, "pKa_BH": 44}, #Ethylene, deprotonated
     "[H][CH2]-[C,CH,CH2]": {"pKa_HA": 50, "pKa_BH": None}, #Ethyl with proton
