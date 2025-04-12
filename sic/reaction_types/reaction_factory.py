@@ -6,17 +6,17 @@ could get extremely annoying.
 NOTE: The reaction types given MUST be the same as the ones in interactions.py!
 """
 
-from .ade3 import ADE3
-from .adn import ADN
-from .ae import AE
-from .an import AN
-from .dn import DN
-from .e1 import E1
-from .e2 import E2
-from .eb import EB
-from .NuL import NuL
-from .proton_transfer import ProtonTransfer
-from .sn2 import SN2
+from .reaction_ade3 import ADE3
+from .reaction_adn import ADN
+from .reaction_ae import AE
+from .reaction_an import AN
+from .reaction_dn import DN
+from .reaction_e1 import E1
+from .reaction_e2 import E2
+from .reaction_eb import EB
+from .reaction_NuL import NuL
+from .reaction_proton_transfer import ProtonTransfer
+from .reaction_sn2 import SN2
 from sic import utils
 
 def produce_reaction(r_type,sources,sinks,mol=False,second_product = False):
