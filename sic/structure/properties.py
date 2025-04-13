@@ -55,13 +55,13 @@ def get_mapping(reactants,products):
         #remove hydrogen-only maps - these are unlikely but they do come up and mess up the rest of our procedure
         #also I'm not digging into their code to figure out why they do this only *sometimes*, I'm mad
         #enough at Java as it is.
-        hydrogen_re = re.compile("\[H:[0-9]*\]")
+        hydrogen_re = re.compile(r"\[H:[0-9]*\]")
         mapping_string = hydrogen_re.sub("",mapping_string)
         #split into reactant and product map
         react_map,prod_map = mapping_string.split(">>")
         #look for the [] groups
-        react_groups = re.findall("\[[^\]]+\]",react_map)
-        prod_groups = re.findall("\[[^\]]+\]",prod_map)
+        react_groups = re.findall(r"\[[^\]]+\]",react_map)
+        prod_groups = re.findall(r"\[[^\]]+\]",prod_map)
         internal_mapping = {} #to make up for the H groups we excised. Most of the time this will just be a map from a number to itself, but gotta future-proof.
         for i in range(len(react_groups)):
             current_group = react_groups[i]

@@ -7,7 +7,7 @@ import re
 
 from sic.utils import write_mol
 
-SMILES_CHARS = re.escape("+[]()=#@/\-") #special characters involved in SMILES, see spec as described in parse_sic_file
+SMILES_CHARS = re.escape(r"+[]()=#@/\-") #special characters involved in SMILES, see spec as described in parse_sic_file
 
 def parse_sic_file(sic_input):
     """
@@ -48,7 +48,7 @@ def parse_sic_file(sic_input):
     for key in react_obj:
             if react_obj[key]:
                     #Since we don't know the arbitrary delimiter, find it using regex and what we know about the SMILES spec
-                    react_obj[key] = re.split("[^a-zA-Z0-9%s]"%SMILES_CHARS,react_obj[key]) 
+                    react_obj[key] = re.split(r"[^a-zA-Z0-9%s]"%SMILES_CHARS,react_obj[key]) 
     return react_obj
 
 
