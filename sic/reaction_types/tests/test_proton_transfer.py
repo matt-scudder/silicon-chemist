@@ -1,6 +1,6 @@
 """
 Tests all the characteristics of a proton transfer:
-    1. Whether the cross-check score is generated accurately for each of the four "tiers" of it (see proton_transfer.py)
+    1. Whether the cross-check score is generated accurately for each of the four "tiers" of it (see reaction_proton_transfer.py)
     2. Whether rearrangement results in the correct structure
     3. Whether the proton transfer step works on "Z=C", Z=[O,S,N], as the first step of the "AE" reaction of "Z=C"
 """
@@ -12,7 +12,7 @@ import unittest
 from openbabel.pybel import readstring
 
 from sic.pka import pka
-from sic.reaction_types import proton_transfer
+from sic.reaction_types import reaction_proton_transfer
 from sic.segmentation import segmentation
 from sic.structure import similarity
 from sic.structure.connectivity_table import ConnectivityTable
@@ -66,31 +66,31 @@ class ProtonTransferTest(unittest.TestCase):
         self.z_doubleBond_C_sinks = segmentation.label_sinks(self.z_doubleBond_C)
     
     def testReallyBad(self):
-        reaction = proton_transfer.ProtonTransfer([self.really_bad_sources[0]],[self.really_bad_sinks[0]])
+        reaction = reaction_proton_transfer.ProtonTransfer([self.really_bad_sources[0]],[self.really_bad_sinks[0]])
         self.assertEquals(reaction.cross_check(), 0.0)
         reaction.rearrange()
         self.assertEquals(*similarity.normalize_mols([self.really_bad_reaction,self.really_bad_reaction_products]))
 
     def testUphill(self):
-        reaction = proton_transfer.ProtonTransfer([self.uphill_sources[0]],[self.uphill_sinks[0]])
+        reaction = reaction_proton_transfer.ProtonTransfer([self.uphill_sources[0]],[self.uphill_sinks[0]])
         self.assertTrue(reaction.cross_check() > 0.20 and reaction.cross_check() < 0.22) #not gonna rely on equalities on math.exp()-derived floats...
         reaction.rearrange()
         self.assertEquals(*similarity.normalize_mols([self.uphill_reaction,self.uphill_reaction_products]))
 
     def testDownhill(self):
-        reaction = proton_transfer.ProtonTransfer([self.downhill_sources[0]],[self.downhill_sinks[0]])
+        reaction = reaction_proton_transfer.ProtonTransfer([self.downhill_sources[0]],[self.downhill_sinks[0]])
         self.assertTrue(reaction.cross_check() > 0.9 and reaction.cross_check() < 0.91)
         reaction.rearrange()
         self.assertEquals(*similarity.normalize_mols([self.downhill_reaction,self.downhill_reaction_products]))
 
     def testVeryDownhill(self):
-        reaction = proton_transfer.ProtonTransfer([self.very_downhill_sources[0]],[self.very_downhill_sinks[0]])
+        reaction = reaction_proton_transfer.ProtonTransfer([self.very_downhill_sources[0]],[self.very_downhill_sinks[0]])
         self.assertEquals(reaction.cross_check(), 1.0)
         reaction.rearrange()
         self.assertEquals(*similarity.normalize_mols([self.very_downhill_reaction,self.very_downhill_reaction_products]))
        
     def test_ZdoubleBond(self):
-        reaction = proton_transfer.ProtonTransfer([self.z_doubleBond_C_sources[1]],[self.z_doubleBond_C_sinks[0]])
+        reaction = reaction_proton_transfer.ProtonTransfer([self.z_doubleBond_C_sources[1]],[self.z_doubleBond_C_sinks[0]])
         self.assertGreater(reaction.cross_check(), -10)
         reaction.rearrange()
         print("product =",self.z_doubleBond_C)
