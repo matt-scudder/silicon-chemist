@@ -1,0 +1,8 @@
+.gitignore
+.gitattributes
+.dockerignore
+.devcontainer
+.vscode
+Dockerfile
+__pycache__
+compose.yml

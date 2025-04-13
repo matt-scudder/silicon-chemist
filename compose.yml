@@ -1,0 +1,16 @@
+services:
+  sic-dev:
+    build: .
+    ports:
+      - "5000:5000"
+    develop:
+      watch:
+        # allows hot reloading of source changes
+        - action: sync
+          path: .
+          target: /usr/src/app
+          ignore:
+            - __pycache__/
+        - action: rebuild
+          path: ./requirements.txt
+          target: /usr/src/app/requirements.txt
