@@ -44,7 +44,7 @@ class SingleAtomMovementTest(unittest.TestCase):
         log.debug("L index: %s; H index %s" % (L,H))
         struct_ops.break_bond(H,L,self.reactants)
         log.debug(self.reactants.write("can"))
-        self.assertEquals(*similarity.normalize_mols([self.reactants,self.products]))
+        self.assertEqual(*similarity.normalize_mols([self.reactants,self.products]))
 
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stderr)

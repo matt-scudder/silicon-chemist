@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "SiC Backend Debug",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "flask",
             "env": {
@@ -12,13 +12,14 @@
             },
             "args": [
                 "run",
+                "--host=0.0.0.0",
                 "--no-debugger"
             ],
             "justMyCode": true
         },
         {
             "name": "SiC CMD",
-            "type": "python",
+            "type": "debugpy",
             "module": "sic.sic",
             "request": "launch",
             "cwd": "${workspaceFolder}",
@@ -28,10 +29,10 @@
     ],
     "inputs": [
         {
-          "id": "enterArgs",
-          "type": "promptString",
-          "description": "Enter Command-Line Arguments",
-          "default": "--help"
+            "id": "enterArgs",
+            "type": "promptString",
+            "description": "Enter Command-Line Arguments",
+            "default": "--help"
         }
     ]
 }

@@ -51,7 +51,7 @@ class TanimotoSimilarityTest(unittest.TestCase):
 
     def testComplicatedMolecule(self):
         self.assertNotEqual(similarity.tanimoto(self.complicated_molecule,self.slightly_different_complicated_molecule), 1.0)
-        self.assertEquals(similarity.tanimoto(self.complicated_molecule,self.identical_complicated_molecule), 1.0)
+        self.assertEqual(similarity.tanimoto(self.complicated_molecule,self.identical_complicated_molecule), 1.0)
         print(similarity.tanimoto(self.mol3,self.mol3))
 
     def testTanimotoMapping(self):

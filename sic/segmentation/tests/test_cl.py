@@ -25,19 +25,19 @@ class CLIdentificationTest(unittest.TestCase):
             mol = readstring("smi",match)
             mol.addh()
             results = smarts.findall(mol)
-            self.assertEquals(len(results), 1) #only one set of atoms 
-            self.assertEquals(len(results[0]), 2) #and the group should be composed of two
+            self.assertEqual(len(results), 1) #only one set of atoms 
+            self.assertEqual(len(results[0]), 2) #and the group should be composed of two
         for match in self.cl[3:]:
             mol = readstring("smi",match)
             mol.addh()
             results = smarts.findall(mol)
-            self.assertEquals(len(results), 2) # two carbon atoms have an L in both of these.
+            self.assertEqual(len(results), 2) # two carbon atoms have an L in both of these.
             for result in results:
-                self.assertEquals(len(result), 2) #and each should have two atoms
+                self.assertEqual(len(result), 2) #and each should have two atoms
         for not_match in self.not_cl:
             mol = readstring("smi",not_match)
             mol.addh()
-            self.assertEquals(len(smarts.findall(mol)), 0)
+            self.assertEqual(len(smarts.findall(mol)), 0)
 
 if __name__ == "__main__":
     unittest.main()

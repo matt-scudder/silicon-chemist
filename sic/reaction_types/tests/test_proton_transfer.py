@@ -67,27 +67,27 @@ class ProtonTransferTest(unittest.TestCase):
     
     def testReallyBad(self):
         reaction = reaction_proton_transfer.ProtonTransfer([self.really_bad_sources[0]],[self.really_bad_sinks[0]])
-        self.assertEquals(reaction.cross_check(), 0.0)
+        self.assertEqual(reaction.cross_check(), 0.0)
         reaction.rearrange()
-        self.assertEquals(*similarity.normalize_mols([self.really_bad_reaction,self.really_bad_reaction_products]))
+        self.assertEqual(*similarity.normalize_mols([self.really_bad_reaction,self.really_bad_reaction_products]))
 
     def testUphill(self):
         reaction = reaction_proton_transfer.ProtonTransfer([self.uphill_sources[0]],[self.uphill_sinks[0]])
         self.assertTrue(reaction.cross_check() > 0.20 and reaction.cross_check() < 0.22) #not gonna rely on equalities on math.exp()-derived floats...
         reaction.rearrange()
-        self.assertEquals(*similarity.normalize_mols([self.uphill_reaction,self.uphill_reaction_products]))
+        self.assertEqual(*similarity.normalize_mols([self.uphill_reaction,self.uphill_reaction_products]))
 
     def testDownhill(self):
         reaction = reaction_proton_transfer.ProtonTransfer([self.downhill_sources[0]],[self.downhill_sinks[0]])
         self.assertTrue(reaction.cross_check() > 0.9 and reaction.cross_check() < 0.91)
         reaction.rearrange()
-        self.assertEquals(*similarity.normalize_mols([self.downhill_reaction,self.downhill_reaction_products]))
+        self.assertEqual(*similarity.normalize_mols([self.downhill_reaction,self.downhill_reaction_products]))
 
     def testVeryDownhill(self):
         reaction = reaction_proton_transfer.ProtonTransfer([self.very_downhill_sources[0]],[self.very_downhill_sinks[0]])
-        self.assertEquals(reaction.cross_check(), 1.0)
+        self.assertEqual(reaction.cross_check(), 1.0)
         reaction.rearrange()
-        self.assertEquals(*similarity.normalize_mols([self.very_downhill_reaction,self.very_downhill_reaction_products]))
+        self.assertEqual(*similarity.normalize_mols([self.very_downhill_reaction,self.very_downhill_reaction_products]))
        
     def test_ZdoubleBond(self):
         reaction = reaction_proton_transfer.ProtonTransfer([self.z_doubleBond_C_sources[1]],[self.z_doubleBond_C_sinks[0]])
@@ -95,7 +95,7 @@ class ProtonTransferTest(unittest.TestCase):
         reaction.rearrange()
         print("product =",self.z_doubleBond_C)
         print("Actual product =", self.z_doubleBond_C_products)
-        self.assertEquals(*similarity.normalize_mols([self.z_doubleBond_C,self.z_doubleBond_C_products]))
+        self.assertEqual(*similarity.normalize_mols([self.z_doubleBond_C,self.z_doubleBond_C_products]))
 
 if __name__ == "__main__":
     unittest.main()

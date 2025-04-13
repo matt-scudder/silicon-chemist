@@ -30,18 +30,18 @@ class HalogenIdentificationTest(unittest.TestCase):
             mol = readstring("smi",c_base)
             mol.addh()
             results = smarts.findall(mol)
-            self.assertEquals(len(results), 1) #should be only one group that's a source
-            self.assertEquals(len(results[0]), 1) #and only 1 atom in the group
+            self.assertEqual(len(results), 1) #should be only one group that's a source
+            self.assertEqual(len(results[0]), 1) #and only 1 atom in the group
         
         for acid in self.halogen_acids:
             mol = readstring("smi",acid)
             mol.addh()
-            self.assertEquals(len(smarts.findall(mol)), 0) #shouldn't find anything here
+            self.assertEqual(len(smarts.findall(mol)), 0) #shouldn't find anything here
 
         for not_match in self.halogen_not_match:
             mol = readstring("smi",not_match)
             mol.addh()
-            self.assertEquals(len(smarts.findall(mol)), 0) #shouldn't find anything here
+            self.assertEqual(len(smarts.findall(mol)), 0) #shouldn't find anything here
 
     def testHalogenSinks(self):
         """
@@ -52,19 +52,19 @@ class HalogenIdentificationTest(unittest.TestCase):
         for c_base in self.halogen_c_bases:
             mol = readstring("smi",c_base)
             mol.addh()
-            self.assertEquals(len(smarts.findall(mol)), 0) #shouldn't find anything here
+            self.assertEqual(len(smarts.findall(mol)), 0) #shouldn't find anything here
 
         for acid in self.halogen_acids:
             mol = readstring("smi",acid)
             mol.addh()
             results = smarts.findall(mol)
-            self.assertEquals(len(results), 1) #should be exactly 1 acid
-            self.assertEquals(len(results[0]), 2) #catch the H for sure
+            self.assertEqual(len(results), 1) #should be exactly 1 acid
+            self.assertEqual(len(results[0]), 2) #catch the H for sure
 
         for not_match in self.halogen_not_match:
             mol = readstring("smi",not_match)
             mol.addh()
-            self.assertEquals(len(smarts.findall(mol)), 0) #shouldn't find anything here
+            self.assertEqual(len(smarts.findall(mol)), 0) #shouldn't find anything here
 
 def main():
     unittest.main()

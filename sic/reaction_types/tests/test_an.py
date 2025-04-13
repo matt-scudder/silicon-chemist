@@ -25,9 +25,9 @@ class ANTest(unittest.TestCase):
 
     def testCation(self):
         reaction = reaction_factory.produce_reaction("AN",self.cation_sources,self.cation_sinks)
-        self.assertEquals(reaction.cross_check(), 1.0)
+        self.assertEqual(reaction.cross_check(), 1.0)
         reaction.rearrange()
-        self.assertEquals(*similarity.normalize_mols([self.cation,self.cation_products]))
+        self.assertEqual(*similarity.normalize_mols([self.cation,self.cation_products]))
 
 if __name__ == "__main__":
     unittest.main()

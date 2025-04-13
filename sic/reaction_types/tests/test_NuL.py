@@ -27,9 +27,9 @@ class NuLTest(unittest.TestCase):
     def testdouble(self):
         reaction = reaction_factory.produce_reaction("NuL",self.double_Y_L_sources,self.double_Y_L_sinks)
         print("reaction.cross_check() =", reaction.cross_check())
-        self.assertEquals(reaction.cross_check(), 0.3)
+        self.assertEqual(reaction.cross_check(), 0.3)
         reaction.rearrange()
-        self.assertEquals(*similarity.normalize_mols([self.double_Y_L,self.double_Y_L_products]))
+        self.assertEqual(*similarity.normalize_mols([self.double_Y_L,self.double_Y_L_products]))
 
 if __name__ == "__main__":
     unittest.main()

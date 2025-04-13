@@ -46,19 +46,19 @@ class SN2Test(unittest.TestCase):
     #TODO: Update the below when we get C-H...
     def testPrimary(self):
         reaction = reaction_factory.produce_reaction("SN2",self.primary_sources,self.primary_sinks)
-        self.assertEquals(reaction.cross_check(), 0.95)
+        self.assertEqual(reaction.cross_check(), 0.95)
         reaction.rearrange()
-        self.assertEquals(*similarity.normalize_mols([self.primary,self.primary_products]))
+        self.assertEqual(*similarity.normalize_mols([self.primary,self.primary_products]))
 
     def testSecondary(self):
         reaction = reaction_factory.produce_reaction("SN2",self.secondary_sources,self.secondary_sinks)
-        self.assertEquals(reaction.cross_check(), 0.6)
+        self.assertEqual(reaction.cross_check(), 0.6)
         reaction.rearrange()
-        self.assertEquals(*similarity.normalize_mols([self.secondary,self.secondary_products]))
+        self.assertEqual(*similarity.normalize_mols([self.secondary,self.secondary_products]))
 
     def testTertiary(self):
         reaction = reaction_factory.produce_reaction("SN2",self.tertiary_sources,self.tertiary_sinks)
-        self.assertEquals(reaction.cross_check(), 0.0)
+        self.assertEqual(reaction.cross_check(), 0.0)
         
 
 if __name__ == "__main__":

@@ -30,13 +30,13 @@ class LonePairIdentificationTest(unittest.TestCase):
             mol = readstring("smi",oxygen_pair)
             mol.addh()
             results = smarts.findall(mol)
-            self.assertEquals(len(results), 1) #only one atom that's relevant
-            self.assertEquals(len(results[0]), 1) #only catch the lone pair atom
+            self.assertEqual(len(results), 1) #only one atom that's relevant
+            self.assertEqual(len(results[0]), 1) #only catch the lone pair atom
 
         for full_valence in self.full_oxygen_valence:
             mol = readstring("smi",full_valence)
             mol.addh()
-            self.assertEquals(len(smarts.findall(mol)), 0) #full valence means you shouldn't get anything
+            self.assertEqual(len(smarts.findall(mol)), 0) #full valence means you shouldn't get anything
     
     def testNitrogenSources(self):
         """
@@ -48,13 +48,13 @@ class LonePairIdentificationTest(unittest.TestCase):
             mol = readstring("smi",nitrogen_pair)
             mol.addh()
             results = smarts.findall(mol)
-            self.assertEquals(len(results), 1) #only one atom that's relevant
-            self.assertEquals(len(results[0]), 1) #only catch the lone pair atom
+            self.assertEqual(len(results), 1) #only one atom that's relevant
+            self.assertEqual(len(results[0]), 1) #only catch the lone pair atom
 
         for full_valence in self.full_nitrogen_valence:
             mol = readstring("smi",full_valence)
             mol.addh()
-            self.assertEquals(len(smarts.findall(mol)), 0) #full valence means you shouldn't get anything
+            self.assertEqual(len(smarts.findall(mol)), 0) #full valence means you shouldn't get anything
 
     def testSulfurSources(self):
         """
@@ -66,13 +66,13 @@ class LonePairIdentificationTest(unittest.TestCase):
             mol = readstring("smi",sulfur_pair)
             mol.addh()
             results = smarts.findall(mol)
-            self.assertEquals(len(results), 1) #only one atom that's relevant
-            self.assertEquals(len(results[0]), 1) #only catch the lone pair atom
+            self.assertEqual(len(results), 1) #only one atom that's relevant
+            self.assertEqual(len(results[0]), 1) #only catch the lone pair atom
 
         for full_valence in self.full_sulfur_valence:
             mol = readstring("smi",full_valence)
             mol.addh()
-            self.assertEquals(len(smarts.findall(mol)), 0) #full valence means you shouldn't get anything
+            self.assertEqual(len(smarts.findall(mol)), 0) #full valence means you shouldn't get anything
 
 def main():
     unittest.main()

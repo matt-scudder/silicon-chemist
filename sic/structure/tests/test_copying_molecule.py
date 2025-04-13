@@ -40,7 +40,7 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         copy_mol = struct_ops.copy_molecule(self.orig_mol)
         new_sources = utils.shift_molecule_references(self.sources,copy_mol)
         for source in new_sources:
-            self.assertEquals(source.molecule, copy_mol)
+            self.assertEqual(source.molecule, copy_mol)
             self.assertNotEqual(source.molecule, self.orig_mol)
 
     def testCopyNotModifiedAfterModifyingOriginal(self):
@@ -63,7 +63,7 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         sink = segment["sinks"][0]
         struct_ops.make_bond(source.get_atom("Y"),sink.get_atom("H"),orig_mol)
         struct_ops.break_bond(sink.get_atom("H"),sink.get_atom("L"),orig_mol)
-        self.assertEquals(orig_mol.write("can"), self.prod_mol.write("can"))
+        self.assertEqual(orig_mol.write("can"), self.prod_mol.write("can"))
         self.assertNotEqual(orig_mol.write("can"), copy_mol.write("can"))
 
     def testOriginalNotModifiedAfterModifyingCopy(self):
@@ -82,7 +82,7 @@ class MoleculeCopyAndModifyTest(unittest.TestCase):
         L = new_sinks[0].get_atom("L")
         struct_ops.make_bond(Y,H,copy_mol)
         struct_ops.break_bond(H,L,copy_mol)
-        self.assertEquals(copy_mol.write("can"), self.prod_mol.write("can"))
+        self.assertEqual(copy_mol.write("can"), self.prod_mol.write("can"))
         self.assertNotEqual(self.orig_mol.write("can"), copy_mol.write("can"))
 
 if __name__ == "__main__":

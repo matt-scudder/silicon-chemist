@@ -24,10 +24,10 @@ class E2Test(unittest.TestCase):
 
     def testCation(self):
         reaction = reaction_factory.produce_reaction("E2",self.t_butyl_sources,self.t_butyl_sinks)
-        self.assertEquals(reaction.cross_check(), 0.3)
+        self.assertEqual(reaction.cross_check(), 0.3)
         reaction.rearrange()
         #print self.t_butyl.write("can")
-        self.assertEquals(*similarity.normalize_mols([self.t_butyl,self.t_butyl_products]))
+        self.assertEqual(*similarity.normalize_mols([self.t_butyl,self.t_butyl_products]))
 
 if __name__ == "__main__":
     unittest.main()

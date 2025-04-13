@@ -34,15 +34,15 @@ class AEtest(unittest.TestCase):
     #(C=C, H-L)
     def testdouble(self):
         reaction = reaction_factory.produce_reaction("AE",self.double_sources,self.double_sinks)
-        self.assertEquals(reaction.cross_check(), 0.25)
+        self.assertEqual(reaction.cross_check(), 0.25)
         reaction.rearrange()
-        self.assertEquals(*similarity.normalize_mols([self.double,self.double_products])) 
+        self.assertEqual(*similarity.normalize_mols([self.double,self.double_products])) 
     # (C=C,Y-L)
     def testdouble(self):
         reaction = reaction_factory.produce_reaction("AE",self.double_Y_L_sources,self.double_Y_L_sinks)
-        self.assertEquals(reaction.cross_check(), 1)
+        self.assertEqual(reaction.cross_check(), 1)
         reaction.rearrange()
-        self.assertEquals(*similarity.normalize_mols([self.double_Y_L,self.double_Y_L_products]))
+        self.assertEqual(*similarity.normalize_mols([self.double_Y_L,self.double_Y_L_products]))
 
 if __name__ == "__main__":
     unittest.main()

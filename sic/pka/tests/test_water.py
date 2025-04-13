@@ -24,19 +24,19 @@ class WaterPkaTest(unittest.TestCase):
         #get_all_pka modifies state so now let's iterate through atoms
         for atom in water_mols[0]:
             if atom.atomicnum == 1:
-                self.assertEquals(pka.get_pka(atom.idx,water_mols[0]), 52)
+                self.assertEqual(pka.get_pka(atom.idx,water_mols[0]), 52)
             else:
-                self.assertEquals(pka.get_pka(atom.idx,water_mols[0]), 15.7)
+                self.assertEqual(pka.get_pka(atom.idx,water_mols[0]), 15.7)
         for atom in water_mols[1]:
             if atom.atomicnum == 1:
-                self.assertEquals(pka.get_pka(atom.idx,water_mols[1]), 15.7)
+                self.assertEqual(pka.get_pka(atom.idx,water_mols[1]), 15.7)
             else:
-                self.assertEquals(pka.get_pka(atom.idx,water_mols[1]), -1.7)
+                self.assertEqual(pka.get_pka(atom.idx,water_mols[1]), -1.7)
         for atom in water_mols[2]:
             if atom.atomicnum == 1:
-                self.assertEquals(pka.get_pka(atom.idx,water_mols[2]),-1.7)
+                self.assertEqual(pka.get_pka(atom.idx,water_mols[2]),-1.7)
             else:
-                self.assertEquals(pka.get_pka(atom.idx,water_mols[2]),None)
+                self.assertEqual(pka.get_pka(atom.idx,water_mols[2]),None)
 def main():
     unittest.main()
 

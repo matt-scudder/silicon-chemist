@@ -33,7 +33,7 @@ class GroupAttachmentTest(unittest.TestCase):
         print(self.reactants.write("can"))
         struct_ops.make_bond(Y,C,self.reactants) #self.reactants is a Molecule object
         print(self.reactants.write("can"))
-        self.assertEquals(*similarity.normalize_mols([self.reactants,self.products]))
+        self.assertEqual(*similarity.normalize_mols([self.reactants,self.products]))
 
 if __name__ == "__main__":
     unittest.main()
