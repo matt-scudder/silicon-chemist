@@ -6,13 +6,29 @@
 - Use a more sophisticated algorithm for mechanism decision-making than in the original SiC
 - Create a Web-based graphical user interface that will be friendlier to users than the original SiC
 
+## Development
+
+The fastest way to set up the enviroment will all dependencies is to have [Docker](https://www.docker.com/get-started/) installed and use the included Dockerfile
+
+#### VS Code
+This repository contains devcontainer configs, so opening this directory in VS Code will prompt you to install the [Dev Containers](https://marketplace.visualstudio.com/items/?itemName=ms-vscode-remote.remote-containers) extension, and then to reopen the workspace in a container.  The workspace is mounted to `/usr/src/app` so changes made inside the container will persist.  
+VS Code will automatically share the Git Credential Manager with the container if you cloned with HTTPS.  
+There are debug profiles in `.vscode/launch.json` for the Flask development server and the SiC command line.  
+Testing uses `unittest` with the `test_*` prefix.  
+
+#### Docker Compose
+Alternatively, there is an included `compose.yml` in the workspace set up to support hot reloading if you're not using VS Code.  
+Simply run the following to start the development server:
+```bash
+docker compose up --watch
+```
+
 ## Dependencies
 
 ### Linux Packages
 The following dependencies can all be installed via the linux package manager
 
-- `apache2`
-- `default-jre`
+- `openjdk-17-jre`
 - `libopenbabel-dev`
 - `python3-pip`
 - `swig`
@@ -24,9 +40,9 @@ The following dependencies are available from [PyPI](https://pypi.org/):
 - `sortedcontainers`
 - `openbabel`
 
-On many linux distros, libopenbabel-dev does not place its files where the openbabel pip installer espects them, but we can tell it where those files are with:
+On many linux distros, libopenbabel-dev does not place its files where the openbabel pip installer espects them, but we can link the folder to the expected location:
 ```bash
-python3 -m pip install openbabel --global-option="build_ext" --global-option="-I/usr/include/openbabel3"
+ln -s /usr/include/openbabel3 /usr/local/include/openbabel3
 ```
   - This requires the `libopenbabel-dev` package to be installed first.
 

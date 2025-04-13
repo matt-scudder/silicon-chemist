@@ -3,7 +3,7 @@ FROM python:3.13-slim-bookworm
 WORKDIR /usr/src/app
 
 RUN apt update && apt install -y --no-install-recommends \
-    default-jre \
+    openjdk-17-jre \
     swig \
     libopenbabel-dev \
     g++ \
