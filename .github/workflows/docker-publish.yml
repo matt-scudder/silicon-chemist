@@ -8,10 +8,8 @@ name: Docker
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - 'Dockerfile'
-      - 'requirements.txt'
-      - '.github/workflows/docker-publish.yml'
+    tags:
+      - 'v*'
   pull_request:
     branches: [ "main" ]
 
