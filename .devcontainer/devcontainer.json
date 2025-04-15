@@ -3,7 +3,9 @@
 {
 	"name": "SiC Dependencies",
 
-	"build": {"dockerfile": "../Dockerfile" },
+	// switch from image line to build line if you want to build the docker image locally
+	// "build": {"dockerfile": "../Dockerfile" },
+	"image": "ghcr.io/matt-scudder/silicon-chemist:0.1",
 
 	"workspaceMount": "source=${localWorkspaceFolder},target=/usr/src/app,type=bind",
 	"workspaceFolder": "/usr/src/app",
